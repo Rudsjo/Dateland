@@ -1,4 +1,4 @@
-﻿@model UserViewModel
+﻿@model User
 
 @{
     ViewData["Title"] = "Home Page";
@@ -62,16 +62,16 @@
 
                     <!-- Email -->
                     <div class="form-group">
-                        <label asp-for="EmailAdress" class="control-label"></label>
-                        <input asp-for="EmailAdress" class="form-control" />
-                        <span asp-validation-for="EmailAdress" class="text-danger"></span>
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
                     <!-- Confirm email -->
                     <div class="form-group">
-                        <label asp-for="ConfirmEmail" class="control-label"></label>
-                        <input asp-for="ConfirmEmail" class="form-control" />
-                        <span asp-validation-for="ConfirmEmail" class="text-danger"></span>
+                        <label asp-for="IsEmailConfirmed" class="control-label"></label>
+                        <input asp-for="IsEmailConfirmed" class="form-control" />
+                        <span asp-validation-for="IsEmailConfirmed" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">

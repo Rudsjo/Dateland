@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Dateland.Test2.Models;
-using Dateland.Test2.Core;
-using System.Data;
-
-namespace Dateland.Test2.Controllers
+﻿namespace Dateland.Test2.Controllers
 {
+    // Required namespaces
+    using System.Diagnostics;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
+    using Dateland.Test2.Core;
+
+    /// <summary>
+    /// Our home controller
+    /// </summary>
+    /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
     public class HomeController : Controller
     {
         #region Private Members
@@ -50,10 +49,8 @@ namespace Dateland.Test2.Controllers
         /// </summary>
         /// <returns></returns>
         public IActionResult Index()
-        {
-            // Returns the index view
-            return View();
-        }
+            =>
+            View();
 
         /// <summary>
         /// Registers a user to the database if criterias are set in the register form
@@ -62,7 +59,7 @@ namespace Dateland.Test2.Controllers
         /// <returns>The page to go to</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(UserViewModel user)
+        public IActionResult Register(User user)
         {
             // Check if all fields are filled correctly
             if (ModelState.IsValid)

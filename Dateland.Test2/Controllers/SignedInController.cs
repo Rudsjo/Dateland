@@ -48,7 +48,7 @@ namespace Dateland.Test2
         public async Task<IActionResult> Index()
         {
             // Get the list of matched users for the logged in user
-            _vm.MatchedUsers = new List<UserViewModel>((await _repo.GetUsers()).ToList().ToViewModel<IUser, UserViewModel>());
+            _vm.MatchedUsers = new List<User>(await _repo.GetUsers());
 
             return View(_vm);
         }

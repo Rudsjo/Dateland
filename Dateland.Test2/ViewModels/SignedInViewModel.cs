@@ -1,11 +1,9 @@
-﻿using Dateland.Test2.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Dateland.Test2
+﻿namespace Dateland.Test2
 {
+    // Required namespaces
+    using Dateland.Test2.Core;
+    using System.Collections.Generic;
+
     /// <summary>
     /// The view model for the SignedIn view
     /// </summary>
@@ -16,7 +14,7 @@ namespace Dateland.Test2
         /// <summary>
         /// A list of of the matched users
         /// </summary>
-        public List<UserViewModel> MatchedUsers { get; set; }
+        public List<User> MatchedUsers { get; set; }
 
         /// <summary>
         /// The user selected to be shown

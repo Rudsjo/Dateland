@@ -1,6 +1,6 @@
 using System;
 
-namespace Dateland.Test2.Models
+namespace Dateland.Test2
 {
     public class ErrorViewModel
     {
