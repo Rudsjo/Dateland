@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Dateland.Test2</title>
+    <!-- Bootstrap CDN-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!--Font awesome CDN-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <!--Scroll reveal CDN-->
+    <script src="https://unpkg.com/scrollreveal"></script>
+
+    <!-- Our styles -->
+    <link rel="stylesheet" href="~/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="nav">
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                    <i class="fas fa-times"></i>
+                </div>
+                <a href="#" class="logo">
+                    <img src="~/images/dateland-logo-white.png" alt="">
+                </a>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Rubrik</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Rubrik</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Rubrik</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Rubrik</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Rubrik</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Rubrik</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    @RenderBody()
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/main.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
