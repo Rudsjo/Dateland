@@ -7,19 +7,43 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Dateland.Test2.Models;
 using Dateland.Test2.Core;
+using System.Data;
 
 namespace Dateland.Test2.Controllers
 {
     public class HomeController : Controller
     {
+        #region Private Members
+
+        /// <summary>
+        /// The instance of the <see cref="ILogger"/>
+        /// </summary>
         private readonly ILogger<HomeController> _logger;
 
-        public IRepository repo { get; private set; } = new MSSQL();
+        /// <summary>
+        /// The instance of the repository
+        /// </summary>
+        private readonly IRepository _repo;
 
-        public HomeController(ILogger<HomeController> logger)
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="vm"></param>
+        public HomeController(ILogger<HomeController> logger, SignedInViewModel vm, IRepository repo)
         {
+            // Set instances
             _logger = logger;
+            _repo = repo;
         }
+
+        #endregion
+
+        #region Action Results
 
         /// <summary>
         /// Shows the index page
@@ -47,22 +71,12 @@ namespace Dateland.Test2.Controllers
                 // await repo.AddUser(user.ToModel<IUser, User>());
 
                 // Change the page
-                return RedirectToAction(nameof(SignedIn));
+                return RedirectToAction();
             }
 
             // Go back to the start page in case of failing
             return RedirectToAction(nameof(Index));
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public IActionResult SignedIn()
-        {
-            return View();
-        }
-
 
 
         public IActionResult Privacy()
@@ -74,6 +88,8 @@ namespace Dateland.Test2.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        } 
+
+        #endregion
     }
 }

@@ -68,5 +68,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Locations\Dateland.Test2.Data.publish.xml" />
+    <None Include="Publish Locations\Dateland.Test2.DataSt.publish.xml" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,65 @@
+﻿@model SignedInViewModel
+
+@{
+    ViewData["Title"] = "Signed In";
+}
+
+<!-- Header ends -->
+
+<section class="potential-partners">
+    <div class="container">
+        <div class="global-headline">
+            <h1 class="headline headline-dark">Dina</h1>
+            <h2 class="sub-headline">
+                <span class="first-letter">M</span>atchningar
+            </h2>
+            <div class="asterisk"><i class="fas fa-heart"></i></div>
+        </div>
+
+        <div class="si-main-row">
+            <div class="si-main-col">
+
+                <div class="si-row-inner">
+                    <div class="sub-col-3">
+                        <a asp-route-id="0" asp-action="UpdateSelectedUser"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[0].ProfilePictureUrl)" /></a>
+                        <a asp-route-id="1" asp-action="UpdateSelectedUser"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[1].ProfilePictureUrl)" /></a>
+                    </div>
+                    <div class="sub-col-3">
+                        <a href="#"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[0].ProfilePictureUrl)" /></a>
+                        <a href="#"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[0].ProfilePictureUrl)" /></a>
+                    </div>
+                    <div class="sub-col-3">
+                        <a href="#"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[0].ProfilePictureUrl)" /></a>
+                        <a href="#"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[0].ProfilePictureUrl)" /></a>
+                    </div>
+                </div>                
+
+            </div>
+
+            <div class="si-main-col">
+                <div class="si-row-inner">
+                    <div class="vertical-separator"></div>
+                    
+                    <div class="chosen-container">
+
+                        <div class="chosen-header">
+                            <img class="si-img-chosen" src="@Url.Content(Model.MatchedUsers[Model.SelectedUser].ProfilePictureUrl)" />
+
+                            <h2>@Model.MatchedUsers[Model.SelectedUser].FullName</h2>
+
+                        </div>
+
+                        <div class="chosen-body">
+                            <p>
+                                Some text about @Model.MatchedUsers[Model.SelectedUser].FirstName...
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
