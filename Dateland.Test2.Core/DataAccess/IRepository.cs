@@ -20,7 +20,7 @@
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        abstract Task<IEnumerable<UserIntrestRelation>> GetUsersInterest(int id);
+        abstract Task<IEnumerable<UserInterestRelation>> GetUsersInterest(int id);
 
         /// <summary>
         /// Gets all interests  from the database.

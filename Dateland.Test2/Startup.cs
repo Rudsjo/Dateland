@@ -17,7 +17,7 @@ namespace Dateland.Test2
         /// <summary>
         /// Gets the current connection to use.
         /// </summary>
-        private string CurrentConnection { get => "Jimmys"; }
+        private string CurrentConnection { get => "Jockes"; }
 
         /// <summary>
         /// Gets the configuration.

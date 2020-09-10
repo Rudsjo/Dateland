@@ -18,7 +18,7 @@
         /// <summary>
         /// Gets or sets the user intrests.
         /// </summary>
-        public DbSet<UserIntrestRelation> UserIntrests { get; set; }
+        public DbSet<UserInterestRelation> UserIntrests { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppDbContext"/> class.

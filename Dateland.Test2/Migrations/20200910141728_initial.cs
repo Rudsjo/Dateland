@@ -2,7 +2,7 @@
 
 namespace Dateland.Test2.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,13 +10,13 @@ namespace Dateland.Test2.Migrations
                 name: "Interests",
                 columns: table => new
                 {
-                    IntrestID = table.Column<int>(nullable: false)
+                    InterestID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IntrestName = table.Column<string>(nullable: false)
+                    InterestName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Interests", x => x.IntrestID);
+                    table.PrimaryKey("PK_Interests", x => x.InterestID);
                 });
 
             migrationBuilder.CreateTable(
@@ -39,25 +39,25 @@ namespace Dateland.Test2.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserIntrestRelations",
+                name: "UserInterestRelations",
                 columns: table => new
                 {
-                    UserIntrestID = table.Column<int>(nullable: false)
+                    UserInterestID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<int>(nullable: true),
-                    IntrestID = table.Column<int>(nullable: true)
+                    InterestID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserIntrestRelations", x => x.UserIntrestID);
+                    table.PrimaryKey("PK_UserInterestRelations", x => x.UserInterestID);
                     table.ForeignKey(
-                        name: "FK_UserIntrestRelations_Interests_IntrestID",
-                        column: x => x.IntrestID,
+                        name: "FK_UserInterestRelations_Interests_InterestID",
+                        column: x => x.InterestID,
                         principalTable: "Interests",
-                        principalColumn: "IntrestID",
+                        principalColumn: "InterestID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserIntrestRelations_Users_UserID",
+                        name: "FK_UserInterestRelations_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "UserID",
@@ -65,20 +65,20 @@ namespace Dateland.Test2.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserIntrestRelations_IntrestID",
-                table: "UserIntrestRelations",
-                column: "IntrestID");
+                name: "IX_UserInterestRelations_InterestID",
+                table: "UserInterestRelations",
+                column: "InterestID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserIntrestRelations_UserID",
-                table: "UserIntrestRelations",
+                name: "IX_UserInterestRelations_UserID",
+                table: "UserInterestRelations",
                 column: "UserID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "UserIntrestRelations");
+                name: "UserInterestRelations");
 
             migrationBuilder.DropTable(
                 name: "Interests");

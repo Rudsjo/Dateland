@@ -12,7 +12,7 @@
         /// Gets or sets the intrest identifier.
         /// </summary>
         [Key]
-        public int IntrestID { get; set; }
+        public int InterestID { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the intrest.
@@ -22,6 +22,6 @@
         /// </value>
         [Required]
         [DataType("NVARCHAR(MAX)")]
-        public string IntrestName { get; set; }
+        public string InterestName { get; set; }
     }
 }

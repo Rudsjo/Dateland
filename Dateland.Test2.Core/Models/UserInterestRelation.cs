@@ -7,14 +7,14 @@
     /// <summary>
     /// Contains all user intrest relations
     /// </summary>
-    [Table("UserIntrestRelations")]
-    public class UserIntrestRelation
+    [Table("UserInterestRelations")]
+    public class UserInterestRelation
     {
         /// <summary>
         /// Gets or sets the user intrest identifier.
         /// </summary>
         [Key]
-        public int UserIntrestID { get; set; }
+        public int UserInterestID { get; set; }
 
         /// <summary>
         /// Gets or sets the user.
@@ -25,7 +25,7 @@
         /// <summary>
         /// Gets or sets the intrest.
         /// </summary>
-        [ForeignKey("IntrestID")]
-        public Interest _Intrest { get; set; }
+        [ForeignKey("InterestID")]
+        public Interest _Interest { get; set; }
     }
 }

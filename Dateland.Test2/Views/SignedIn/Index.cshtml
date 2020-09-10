@@ -32,6 +32,8 @@
                         <a href="#"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[0].ProfilePictureUrl)" /></a>
                         <a href="#"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[0].ProfilePictureUrl)" /></a>
                     </div>
+
+                    <a href="#" class="btn cta-btn-dark si-randomize-btn">Slumpa nya matchningar!</a>
                 </div>                
 
             </div>
@@ -39,24 +41,44 @@
             <div class="si-main-col">
                 <div class="si-row-inner">
                     <div class="vertical-separator"></div>
-                    
+
                     <div class="chosen-container">
 
                         <div class="chosen-header">
                             <img class="si-img-chosen" src="@Url.Content(Model.MatchedUsers[Model.SelectedUser].ProfilePictureUrl)" />
 
-                            <h2>@Model.MatchedUsers[Model.SelectedUser].FirstName  @Model.MatchedUsers[Model.SelectedUser].LastName</h2>
+                            <div class="name-and-btns">
+                                <span class="ca-btn plane"><i class="far fa-paper-plane"></i></span>
+                                <span class="ca-btn plus"><i class="far fa-plus-square"></i></span>
+
+                                <h2>
+                                    @Model.MatchedUsers[Model.SelectedUser].FirstName  @Model.MatchedUsers[Model.SelectedUser].LastName
+                                    <br /><span class="chosen-subheader">29 år, Stockholm</span>
+                                </h2>
+
+                                <span class="dot"></span>
+                            </div>
 
                         </div>
 
                         <div class="chosen-body">
-                            <p>
-                                Some text about @Model.MatchedUsers[Model.SelectedUser].FirstName...
-                            </p>
+                            <ul>
+                                <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
+                                <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
+                                <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
+                                <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
+                                <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
+                                <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
+                                <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
+                            </ul>
+
+                            <hr class="chosen-body" />
+
+                            <div class="go-to-profile">
+                                <a href="#">Gå till profil<span class="ca-btn"><i class="fa fa-arrow-right"></i></span></a>
+                            </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>

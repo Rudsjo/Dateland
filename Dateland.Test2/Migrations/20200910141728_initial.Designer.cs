@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dateland.Test2.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200910135753_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200910141728_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,16 +23,16 @@ namespace Dateland.Test2.Migrations
 
             modelBuilder.Entity("Dateland.Test2.Core.Interest", b =>
                 {
-                    b.Property<int>("IntrestID")
+                    b.Property<int>("InterestID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("IntrestName")
+                    b.Property<string>("InterestName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IntrestID");
+                    b.HasKey("InterestID");
 
                     b.ToTable("Interests");
                 });
@@ -75,33 +75,33 @@ namespace Dateland.Test2.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Dateland.Test2.Core.UserIntrestRelation", b =>
+            modelBuilder.Entity("Dateland.Test2.Core.UserInterestRelation", b =>
                 {
-                    b.Property<int>("UserIntrestID")
+                    b.Property<int>("UserInterestID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("IntrestID")
+                    b.Property<int?>("InterestID")
                         .HasColumnType("int");
 
                     b.Property<int?>("UserID")
                         .HasColumnType("int");
 
-                    b.HasKey("UserIntrestID");
+                    b.HasKey("UserInterestID");
 
-                    b.HasIndex("IntrestID");
+                    b.HasIndex("InterestID");
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("UserIntrestRelations");
+                    b.ToTable("UserInterestRelations");
                 });
 
-            modelBuilder.Entity("Dateland.Test2.Core.UserIntrestRelation", b =>
+            modelBuilder.Entity("Dateland.Test2.Core.UserInterestRelation", b =>
                 {
-                    b.HasOne("Dateland.Test2.Core.Interest", "_Intrest")
+                    b.HasOne("Dateland.Test2.Core.Interest", "_Interest")
                         .WithMany()
-                        .HasForeignKey("IntrestID");
+                        .HasForeignKey("InterestID");
 
                     b.HasOne("Dateland.Test2.Core.User", "_User")
                         .WithMany()

@@ -51,7 +51,7 @@
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         /// <exception cref="System.NotImplementedException"></exception>
-        public async Task<IEnumerable<UserIntrestRelation>> GetUsersInterest(int id)
+        public async Task<IEnumerable<UserInterestRelation>> GetUsersInterest(int id)
             =>
             await Context.UserIntrests.Where(u => u._User.UserID.Equals(id)).ToListAsync();
     }
