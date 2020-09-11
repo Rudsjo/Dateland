@@ -1,5 +1,4 @@
-﻿using Core.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -35,8 +34,7 @@ namespace Dateland.Test2.Core
         /// Gets or sets the email.
         /// </summary>
         [Required]
-        [EmailAddress]
-        [DataType("NVARCHAR(MAX)")]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         /// <summary>
@@ -201,6 +199,15 @@ namespace Dateland.Test2.Core
         /// Property for Profession ID used in relationship table <see cref="UserProfessionRelation"/>
         /// </summary>
         public Profession Profession { get; set; }
+        City IUser.City { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Education IUser.Education { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Food IUser.Food { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Gender IUser.Gender { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        GenderPreferation IUser.GenderPreferation { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Movie IUser.Movie { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Music IUser.Music { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Profession IUser.Profession { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Relation IUser.Relation { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         #endregion
 

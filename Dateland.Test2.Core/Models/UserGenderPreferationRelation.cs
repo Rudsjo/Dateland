@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Core.Model
+namespace Dateland.Test2.Core
 {
     /// <summary>
     /// Class used to set up the relation between User and GenderPreferation

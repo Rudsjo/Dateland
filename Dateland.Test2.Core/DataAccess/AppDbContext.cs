@@ -1,6 +1,5 @@
 ﻿namespace Dateland.Test2.Core
 {
-    using global::Core.Model;
     // Required namespaces
     using Microsoft.EntityFrameworkCore;
 

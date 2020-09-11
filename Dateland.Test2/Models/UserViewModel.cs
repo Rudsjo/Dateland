@@ -1,5 +1,4 @@
-﻿using Core.Model;
-using Dateland.Test2.Core;
+﻿using Dateland.Test2.Core;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;

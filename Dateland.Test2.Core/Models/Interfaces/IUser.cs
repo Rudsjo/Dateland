@@ -1,5 +1,4 @@
-﻿using Core.Model;
-using System;
+﻿using System;
 
 namespace Dateland.Test2.Core
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Core.Model
+namespace Dateland.Test2.Core
 {
     /// <summary>
     /// Represents a music genre object
