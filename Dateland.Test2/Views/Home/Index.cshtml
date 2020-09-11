@@ -1,7 +1,9 @@
-﻿@model User
+﻿@model UserViewModel
 
 @{
     ViewData["Title"] = "Home Page";
+
+    var maxDate = DateTime.Now.AddYears(-18).Date.ToString("yyyy-MM-dd");
 }
 
 <!-- Header ends -->
@@ -69,9 +71,23 @@
 
                     <!-- Confirm email -->
                     <div class="form-group">
-                        <label asp-for="IsEmailConfirmed" class="control-label"></label>
-                        <input asp-for="IsEmailConfirmed" class="form-control" />
-                        <span asp-validation-for="IsEmailConfirmed" class="text-danger"></span>
+                        <label asp-for="EmailConfirmed" class="control-label"></label>
+                        <input asp-for="EmailConfirmed" class="form-control" />
+                        <span asp-validation-for="EmailConfirmed" class="text-danger"></span>
+                    </div>
+                    
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label asp-for="PasswordHash" class="control-label"></label>
+                        <input asp-for="PasswordHash" class="form-control" />
+                        <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                    </div>
+
+                    <!-- Date of birth -->
+                    <div class="form-group">
+                        <label asp-for="DateOfBirth" class="control-label"></label>
+                        <input asp-for="DateOfBirth" class="form-control" type="date" max="@maxDate"/>
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">

@@ -1,15 +1,19 @@
 ﻿using Core.Model;
+using Dateland.Test2.Core;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Dateland.Test2.Core
+namespace Dateland.Test2
 {
     /// <summary>
-    /// Class that represents a user
+    /// Class that represents a user as a view model
     /// </summary>
-    public class User : IUser
+    public class UserViewModel
     {
         /// <summary>
         /// Gets or sets the user identifier.
@@ -87,8 +91,9 @@ namespace Dateland.Test2.Core
         /// Gets or sets the users date of birth
         /// </summary>
         [Required]
-        [DataType(DataType.Date)]
-        public DateTime DateOfBirth { get; set; }
+        //[DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public string DateOfBirth { get; set; }
 
         /// <summary>
         /// Property to get or set the description of the user
@@ -203,6 +208,16 @@ namespace Dateland.Test2.Core
         public Profession Profession { get; set; }
 
         #endregion
+
+        #endregion
+
+        #region Added properties
+        
+        /// <summary>
+        /// The confirmed email put in by the user
+        /// </summary>
+        [Compare(nameof(Email))]
+        public string ConfirmedEmail { get; set; }
 
         #endregion
 
