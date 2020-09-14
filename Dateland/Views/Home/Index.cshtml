@@ -32,63 +32,57 @@
 <section class="register" id="register">
     <div class="container">
         <div class="register-info">
-            <div class="register-description padding-right animate-left">
-                <div class="global-headline">
+            <div class="register-description padding-right">
+                <div class="global-headline animate-top">
                     <h2 class="sub-headline">
                         <span class="first-letter">H</span>itta någon
                     </h2>
                     <h1 class="headline headline-dark">Att Dela Livet Med</h1>
-                    <div class="asterisk"><i class="fas fa-heart"></i></div>
-                </div>
-                <p> 
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Maxime, libero quos! Sit et aperiam reprehenderit perspiciatis
-                    commodi iure cum dolorum hic. Ea maxime unde laborum voluptatibus eum.
-                    Minima, maxime sint.
+                <div class="asterisk sub-asterisk"><i class="fas fa-heart"></i></div>
+                <div class="register-description">
+                <p>
+                    Hitta din drömpartner redan idag genom att registrera dig i formuläret nedan. 
+                    Registreringen är helt kostnadsfri och ger dig full tillgång till hundratals andra singlar
+                    som väntar på att få interagera med dig!
                 </p>
-                <a href="#" class="btn body-btn">LÄS MER</a>
+                    </div>
+                </div>
             </div>
-            <div class="restaurant-info-img animate-right">
+            <div class="restaurant-info-img animate-bottom">
                 <form method="post">
                     <div asp-validation-summary="All" class="text-danger"></div>
 
                     <div class="form-group">
-                        <label asp-for="FirstName" class="control-label"></label>
-                        <input asp-for="FirstName" class="form-control">
+                        <input asp-for="FirstName" class="form-control" placeholder="Förnamn">
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                     <!-- Last Name -->
                     <div class="form-group">
-                        <label asp-for="LastName" class="control-label"></label>
-                        <input asp-for="LastName" class="form-control" />
+                        <input asp-for="LastName" class="form-control" placeholder="Efternamn" />
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
 
                     <!-- Email -->
                     <div class="form-group">
-                        <label asp-for="Email" class="control-label"></label>
-                        <input asp-for="Email" class="form-control" />
+                        <input asp-for="Email" class="form-control" placeholder="Email" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
                     <!-- Confirm email -->
                     <div class="form-group">
-                        <label asp-for="Email" class="control-label"></label>
-                        <input asp-for="Email" class="form-control" />
+                        <input asp-for="Email" class="form-control" placeholder="Bekräfta Email" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
                     <!-- Password -->
                     <div class="form-group">
-                        <label asp-for="Password" class="control-label"></label>
-                        <input asp-for="Password" class="form-control" type="password" />
+                        <input asp-for="Password" class="form-control" type="password" placeholder="Lösenord" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
 
                     <!-- Password again-->
                     <div class="form-group">
-                        <label asp-for="ConfirmPassword" class="control-label"></label>
-                        <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                        <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Bekfäfta lösenord" />
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
 
@@ -100,7 +94,7 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="submit" asp-action="Register" class="btn cta-btn-dark" asp-controller="Home" />
+                        <input type="submit" asp-action="Register" class="btn cta-btn-dark" asp-controller="Home" value="Registrera" />
                     </div>
                 </form>
             </div>

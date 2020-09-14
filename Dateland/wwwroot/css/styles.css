@@ -191,6 +191,9 @@ header {
     font-weight: 100;
     line-height: .4;
     letter-spacing: 2px;
+    opacity: 0;
+    animation: fadeUp .5s forwards;
+    animation-delay: .5s;
 }
 
 .first-letter {
@@ -206,6 +209,7 @@ header {
     font-weight: 900;
     letter-spacing: .5rem;
     margin-right: -.5rem;
+    animation: scale .5s forwards;
 }
 
 .separator {
@@ -220,6 +224,9 @@ header {
     height: .25rem;
     background-color: #fff;
     position: relative;
+    opacity: 0;
+    animation: grow 2s forwards;
+    animation-delay: .9s;
 }
 
 .line-right::before,
@@ -229,6 +236,9 @@ header {
     top: 50%;
     transform: translateY(-50%);
     border: .6rem solid transparent;
+    opacity: 0;
+    animation: grow .5s forwards;
+    animation-delay: 1.2s;
 }
 
 .line-right::before{
@@ -245,6 +255,19 @@ header {
     font-size: 1.2rem;
     color: var(--secondary-font-color);
     margin: 0 1.6rem;
+    opacity: 0;
+    animation: spin .5s forwards;
+    animation-delay: 1.2s;
+}
+
+.sub-asterisk {
+    margin: 1.6rem;
+}
+
+.single-animation {
+    opacity: 0;
+    animation: fadeDown .5s forwards;
+    animation-delay: 1.5s;
 }
 
 .headline-description h5 {
@@ -329,9 +352,12 @@ header {
     margin-bottom: 3rem;
 }
 
+
 .register-description p {
-    line-height: 1.6;
-    margin-bottom: 2.4rem;
+        line-height: 1.6;
+        opacity: 0;
+        animation: scale .5s forwards;
+        animation-delay: .7s;
 }
 
 .body-btn {
@@ -503,6 +529,11 @@ header {
     margin-left: .5rem;
 }
 
+/* FORMS */
+
+.form-group {
+    margin: 2rem 22.5rem;
+}
 
 
 /* MEDIA QUERIES */
@@ -538,6 +569,85 @@ header {
 
     .chosen-body ul li {
         margin-left: 0;
+    }
+
+    .form-group {
+        margin: 2rem;
+    }
+
+    .register-description p {
+        margin: 2.4rem 0rem;
+    }
+
+
+/* Animations */
+@keyframes fadeUp {
+    0% {
+        transform: translateY(4rem);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeDown {
+    0% {
+        transform: translateY(-4rem);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes up {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-1rem);
+    }
+}
+
+@keyframes scale {
+    0% {
+        transform: scale(2);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes grow {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        opacity: 1;
+        width: 100%;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: rotate(-360deg);
     }
 }
 

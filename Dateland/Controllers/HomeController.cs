@@ -8,7 +8,6 @@
     using Microsoft.AspNetCore.Identity;
     using System.Threading.Tasks;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using Dateland.ViewModels;
 
     /// <summary>
     /// Our home controller

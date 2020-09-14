@@ -1,4 +1,4 @@
-﻿namespace Dateland.ViewModels
+﻿namespace Dateland
 {
     // Required namespaces
     using System.ComponentModel.DataAnnotations;
