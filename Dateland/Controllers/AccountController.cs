@@ -19,7 +19,18 @@ namespace Dateland.Controllers
         /// </summary>
         private readonly SignInManager<User> SignInManager;
 
-        public AccountController( UserManager<User> userManager, SignInManager<User> signInManager)
+        /// <summary>
+        /// Gets the email service.
+        /// </summary>
+        public IEmailService EmailService { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccountController"/> class.
+        /// </summary>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="signInManager">The sign in manager.</param>
+        /// <param name="emailService">The email service.</param>
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService)
         {
             // Set the user manager
             UserManager = userManager;
@@ -44,8 +55,11 @@ namespace Dateland.Controllers
         /// <returns>The page to go to</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel vm)
         {
+            throw new Exception("Råkade låsa våran email :( får fixa en ny eller stänga av email confirmation temperärt");
+
             // Check if all fields are filled correctly
             if (ModelState.IsValid)
             {
@@ -71,8 +85,21 @@ namespace Dateland.Controllers
                     // Create the confirmation link
                     var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userid = newUser.Id, confirmationtoken = token }, Request.Scheme);
 
-                    // Redirect to the Index in screen
-                    return RedirectToAction(nameof(Index));
+                    // Send the confirmation link and get result
+                    var emailResult = await EmailService.SendEmail(vm.Email, "Confirmation", $"Click on the link to activate your account: {confirmationLink}");
+
+                    // If email could be sent...
+                    if (emailResult)
+                    {
+                        // Redirect to the Index in screen
+                        return View(viewName: "ConfirmEmail");
+                    }
+                    // Else...
+                    else
+                    {
+                        // Email does not exist (Probably...)
+                        ModelState.AddModelError("", "Confirmation email could not be sent");
+                    }
                 }
                 // Else...
                 else foreach (var err in registrationResult.Errors) ModelState.AddModelError("", err.Description);

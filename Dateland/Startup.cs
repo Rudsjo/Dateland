@@ -66,6 +66,9 @@ namespace Dateland
             // Map our IReposirory to our GlobalReposirory class
             services.AddScoped<IRepository, GlobalRepository>();
 
+            // Map our IEmailService with our StandardEmailService
+            services.AddSingleton<IEmailService, StandardEmailService>();
+
             // Add Controllers
             services.AddControllersWithViews();
         }
@@ -91,6 +94,8 @@ namespace Dateland
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
