@@ -56,25 +56,18 @@ namespace Dateland
                 // Set the password options here
                 req.Password.RequireNonAlphanumeric = false;
                 req.Password.RequireUppercase       = false;
+
+                req.SignIn.RequireConfirmedEmail = true;
             
             })
                 .AddEntityFrameworkStores<AppDbContext>()
-                .AddDefaultTokenProviders();
-
-            // Change the login route
-            services.ConfigureApplicationCookie(opt =>
-            {
-                opt.LoginPath = "/Home/Login";
-            });
+                .AddDefaultTokenProviders().AddRoles<IdentityRole>();
 
             // Map our IReposirory to our GlobalReposirory class
             services.AddScoped<IRepository, GlobalRepository>();
 
             // Add Controllers
             services.AddControllersWithViews();
-
-            // Add SingletonViewModel singleton to the container
-            services.AddSingleton<SignedInViewModel>();
         }
 
         /// <summary>
