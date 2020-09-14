@@ -355,6 +355,7 @@ header {
 
 .register-description p {
         line-height: 1.6;
+        margin: 0 28rem;
         opacity: 0;
         animation: scale .5s forwards;
         animation-delay: .7s;
@@ -535,6 +536,10 @@ header {
     margin: 2rem 22.5rem;
 }
 
+.login-form {
+    margin: 2rem 38rem;
+}
+
 
 /* MEDIA QUERIES */
 
@@ -563,91 +568,97 @@ header {
         margin-left: 4rem;
     }
 
-    .chosen-body hr {
-        margin-left: -2.5rem;
-    }
+        .chosen-body hr {
+            margin-left: -2.5rem;
+        }
 
-    .chosen-body ul li {
-        margin-left: 0;
+        .chosen-body ul li {
+            margin-left: 0;
+        }
+
+    .register-description p {
+        margin: 0;
     }
 
     .form-group {
         margin: 2rem;
     }
 
-    .register-description p {
-        margin: 2.4rem 0rem;
-    }
-
-
-/* Animations */
-@keyframes fadeUp {
-    0% {
-        transform: translateY(4rem);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
+    .login-form {
+        margin: 2rem;
     }
 }
 
-@keyframes fadeDown {
-    0% {
-        transform: translateY(-4rem);
+
+    /* Animations */
+    @keyframes fadeUp {
+        0% {
+            transform: translateY(4rem);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+    @keyframes fadeDown {
+        0% {
+            transform: translateY(-4rem);
+        }
 
-@keyframes up {
-    0% {
-        opacity: 0;
-    }
-
-    50% {
-        opacity: 1;
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
-    100% {
-        opacity: 0;
-        transform: translateY(-1rem);
-    }
-}
+    @keyframes up {
+        0% {
+            opacity: 0;
+        }
 
-@keyframes scale {
-    0% {
-        transform: scale(2);
-    }
+        50% {
+            opacity: 1;
+        }
 
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-@keyframes grow {
-    0% {
-        width: 0;
+        100% {
+            opacity: 0;
+            transform: translateY(-1rem);
+        }
     }
 
-    100% {
-        opacity: 1;
-        width: 100%;
-    }
-}
+    @keyframes scale {
+        0% {
+            transform: scale(2);
+        }
 
-@keyframes spin {
-    0% {
-        transform: rotate(0);
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
     }
 
-    100% {
-        opacity: 1;
-        transform: rotate(-360deg);
+    @keyframes grow {
+        0% {
+            width: 0;
+        }
+
+        100% {
+            opacity: 1;
+            width: 100%;
+        }
     }
-}
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0);
+        }
+
+        100% {
+            opacity: 1;
+            transform: rotate(-360deg);
+        }
+    }
+
 
