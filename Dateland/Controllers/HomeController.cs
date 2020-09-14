@@ -8,6 +8,8 @@
     using Microsoft.AspNetCore.Identity;
     using System.Threading.Tasks;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using System;
+    using Microsoft.AspNetCore.Authorization;
 
     /// <summary>
     /// Our home controller
@@ -102,11 +104,14 @@
                 // If registration was successful...
                 if (registrationResult.Succeeded)
                 {
-                    // Sign in the new user
-                    await SignInManager.SignInAsync(newUser, isPersistent: false);
+                    // Generate an email confirmation token for the user
+                    var token = await UserManager.GenerateEmailConfirmationTokenAsync(newUser);
 
-                    // Redirect to the signed in screen
-                    return RedirectToAction("Index", "SignedIn");
+                    // Create the confirmation link
+                    var confirmationLink = Url.Action("ConfirmEmail", "Home", new { userid = newUser.Id, confirmationtoken = token}, Request.Scheme);
+
+                    // Redirect to the Index in screen
+                    return RedirectToAction(nameof(Index));
                 }
                 // Else...
                 else foreach (var err in registrationResult.Errors) ModelState.AddModelError("", err.Description);
@@ -114,6 +119,39 @@
 
             // Go back to the start page in case of failing
             return View(nameof(Index), vm);
+        }
+
+        /// <summary>
+        /// Confirms the email.
+        /// </summary>
+        /// <param name="userid">The userid received by the link.</param>
+        /// <param name="confirmationtoken">The confirm token received by the link.</param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userid, string confirmationtoken)
+        {
+            // If any of the received parameters are null...
+            if(userid == null || confirmationtoken == null)
+            {
+                // Redirect the user back to the index page
+                return RedirectToAction("Index");
+            }
+
+            // Find the user
+            var user = await UserManager.FindByIdAsync(userid);
+
+            // Confirm the user's email
+            var confirmationResult = await UserManager.ConfirmEmailAsync(user, confirmationtoken);
+
+            // If email could be confirmed
+            if (confirmationResult.Succeeded)
+            {
+                // Return the email confirmed view
+                return View("EmailConfirmed");
+            }
+
+            // Return the error page if the email could not be confirmed
+            return View("Error");
         }
 
         /// <summary>

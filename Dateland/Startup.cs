@@ -4,6 +4,7 @@ namespace Dateland
     using Dateland.Core;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -59,6 +60,12 @@ namespace Dateland
             })
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+
+            // Change the login route
+            services.ConfigureApplicationCookie(opt =>
+            {
+                opt.LoginPath = "/Home/Login";
+            });
 
             // Map our IReposirory to our GlobalReposirory class
             services.AddScoped<IRepository, GlobalRepository>();

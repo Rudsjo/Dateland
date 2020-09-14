@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dateland.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dateland
@@ -43,6 +44,7 @@ namespace Dateland
         /// The action result to show the matched users for a logged in user
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             // Get the list of matched users for the logged in user
