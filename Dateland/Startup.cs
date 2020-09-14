@@ -18,7 +18,7 @@ namespace Dateland
         /// <summary>
         /// Gets the current connection to use.
         /// </summary>
-        private string CurrentConnection { get => "Jimmys"; }
+        private string CurrentConnection { get => "SmarterConnection"; }
 
         /// <summary>
         /// Gets the configuration.

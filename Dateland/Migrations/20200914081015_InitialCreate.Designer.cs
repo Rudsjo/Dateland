@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dateland.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200913214402_InitialCreate")]
+    [Migration("20200914081015_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
