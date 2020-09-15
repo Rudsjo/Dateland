@@ -18,18 +18,18 @@ namespace Dateland.Core
         /// Gets or sets the first users ID
         /// </summary>
         [ForeignKey("Id")]
-        public User _FirstUser { get; set; }
+        public string _FirstUser { get; set; }
 
         /// <summary>
         /// Gets or sets the first users ID
         /// </summary>
         [ForeignKey("Id")]
-        public User _SecondUser { get; set; }
+        public string _SecondUser { get; set; }
 
         /// <summary>
         /// Gets or sets the users relation
         /// </summary>
         [ForeignKey("RelationID")]
-        public Relation _Relation { get; set; }
+        public int _Relation { get; set; }
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dateland.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200914081015_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200915091619_TestMigration")]
+    partial class TestMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -333,14 +333,14 @@ namespace Dateland.Migrations
                     b.Property<int?>("CityID")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserID")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserCityID");
 
                     b.HasIndex("CityID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("Id");
 
                     b.ToTable("UserCityRelations");
                 });
@@ -355,14 +355,14 @@ namespace Dateland.Migrations
                     b.Property<int?>("EducationID")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserID")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserEducationID");
 
                     b.HasIndex("EducationID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("Id");
 
                     b.ToTable("UserEducationRelations");
                 });
@@ -377,14 +377,14 @@ namespace Dateland.Migrations
                     b.Property<int?>("GenderPreferationID")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserID")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserGenderPreferationID");
 
                     b.HasIndex("GenderPreferationID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("Id");
 
                     b.ToTable("UserGenderPreferationRelations");
                 });
@@ -396,17 +396,17 @@ namespace Dateland.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int?>("InterestID")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("UserInterestID");
 
-                    b.HasIndex("InterestID");
+                    b.HasIndex("Id");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("InterestID");
 
                     b.ToTable("UserInterestRelations");
                 });
@@ -418,17 +418,17 @@ namespace Dateland.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int?>("ProfessionID")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("UserProfessionID");
 
-                    b.HasIndex("ProfessionID");
+                    b.HasIndex("Id");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("ProfessionID");
 
                     b.ToTable("UserProfessionRelations");
                 });
@@ -443,19 +443,19 @@ namespace Dateland.Migrations
                     b.Property<int?>("RelationID")
                         .HasColumnType("int");
 
-                    b.Property<string>("_FirstUserIDId")
+                    b.Property<string>("_FirstUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("_SecondUserIDId")
+                    b.Property<string>("_SecondUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserRelationID");
 
                     b.HasIndex("RelationID");
 
-                    b.HasIndex("_FirstUserIDId");
+                    b.HasIndex("_FirstUserId");
 
-                    b.HasIndex("_SecondUserIDId");
+                    b.HasIndex("_SecondUserId");
 
                     b.ToTable("UserRelationRelations");
                 });
@@ -642,7 +642,7 @@ namespace Dateland.Migrations
 
                     b.HasOne("Dateland.Core.User", "_User")
                         .WithMany()
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("Id");
                 });
 
             modelBuilder.Entity("Dateland.Core.UserEducationRelation", b =>
@@ -653,7 +653,7 @@ namespace Dateland.Migrations
 
                     b.HasOne("Dateland.Core.User", "_User")
                         .WithMany()
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("Id");
                 });
 
             modelBuilder.Entity("Dateland.Core.UserGenderPreferationRelation", b =>
@@ -664,29 +664,29 @@ namespace Dateland.Migrations
 
                     b.HasOne("Dateland.Core.User", "_User")
                         .WithMany()
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("Id");
                 });
 
             modelBuilder.Entity("Dateland.Core.UserInterestRelation", b =>
                 {
+                    b.HasOne("Dateland.Core.User", "_User")
+                        .WithMany()
+                        .HasForeignKey("Id");
+
                     b.HasOne("Dateland.Core.Interest", "_Interest")
                         .WithMany()
                         .HasForeignKey("InterestID");
-
-                    b.HasOne("Dateland.Core.User", "_User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("Dateland.Core.UserProfessionRelation", b =>
                 {
+                    b.HasOne("Dateland.Core.User", "_User")
+                        .WithMany()
+                        .HasForeignKey("Id");
+
                     b.HasOne("Dateland.Core.Profession", "_Profession")
                         .WithMany()
                         .HasForeignKey("ProfessionID");
-
-                    b.HasOne("Dateland.Core.User", "_User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("Dateland.Core.UserRelationRelation", b =>
@@ -695,13 +695,13 @@ namespace Dateland.Migrations
                         .WithMany()
                         .HasForeignKey("RelationID");
 
-                    b.HasOne("Dateland.Core.User", "_FirstUserID")
+                    b.HasOne("Dateland.Core.User", "_FirstUser")
                         .WithMany()
-                        .HasForeignKey("_FirstUserIDId");
+                        .HasForeignKey("_FirstUserId");
 
-                    b.HasOne("Dateland.Core.User", "_SecondUserID")
+                    b.HasOne("Dateland.Core.User", "_SecondUser")
                         .WithMany()
-                        .HasForeignKey("_SecondUserIDId");
+                        .HasForeignKey("_SecondUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

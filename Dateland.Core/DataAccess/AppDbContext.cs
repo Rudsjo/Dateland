@@ -3,6 +3,7 @@
     // Required namespaces
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+    using System.Dynamic;
 
     public class AppDbContext : IdentityDbContext<User>
     {

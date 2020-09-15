@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Dateland.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class TestMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -371,7 +371,7 @@ namespace Dateland.Migrations
                 {
                     UserCityID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<string>(nullable: true),
+                    Id = table.Column<string>(nullable: true),
                     CityID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -384,8 +384,8 @@ namespace Dateland.Migrations
                         principalColumn: "CityID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserCityRelations_Users_UserID",
-                        column: x => x.UserID,
+                        name: "FK_UserCityRelations_Users_Id",
+                        column: x => x.Id,
                         principalSchema: "dbo",
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -398,7 +398,7 @@ namespace Dateland.Migrations
                 {
                     UserEducationID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<string>(nullable: true),
+                    Id = table.Column<string>(nullable: true),
                     EducationID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -411,8 +411,8 @@ namespace Dateland.Migrations
                         principalColumn: "EducationID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserEducationRelations_Users_UserID",
-                        column: x => x.UserID,
+                        name: "FK_UserEducationRelations_Users_Id",
+                        column: x => x.Id,
                         principalSchema: "dbo",
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -425,7 +425,7 @@ namespace Dateland.Migrations
                 {
                     UserGenderPreferationID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<string>(nullable: true),
+                    Id = table.Column<string>(nullable: true),
                     GenderPreferationID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -438,8 +438,8 @@ namespace Dateland.Migrations
                         principalColumn: "GenderPreferationID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserGenderPreferationRelations_Users_UserID",
-                        column: x => x.UserID,
+                        name: "FK_UserGenderPreferationRelations_Users_Id",
+                        column: x => x.Id,
                         principalSchema: "dbo",
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -452,24 +452,24 @@ namespace Dateland.Migrations
                 {
                     UserInterestID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<string>(nullable: true),
+                    Id = table.Column<string>(nullable: true),
                     InterestID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserInterestRelations", x => x.UserInterestID);
                     table.ForeignKey(
+                        name: "FK_UserInterestRelations_Users_Id",
+                        column: x => x.Id,
+                        principalSchema: "dbo",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_UserInterestRelations_Interests_InterestID",
                         column: x => x.InterestID,
                         principalTable: "Interests",
                         principalColumn: "InterestID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_UserInterestRelations_Users_UserID",
-                        column: x => x.UserID,
-                        principalSchema: "dbo",
-                        principalTable: "Users",
-                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -479,24 +479,24 @@ namespace Dateland.Migrations
                 {
                     UserProfessionID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<string>(nullable: true),
+                    Id = table.Column<string>(nullable: true),
                     ProfessionID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserProfessionRelations", x => x.UserProfessionID);
                     table.ForeignKey(
+                        name: "FK_UserProfessionRelations_Users_Id",
+                        column: x => x.Id,
+                        principalSchema: "dbo",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_UserProfessionRelations_Professions_ProfessionID",
                         column: x => x.ProfessionID,
                         principalTable: "Professions",
                         principalColumn: "ProfessionID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_UserProfessionRelations_Users_UserID",
-                        column: x => x.UserID,
-                        principalSchema: "dbo",
-                        principalTable: "Users",
-                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -506,8 +506,8 @@ namespace Dateland.Migrations
                 {
                     UserRelationID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    _FirstUserIDId = table.Column<string>(nullable: true),
-                    _SecondUserIDId = table.Column<string>(nullable: true),
+                    _FirstUserId = table.Column<string>(nullable: true),
+                    _SecondUserId = table.Column<string>(nullable: true),
                     RelationID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -520,15 +520,15 @@ namespace Dateland.Migrations
                         principalColumn: "RelationID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserRelationRelations_Users__FirstUserIDId",
-                        column: x => x._FirstUserIDId,
+                        name: "FK_UserRelationRelations_Users__FirstUserId",
+                        column: x => x._FirstUserId,
                         principalSchema: "dbo",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserRelationRelations_Users__SecondUserIDId",
-                        column: x => x._SecondUserIDId,
+                        name: "FK_UserRelationRelations_Users__SecondUserId",
+                        column: x => x._SecondUserId,
                         principalSchema: "dbo",
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -568,9 +568,9 @@ namespace Dateland.Migrations
                 column: "CityID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserCityRelations_UserID",
+                name: "IX_UserCityRelations_Id",
                 table: "UserCityRelations",
-                column: "UserID");
+                column: "Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserEducationRelations_EducationID",
@@ -578,9 +578,9 @@ namespace Dateland.Migrations
                 column: "EducationID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserEducationRelations_UserID",
+                name: "IX_UserEducationRelations_Id",
                 table: "UserEducationRelations",
-                column: "UserID");
+                column: "Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserGenderPreferationRelations_GenderPreferationID",
@@ -588,9 +588,14 @@ namespace Dateland.Migrations
                 column: "GenderPreferationID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserGenderPreferationRelations_UserID",
+                name: "IX_UserGenderPreferationRelations_Id",
                 table: "UserGenderPreferationRelations",
-                column: "UserID");
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserInterestRelations_Id",
+                table: "UserInterestRelations",
+                column: "Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserInterestRelations_InterestID",
@@ -598,9 +603,9 @@ namespace Dateland.Migrations
                 column: "InterestID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserInterestRelations_UserID",
-                table: "UserInterestRelations",
-                column: "UserID");
+                name: "IX_UserProfessionRelations_Id",
+                table: "UserProfessionRelations",
+                column: "Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserProfessionRelations_ProfessionID",
@@ -608,24 +613,19 @@ namespace Dateland.Migrations
                 column: "ProfessionID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserProfessionRelations_UserID",
-                table: "UserProfessionRelations",
-                column: "UserID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserRelationRelations_RelationID",
                 table: "UserRelationRelations",
                 column: "RelationID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRelationRelations__FirstUserIDId",
+                name: "IX_UserRelationRelations__FirstUserId",
                 table: "UserRelationRelations",
-                column: "_FirstUserIDId");
+                column: "_FirstUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRelationRelations__SecondUserIDId",
+                name: "IX_UserRelationRelations__SecondUserId",
                 table: "UserRelationRelations",
-                column: "_SecondUserIDId");
+                column: "_SecondUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_CityID",

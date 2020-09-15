@@ -8,6 +8,9 @@
     using System.IO.Compression;
     using Microsoft.EntityFrameworkCore.ChangeTracking;
     using System.Reflection.Metadata.Ecma335;
+    using System.Xml.Schema;
+    using System.Runtime.CompilerServices;
+    using System;
 
     /// <summary>
     /// The global repository implementation
@@ -20,6 +23,7 @@
         /// </summary>
         private readonly AppDbContext Context;
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GlobalRepository"/> class.
         /// </summary>
@@ -31,34 +35,106 @@
         }
 
 
-        /// <summary>
-        /// Gets all interests  from the database.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Interest>> GetAllInterests()
-            =>
-            await Context.Interests.ToListAsync();
+        ///// <summary>
+        ///// Gets all interests  from the database.
+        ///// </summary>
+        ///// <returns></returns>
+        //public async Task<IEnumerable<Interest>> GetAllInterests()
+        //    =>
+        //    await Context.Interests.ToListAsync();
 
-        /// <summary>
-        /// Gets all users from the database.
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public async Task<IEnumerable<User>> GetUsers()
-            =>
-            await Context.Users.ToListAsync();
+        ///// <summary>
+        ///// Gets all users from the database.
+        ///// </summary>
+        ///// <returns></returns>
+        ///// <exception cref="System.NotImplementedException"></exception>
+        //public async Task<IEnumerable<User>> GetUsers()
+        //    =>
+        //    await Context.Users.ToListAsync();
 
-        /// <summary>
-        /// Gets the users intrest.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public async Task<IEnumerable<UserInterestRelation>> GetUsersInterest(int id)
-            =>
-            await Context.UserIntrestsRelation.Where(u => u._User.Id.Equals(id)).ToListAsync();
+        ///// <summary>
+        ///// Gets the users intrest.
+        ///// </summary>
+        ///// <param name="id">The identifier.</param>
+        ///// <returns></returns>
+        ///// <exception cref="System.NotImplementedException"></exception>
+        //public async Task<IEnumerable<UserInterestRelation>> GetUsersInterest(int id)
+        //    =>
+        //    await Context.UserIntrestsRelation.Where(u => u._User.Id.Equals(id)).ToListAsync();
 
         #region Added by marcus
+
+        #region Generic Add, Update, Delete
+
+        public async Task<T> Create<T>(T entity)
+            where T : class
+        {
+
+            await Context.Set<T>().AddAsync(entity);          
+
+            await Context.SaveChangesAsync();
+
+            return entity;
+        }
+
+        public async Task<T> Update<T>(T entity)
+            where T : class
+        {
+            Context.Set<T>().Update(entity);
+
+            await Context.SaveChangesAsync();
+
+            return entity;
+        }
+
+        public async Task<T> Delete<T>(T entity)
+             where T : class
+        {
+            Context.Set<T>().Remove(entity);
+
+            await Context.SaveChangesAsync();
+
+            return entity;
+        }
+
+        public async Task<ICollection<T>> GetAll<T>()
+            where T : class
+        {
+            return await Context.Set<T>().ToListAsync();
+        }
+
+        public async Task<T> GetByID<T>(int id)
+            where T : class
+        {
+            return await Context.Set<T>().FindAsync(id);
+        }
+
+        public async Task<ICollection<T>> GetRelation<T>(int id)
+            where T : class
+        {
+            return await Context.Set<T>().ToListAsync();
+        }
+
+        public async Task<T> CreateRelation<T>(T relation)
+            where T : class
+        {
+            await Context.Set<T>().AddAsync(relation);
+
+            await Context.SaveChangesAsync();
+
+            return relation;
+        }
+
+        public async Task<T> RemoveRelation<T>(T relation)
+            where T : class
+        {
+            Context.Set<T>().Remove(relation);
+
+            await Context.SaveChangesAsync();
+
+            return relation;
+        }
+        #endregion
 
         #region GetAll
         /// <summary>
@@ -227,54 +303,54 @@
             await Context.Relations.Where(r => r.RelationID.Equals(relationID)).FirstOrDefaultAsync();
         #endregion
 
-        #region Get Relationships
+        //#region Get Relationships MAY NOT BE USED IF THE GENERIC METHODS WORK
 
-        /// <summary>
-        /// Gets the users cities of interest
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<UserCityRelation>> GetUserCities(int id)
-            =>
-            await Context.UserCityRelations.Where(u => u._User.Id.Equals(id)).ToListAsync();
+        ///// <summary>
+        ///// Gets the users cities of interest
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns></returns>
+        //public async Task<IEnumerable<UserCityRelation>> GetUserCities(int id)
+        //    =>
+        //    await Context.UserCityRelations.Where(u => u._User.Id.Equals(id)).ToListAsync();
 
-        /// <summary>
-        /// Gets the users educations
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<UserEducationRelation>> GetUserEducations(int id)
-            =>
-            await Context.UserEducationRelations.Where(u => u._User.Id.Equals(id)).ToListAsync();
+        ///// <summary>
+        ///// Gets the users educations
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns></returns>
+        //public async Task<IEnumerable<UserEducationRelation>> GetUserEducations(int id)
+        //    =>
+        //    await Context.UserEducationRelations.Where(u => u._User.Id.Equals(id)).ToListAsync();
 
-        /// <summary>
-        /// Gets the users preferred datinggender
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<UserGenderPreferationRelation>> GetUserGenderPreferations(int id)
-            =>
-            await Context.UserGenderPreferationRelations.Where(u => u._User.Id.Equals(id)).ToListAsync();
+        ///// <summary>
+        ///// Gets the users preferred datinggender
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns></returns>
+        //public async Task<IEnumerable<UserGenderPreferationRelation>> GetUserGenderPreferations(int id)
+        //    =>
+        //    await Context.UserGenderPreferationRelations.Where(u => u._User.Id.Equals(id)).ToListAsync();
 
-        /// <summary>
-        /// Gets the users professions
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<UserProfessionRelation>> GetUserProfessions(int id)
-            =>
-            await Context.UserProfessionRelations.Where(u => u._User.Id.Equals(id)).ToListAsync();
+        ///// <summary>
+        ///// Gets the users professions
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns></returns>
+        //public async Task<IEnumerable<UserProfessionRelation>> GetUserProfessions(int id)
+        //    =>
+        //    await Context.UserProfessionRelations.Where(u => u._User.Id.Equals(id)).ToListAsync();
 
-        /// <summary>
-        /// Gets the users relationships with other users
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<UserRelationRelation>> GetUserRelations(int id)
-            =>
-            await Context.UserRelationRelations.Where(u => u._FirstUser.Id.Equals(id)).ToListAsync();
+        ///// <summary>
+        ///// Gets the users relationships with other users
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns></returns>
+        //public async Task<IEnumerable<UserRelationRelation>> GetUserRelations(int id)
+        //    =>
+        //    await Context.UserRelationRelations.Where(u => u._FirstUser.Id.Equals(id)).ToListAsync();
 
-        #endregion
+        //#endregion
 
         #region Add
 
@@ -284,8 +360,11 @@
         /// <param name="name">the name of the ciy</param>
         /// <returns></returns>
         public async Task AddCity(string name)
-            =>
+        {
             await Context.Cities.AddAsync(new City() { CityName = name });
+            await Context.SaveChangesAsync();
+        }
+
 
         /// <summary>
         /// Adds a new education to the database
@@ -371,76 +450,77 @@
 
         #endregion
 
-        #region AddRelation
-      
-        /// <summary>
-        /// Adds a relation between a user and city
-        /// </summary>
-        /// <param name="user">the user object</param>
-        /// <param name="city">the city object</param>
-        /// <returns></returns>
-        public async Task AddUserCity(User user, City city)
-            =>
-            await Context.UserCityRelations.AddAsync(new UserCityRelation { _User = user, _City = city });
+        //#region AddRelation MAY NOT BE USED IF THE GENERIC METHODS WORK
 
-        /// <summary>
-        /// Adds a relation between a user and an education
-        /// </summary>
-        /// <param name="user">the user object</param>
-        /// <param name="education">the education object</param>
-        /// <returns></returns>
-        public async Task AddUserEducation(User user, Education education)
-            =>
-            await Context.UserEducationRelations.AddAsync(new UserEducationRelation { _User = user, _Education = education });
+        ///// <summary>
+        ///// Adds a relation between a user and city
+        ///// </summary>
+        ///// <param name="user">the user object</param>
+        ///// <param name="city">the city object</param>
+        ///// <returns></returns>
+        //public async Task AddUserCity(User user, City city)
+        //    =>
+        //    await Context.UserCityRelations.AddAsync(new UserCityRelation { _User = user, _City = city });
 
-        /// <summary>
-        /// Adds a relation between a user and a gender preferation
-        /// </summary>
-        /// <param name="user">the user object</param>
-        /// <param name="genderPreferation">the gender preferation object</param>
-        /// <returns></returns>
-        public async Task AddUserGenderPreferation(User user, GenderPreferation genderPreferation)
-            =>
-            await Context.UserGenderPreferationRelations.AddAsync(new UserGenderPreferationRelation { _User = user, _GenderPreferation = genderPreferation });
+        ///// <summary>
+        ///// Adds a relation between a user and an education
+        ///// </summary>
+        ///// <param name="user">the user object</param>
+        ///// <param name="education">the education object</param>
+        ///// <returns></returns>
+        //public async Task AddUserEducation(User user, Education education)
+        //    =>
+        //    await Context.UserEducationRelations.AddAsync(new UserEducationRelation { _User = user, _Education = education });
 
-        /// <summary>
-        /// Adds a relation between a user and an interest
-        /// </summary>
-        /// <param name="user">the user object</param>
-        /// <param name="interest">the interest object</param>
-        /// <returns></returns>
-        public async Task AddUserInterest(User user, Interest interest)
-            =>
-            await Context.UserIntrestsRelation.AddAsync(new UserInterestRelation { _User = user, _Interest = interest });
+        ///// <summary>
+        ///// Adds a relation between a user and a gender preferation
+        ///// </summary>
+        ///// <param name="user">the user object</param>
+        ///// <param name="genderPreferation">the gender preferation object</param>
+        ///// <returns></returns>
+        //public async Task AddUserGenderPreferation(User user, GenderPreferation genderPreferation)
+        //    =>
+        //    await Context.UserGenderPreferationRelations.AddAsync(new UserGenderPreferationRelation { _User = user, _GenderPreferation = genderPreferation });
 
-        /// <summary>
-        /// Adds a relation between a user and a profession
-        /// </summary>
-        /// <param name="user">the user object</param>
-        /// <param name="profession">the profession object</param>
-        /// <returns></returns>
-        public async Task AddUserProfession(User user, Profession profession)
-            =>
-            await Context.UserProfessionRelations.AddAsync(new UserProfessionRelation { _User = user, _Profession = profession });
+        ///// <summary>
+        ///// Adds a relation between a user and an interest
+        ///// </summary>
+        ///// <param name="user">the user object</param>
+        ///// <param name="interest">the interest object</param>
+        ///// <returns></returns>
+        //public async Task AddUserInterest(User user, Interest interest)
+        //    =>
+        //    await Context.UserIntrestsRelation.AddAsync(new UserInterestRelation { _User = user, _Interest = interest });
 
-        /// <summary>
-        /// Adds a relationship between two users
-        /// </summary>
-        /// <param name="firstUser">the first user object</param>
-        /// <param name="secondUser">the second user object</param>
-        /// <param name="relation">the relation object</param>
-        /// <returns></returns>
-        public async Task AddUserRelation(User firstUser, User secondUser, Relation relation)
-            =>
-            await Context.UserRelationRelations.AddAsync(new UserRelationRelation { _FirstUser = firstUser, _SecondUser = secondUser, _Relation = relation });
+        ///// <summary>
+        ///// Adds a relation between a user and a profession
+        ///// </summary>
+        ///// <param name="user">the user object</param>
+        ///// <param name="profession">the profession object</param>
+        ///// <returns></returns>
+        //public async Task AddUserProfession(User user, Profession profession)
+        //    =>
+        //    await Context.UserProfessionRelations.AddAsync(new UserProfessionRelation { _User = user, _Profession = profession });
 
-        #endregion
+        ///// <summary>
+        ///// Adds a relationship between two users
+        ///// </summary>
+        ///// <param name="firstUser">the first user object</param>
+        ///// <param name="secondUser">the second user object</param>
+        ///// <param name="relation">the relation object</param>
+        ///// <returns></returns>
+        //public async Task AddUserRelation(User firstUser, User secondUser, Relation relation)
+        //    =>
+        //    await Context.UserRelationRelations.AddAsync(new UserRelationRelation { _FirstUser = firstUser, _SecondUser = secondUser, _Relation = relation });
+
+        //#endregion
 
         #region Update    
 
-        public void UpdateCity(City city)
-            =>
-            Context.Cities.Update(city);
+        public Task UpdateCity(int id, string name)
+        {
+            throw new System.NotImplementedException();
+        }
 
 
         public Task UpdateEducation(int id, string name)
@@ -578,7 +658,7 @@
 
         #endregion
 
-        #endregion
 
+        #endregion
     }
 }

@@ -18,12 +18,12 @@ namespace Dateland.Core
         /// Gets or sets the users ID
         /// </summary>
         [ForeignKey("Id")]
-        public User _User { get; set; }
+        public string _User { get; set; }
 
         /// <summary>
         /// Gets or sets the users profession
         /// </summary>
         [ForeignKey("ProfessionID")]
-        public Profession _Profession { get; set; }
+        public int _Profession { get; set; }
     }
 }

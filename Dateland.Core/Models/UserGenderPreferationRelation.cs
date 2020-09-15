@@ -18,12 +18,12 @@ namespace Dateland.Core
         /// Gets or sets the users ID
         /// </summary>
         [ForeignKey("Id")]
-        public User _User { get; set; }
+        public string _User { get; set; }
 
         /// <summary>
         /// Gets or sets the users perferred gender
         /// </summary>
         [ForeignKey("GenderPreferationID")]
-        public GenderPreferation _GenderPreferation { get; set; }
+        public int _GenderPreferation { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace Dateland.Core
 {
     using Microsoft.EntityFrameworkCore.ChangeTracking;
+    using System;
     // Required namespaces
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -10,26 +11,54 @@
     /// </summary>
     public interface IRepository
     {
-        /// <summary>
-        /// Gets all users from the database.
-        /// </summary>
-        /// <returns></returns>
-        abstract Task<IEnumerable<User>> GetUsers();
+        ///// <summary>
+        ///// Gets all users from the database.
+        ///// </summary>
+        ///// <returns></returns>
+        //abstract Task<IEnumerable<User>> GetUsers();
 
-        /// <summary>
-        /// Gets the users intrest.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        abstract Task<IEnumerable<UserInterestRelation>> GetUsersInterest(int id);
+        ///// <summary>
+        ///// Gets the users intrest.
+        ///// </summary>
+        ///// <param name="id">The identifier.</param>
+        ///// <returns></returns>
+        //abstract Task<IEnumerable<UserInterestRelation>> GetUsersInterest(int id);
 
-        /// <summary>
-        /// Gets all interests  from the database.
-        /// </summary>
-        /// <returns></returns>
-        abstract Task<IEnumerable<Interest>> GetAllInterests();
+        ///// <summary>
+        ///// Gets all interests  from the database.
+        ///// </summary>
+        ///// <returns></returns>
+        //abstract Task<IEnumerable<Interest>> GetAllInterests();
 
         #region Added by marcus
+
+        #region Generic Add,Update and delete
+
+        abstract Task<T> Create<T>(T entity)
+            where T : class;
+
+        abstract Task<T> Update<T>(T entity)
+            where T : class;
+
+        abstract Task<T> Delete<T>(T entity)
+            where T : class;
+
+        abstract Task<ICollection<T>> GetAll<T>()
+            where T : class;
+
+        abstract Task<T> GetByID<T>(int id)
+            where T : class;
+
+        abstract Task<ICollection<T>> GetRelation<T>(int id)
+            where T : class;
+
+        abstract Task<T> CreateRelation<T>(T relation)
+            where T : class;         
+
+        abstract Task<T> RemoveRelation<T>(T relation)
+            where T : class;
+
+        #endregion
 
         #region GetAll
 
@@ -164,44 +193,44 @@
 
         #endregion
 
-        #region GetRelationships
+        //#region GetRelationships MAY NOT BE USED IF THE GENERIC METHODS WORK
 
-        /// <summary>
-        /// Gets the users cities of interest
-        /// </summary>
-        /// <param name="id">the identifier</param>
-        /// <returns></returns>
-        abstract Task<IEnumerable<UserCityRelation>> GetUserCities(int id);
+        ///// <summary>
+        ///// Gets the users cities of interest
+        ///// </summary>
+        ///// <param name="id">the identifier</param>
+        ///// <returns></returns>
+        //abstract Task<IEnumerable<UserCityRelation>> GetUserCities(int id);
 
-        /// <summary>
-        /// Gets the users educations
-        /// </summary>
-        /// <param name="id">the identifier</param>
-        /// <returns></returns>
-        abstract Task<IEnumerable<UserEducationRelation>> GetUserEducations(int id);
+        ///// <summary>
+        ///// Gets the users educations
+        ///// </summary>
+        ///// <param name="id">the identifier</param>
+        ///// <returns></returns>
+        //abstract Task<IEnumerable<UserEducationRelation>> GetUserEducations(int id);
 
-        /// <summary>
-        /// Gets the users preferred datinggender
-        /// </summary>
-        /// <param name="id">the identifier</param>
-        /// <returns></returns>
-        abstract Task<IEnumerable<UserGenderPreferationRelation>> GetUserGenderPreferations(int id);
+        ///// <summary>
+        ///// Gets the users preferred datinggender
+        ///// </summary>
+        ///// <param name="id">the identifier</param>
+        ///// <returns></returns>
+        //abstract Task<IEnumerable<UserGenderPreferationRelation>> GetUserGenderPreferations(int id);
 
-        /// <summary>
-        /// Gets the users professions
-        /// </summary>
-        /// <param name="id">the identifier</param>
-        /// <returns></returns>
-        abstract Task<IEnumerable<UserProfessionRelation>> GetUserProfessions(int id);
+        ///// <summary>
+        ///// Gets the users professions
+        ///// </summary>
+        ///// <param name="id">the identifier</param>
+        ///// <returns></returns>
+        //abstract Task<IEnumerable<UserProfessionRelation>> GetUserProfessions(int id);
 
-        /// <summary>
-        /// Gets the users relationships with other users
-        /// </summary>
-        /// <param name="id">the identifier</param>
-        /// <returns></returns>
-        abstract Task<IEnumerable<UserRelationRelation>> GetUserRelations(int id);
+        ///// <summary>
+        ///// Gets the users relationships with other users
+        ///// </summary>
+        ///// <param name="id">the identifier</param>
+        ///// <returns></returns>
+        //abstract Task<IEnumerable<UserRelationRelation>> GetUserRelations(int id);
 
-        #endregion
+        //#endregion
 
         #region Add
 
@@ -266,44 +295,44 @@
 
         #endregion 
 
-        #region AddRelations
+        //#region AddRelations MAY NOT BE USED IF THE GENERIC METHODS WORK
 
-        /// <summary>
-        /// Adds a relation between user and city
-        /// </summary>
-        /// <returns></returns>
-        abstract Task AddUserCity(User user, City city);
+        ///// <summary>
+        ///// Adds a relation between user and city
+        ///// </summary>
+        ///// <returns></returns>
+        //abstract Task AddUserCity(User user, City city);
 
-        /// <summary>
-        /// Adds a relation between user and education
-        /// </summary>
-        /// <returns></returns>
-        abstract Task AddUserEducation(User user, Education education);
+        ///// <summary>
+        ///// Adds a relation between user and education
+        ///// </summary>
+        ///// <returns></returns>
+        //abstract Task AddUserEducation(User user, Education education);
 
-        /// <summary>
-        /// Adds a relation between user and preferred datinggender
-        /// </summary>
-        /// <returns></returns>
-        abstract Task AddUserGenderPreferation(User user, GenderPreferation genderPreferation);
+        ///// <summary>
+        ///// Adds a relation between user and preferred datinggender
+        ///// </summary>
+        ///// <returns></returns>
+        //abstract Task AddUserGenderPreferation(User user, GenderPreferation genderPreferation);
 
-        /// <summary>
-        /// Adds a relation between user and interest
-        /// </summary>
-        /// <returns></returns>
-        abstract Task AddUserInterest(User user, Interest interest);
+        ///// <summary>
+        ///// Adds a relation between user and interest
+        ///// </summary>
+        ///// <returns></returns>
+        //abstract Task AddUserInterest(User user, Interest interest);
 
-        /// <summary>
-        /// Adds a relation between user and profession
-        /// </summary>
-        /// <returns></returns>
-        abstract Task AddUserProfession(User user, Profession profession);
+        ///// <summary>
+        ///// Adds a relation between user and profession
+        ///// </summary>
+        ///// <returns></returns>
+        //abstract Task AddUserProfession(User user, Profession profession);
 
-        /// <summary>
-        /// Adds a relation between two users
-        /// </summary>
-        /// <returns></returns>
-        abstract Task AddUserRelation(User firstUser, User secondUser, Relation relation);
-        #endregion
+        ///// <summary>
+        ///// Adds a relation between two users
+        ///// </summary>
+        ///// <returns></returns>
+        //abstract Task AddUserRelation(User firstUser, User secondUser, Relation relation);
+        //#endregion
 
         #region Update
 
@@ -312,7 +341,8 @@
         /// </summary>
         /// <param name="id">the indentifier</param>
         /// <returns></returns>
-        abstract EntityEntry UpdateCity(City city);
+        abstract Task UpdateCity(int id, string name);
+
 
         /// <summary>
         /// Updates the name of an education

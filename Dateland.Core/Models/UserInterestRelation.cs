@@ -20,12 +20,12 @@
         /// Gets or sets the user.
         /// </summary>
         [ForeignKey("Id")]
-        public User _User { get; set; }
+        public string _User { get; set; }
 
         /// <summary>
         /// Gets or sets the intrest.
         /// </summary>
         [ForeignKey("InterestID")]
-        public Interest _Interest { get; set; }
+        public int _Interest { get; set; }
     }
 }

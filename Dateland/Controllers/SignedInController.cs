@@ -46,7 +46,7 @@ namespace Dateland
         public async Task<IActionResult> Index()
         {
             // Get the list of matched users for the logged in user
-            _vm.MatchedUsers = new List<User>(await _repo.GetUsers());
+            _vm.MatchedUsers = new List<User>(await _repo.GetAll<User>());
 
             return View(_vm);
         }

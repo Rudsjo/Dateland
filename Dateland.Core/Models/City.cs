@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace Dateland.Core
 {
@@ -17,7 +19,7 @@ namespace Dateland.Core
         /// Gets or sets the name of the city
         /// </summary>
         [Required]
-        [StringLength(50)]
+        [StringLength(50)]        
         public string CityName { get; set; }
     }
 }

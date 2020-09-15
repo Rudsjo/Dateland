@@ -9,6 +9,9 @@
     using System.Threading.Tasks;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Dateland.ViewModels;
+    using System.Collections;
+    using Microsoft.EntityFrameworkCore;
+    using System.Linq;
 
     /// <summary>
     /// Our home controller
@@ -72,7 +75,8 @@
         /// <returns></returns>
         [HttpGet]
         public IActionResult Index()
-            => View();
+          => View();
+       
            
 
         /// <summary>
@@ -84,6 +88,7 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel vm)
         {
+
             // Check if all fields are filled correctly
             if (ModelState.IsValid)
             {

@@ -19,12 +19,12 @@ public class UserCityRelation
         /// Gets or sets the users id
         /// </summary>
         [ForeignKey("Id")] // Måste denna heta bara Id
-        public User _User { get; set; }
+        public string _User { get; set; }
 
         /// <summary>
         /// Gets or sets the users city
         /// </summary>
         [ForeignKey("CityID")]
-        public City _City { get; set; }
+        public int _City { get; set; }
     }
 }
