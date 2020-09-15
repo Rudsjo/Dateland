@@ -72,8 +72,8 @@
         /// <returns></returns>
         [HttpGet]
         public IActionResult Index()
-            =>
-            View();
+            => View();
+           
 
         /// <summary>
         /// Registers a user to the database if criterias are set in the register form

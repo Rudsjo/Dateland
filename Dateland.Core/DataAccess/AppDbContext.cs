@@ -14,7 +14,7 @@
         /// <summary>
         /// Gets or sets the user intrests.
         /// </summary>
-        public DbSet<UserInterestRelation> UserIntrests { get; set; }
+        public DbSet<UserInterestRelation> UserIntrestsRelation { get; set; }
 
         #region Added by Marcus
 

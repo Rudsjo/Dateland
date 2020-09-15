@@ -19,7 +19,7 @@
         /// <summary>
         /// Gets or sets the user.
         /// </summary>
-        [ForeignKey("UserID")]
+        [ForeignKey("Id")]
         public User _User { get; set; }
 
         /// <summary>

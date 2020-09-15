@@ -5,6 +5,9 @@
     using System.Threading.Tasks;
     using System.Collections.Generic;
     using Microsoft.EntityFrameworkCore;
+    using System.IO.Compression;
+    using Microsoft.EntityFrameworkCore.ChangeTracking;
+    using System.Reflection.Metadata.Ecma335;
 
     /// <summary>
     /// The global repository implementation
@@ -53,7 +56,7 @@
         /// <exception cref="System.NotImplementedException"></exception>
         public async Task<IEnumerable<UserInterestRelation>> GetUsersInterest(int id)
             =>
-            await Context.UserIntrests.Where(u => u._User.Id.Equals(id)).ToListAsync();
+            await Context.UserIntrestsRelation.Where(u => u._User.Id.Equals(id)).ToListAsync();
 
         #region Added by marcus
 
@@ -131,6 +134,99 @@
             await Context.Relations.ToListAsync();
         #endregion
 
+        #region GetByID
+
+        /// <summary>
+        /// Gets a single city by id
+        /// </summary>
+        /// <param name="cityID">the identifier</param>
+        /// <returns></returns>
+        public async Task<City> GetCityByID(int cityID)
+            =>
+            await Context.Cities.Where(c => c.CityID.Equals(cityID)).FirstOrDefaultAsync();
+
+        /// <summary>
+        /// Gets a single education by id
+        /// </summary>
+        /// <param name="educationID">the identifier</param>
+        /// <returns></returns>
+        public async Task<Education> GetEducationByID(int educationID)
+            =>
+            await Context.Educations.Where(e => e.EducationID.Equals(educationID)).FirstOrDefaultAsync();
+
+        /// <summary>
+        /// Gets a single food by id
+        /// </summary>
+        /// <param name="foodID">the identifier</param>
+        /// <returns></returns>
+        public async Task<Food> GetFoodByID(int foodID)
+            =>
+            await Context.Foods.Where(f => f.FoodID.Equals(foodID)).FirstOrDefaultAsync();
+
+        /// <summary>
+        /// Gets a single gender by id
+        /// </summary>
+        /// <param name="genderID">the identifier</param>
+        /// <returns></returns>
+        public async Task<Gender> GetGenderByID(int genderID)
+            =>
+            await Context.Genders.Where(g => g.GenderID.Equals(genderID)).FirstOrDefaultAsync();
+
+        /// <summary>
+        /// Gets a single gender preferation by id
+        /// </summary>
+        /// <param name="genderPreferationID">the identifier</param>
+        /// <returns></returns>
+        public async Task<GenderPreferation> GetGenderPreferationByID(int genderPreferationID)
+            =>
+            await Context.GenderPreferations.Where(g => g.GenderPreferationID.Equals(genderPreferationID)).FirstOrDefaultAsync();
+
+        /// <summary>
+        /// Gets a single interest by id
+        /// </summary>
+        /// <param name="interestID">the identifier</param>
+        /// <returns></returns>
+        public async Task<Interest> GetInterestByID(int interestID)
+            =>
+            await Context.Interests.Where(i => i.InterestID.Equals(interestID)).FirstOrDefaultAsync();
+
+        /// <summary>
+        /// Gets a single movie by id
+        /// </summary>
+        /// <param name="movieID">the identifier</param>
+        /// <returns></returns>
+        public async Task<Movie> GetMovieByID(int movieID)
+            =>
+            await Context.Movies.Where(m => m.MovieID.Equals(movieID)).FirstOrDefaultAsync();
+
+        /// <summary>
+        /// Gets a single music genre by id
+        /// </summary>
+        /// <param name="musicID">the identifier</param>
+        /// <returns></returns>
+        public async Task<Music> GetMusicGenreByID(int musicID)
+            =>
+            await Context.Music.Where(m => m.MusicID.Equals(musicID)).FirstOrDefaultAsync();
+
+        /// <summary>
+        /// Gets a single profession by id
+        /// </summary>
+        /// <param name="professionID">the identifier</param>
+        /// <returns></returns>
+        public async Task<Profession> GetProfessionByID(int professionID)
+            =>
+            await Context.Professions.Where(p => p.ProfessionID.Equals(professionID)).FirstOrDefaultAsync();
+
+        /// <summary>
+        /// Gets a single relationtype by id
+        /// </summary>
+        /// <param name="relationID">the identifier</param>
+        /// <returns></returns>
+        public async Task<Relation> GetRelationByID(int relationID)
+            =>
+            await Context.Relations.Where(r => r.RelationID.Equals(relationID)).FirstOrDefaultAsync();
+        #endregion
+
         #region Get Relationships
 
         /// <summary>
@@ -176,101 +272,176 @@
         /// <returns></returns>
         public async Task<IEnumerable<UserRelationRelation>> GetUserRelations(int id)
             =>
-            await Context.UserRelationRelations.Where(u => u._FirstUserID.Id.Equals(id)).ToListAsync();
+            await Context.UserRelationRelations.Where(u => u._FirstUser.Id.Equals(id)).ToListAsync();
 
         #endregion
 
-        
+        #region Add
 
+        /// <summary>
+        /// Adds a new city to the database
+        /// </summary>
+        /// <param name="name">the name of the ciy</param>
+        /// <returns></returns>
         public async Task AddCity(string name)
-        {
-            var newCity = new City();
-            newCity.CityName = name;
-            await Context.Cities.AddAsync(newCity);
-        }
-            
+            =>
+            await Context.Cities.AddAsync(new City() { CityName = name });
 
+        /// <summary>
+        /// Adds a new education to the database
+        /// </summary>
+        /// <param name="name">the name of the education</param>
+        /// <returns></returns>
         public async Task AddEducation(string name)
-        {
-            var newEducation = new Education();
-            newEducation.EducationName = name;
-            await Context.Educations.AddAsync(newEducation);
-        }
+            =>
+            await Context.Educations.AddAsync(new Education() { EducationName = name });
 
-        public Task AddFood(string name)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <summary>
+        /// Adds a new food to the database
+        /// </summary>
+        /// <param name="name">the type of food</param>
+        /// <returns></returns>
+        public async Task AddFood(string name)
+            =>
+            await Context.Foods.AddAsync(new Food() { FoodName = name });
 
-        public Task AddGender(string name)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <summary>
+        /// Adds a new gender to the databse
+        /// </summary>
+        /// <param name="name">the type of gender</param>
+        /// <returns></returns>
+        public async Task AddGender(string name)
+            =>
+            await Context.Genders.AddAsync(new Gender { GenderType = name });
 
-        public Task AddGenderPreferation(string name)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <summary>
+        /// WE MIGHT NOT NEED THIS
+        /// Adds a new genderpreferation to the database
+        /// </summary>
+        /// <param name="name">the type of gender preferation</param>
+        /// <returns></returns>
+        public async Task AddGenderPreferation(string name)
+            =>
+            await Context.GenderPreferations.AddAsync(new GenderPreferation { GenderPreferationType = name });
 
-        public Task AddInterest(string name)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <summary>
+        /// Adds a new interest to the database
+        /// </summary>
+        /// <param name="name">the name of the interest</param>
+        /// <returns></returns>
+        public async Task AddInterest(string name)
+            =>
+            await Context.Interests.AddAsync(new Interest { InterestName = name });
 
-        public Task AddMovie(string name)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <summary>
+        /// Adds a new movie to the database
+        /// </summary>
+        /// <param name="name">the name of the movie</param>
+        /// <returns></returns>
+        public async Task AddMovie(string name)
+            =>
+            await Context.Movies.AddAsync(new Movie { MovieName = name });
 
-        public Task AddMusic(string name)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <summary>
+        /// Adds a new music genre to the database
+        /// </summary>
+        /// <param name="name">the name of the genre</param>
+        /// <returns></returns>
+        public async Task AddMusic(string name)
+            =>
+            await Context.Music.AddAsync(new Music { MusicGenre = name });
 
-        public Task AddProfession(string name)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <summary>
+        /// Adds a new profession to the database
+        /// </summary>
+        /// <param name="name">the name of the profession</param>
+        /// <returns></returns>
+        public async Task AddProfession(string name)
+            =>
+            await Context.Professions.AddAsync(new Profession { ProfessionName = name });
 
-        public Task AddRelation(string name)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <summary>
+        /// Adds a new type of relation to the database
+        /// </summary>
+        /// <param name="name">the type of relation</param>
+        /// <returns></returns>
+        public async Task AddRelation(string name)
+            =>
+            await Context.Relations.AddAsync(new Relation { RelationType = name });
 
-        public Task AddUserCity(int userID, int cityID)
-        {
-            throw new System.NotImplementedException();
-        }
+        #endregion
 
-        public Task AddUserEducation(int userID, int educationID)
-        {
-            throw new System.NotImplementedException();
-        }
+        #region AddRelation
+      
+        /// <summary>
+        /// Adds a relation between a user and city
+        /// </summary>
+        /// <param name="user">the user object</param>
+        /// <param name="city">the city object</param>
+        /// <returns></returns>
+        public async Task AddUserCity(User user, City city)
+            =>
+            await Context.UserCityRelations.AddAsync(new UserCityRelation { _User = user, _City = city });
 
-        public Task AddUserGenderPreferation(int userID, int genderpreferationID)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <summary>
+        /// Adds a relation between a user and an education
+        /// </summary>
+        /// <param name="user">the user object</param>
+        /// <param name="education">the education object</param>
+        /// <returns></returns>
+        public async Task AddUserEducation(User user, Education education)
+            =>
+            await Context.UserEducationRelations.AddAsync(new UserEducationRelation { _User = user, _Education = education });
 
-        public Task AddUserInterest(int userID, int interestID)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <summary>
+        /// Adds a relation between a user and a gender preferation
+        /// </summary>
+        /// <param name="user">the user object</param>
+        /// <param name="genderPreferation">the gender preferation object</param>
+        /// <returns></returns>
+        public async Task AddUserGenderPreferation(User user, GenderPreferation genderPreferation)
+            =>
+            await Context.UserGenderPreferationRelations.AddAsync(new UserGenderPreferationRelation { _User = user, _GenderPreferation = genderPreferation });
 
-        public Task AddUserProfession(int userID, int professionID)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <summary>
+        /// Adds a relation between a user and an interest
+        /// </summary>
+        /// <param name="user">the user object</param>
+        /// <param name="interest">the interest object</param>
+        /// <returns></returns>
+        public async Task AddUserInterest(User user, Interest interest)
+            =>
+            await Context.UserIntrestsRelation.AddAsync(new UserInterestRelation { _User = user, _Interest = interest });
 
-        public Task AddUserRelation(int userID, int relationID)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <summary>
+        /// Adds a relation between a user and a profession
+        /// </summary>
+        /// <param name="user">the user object</param>
+        /// <param name="profession">the profession object</param>
+        /// <returns></returns>
+        public async Task AddUserProfession(User user, Profession profession)
+            =>
+            await Context.UserProfessionRelations.AddAsync(new UserProfessionRelation { _User = user, _Profession = profession });
 
-        public Task UpdateCity(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <summary>
+        /// Adds a relationship between two users
+        /// </summary>
+        /// <param name="firstUser">the first user object</param>
+        /// <param name="secondUser">the second user object</param>
+        /// <param name="relation">the relation object</param>
+        /// <returns></returns>
+        public async Task AddUserRelation(User firstUser, User secondUser, Relation relation)
+            =>
+            await Context.UserRelationRelations.AddAsync(new UserRelationRelation { _FirstUser = firstUser, _SecondUser = secondUser, _Relation = relation });
+
+        #endregion
+
+        #region Update    
+
+        public void UpdateCity(City city)
+            =>
+            Context.Cities.Update(city);
+
 
         public Task UpdateEducation(int id, string name)
         {
@@ -316,6 +487,10 @@
         {
             throw new System.NotImplementedException();
         }
+
+        #endregion
+
+        #region Delete
 
         public Task DeleteCity(int id)
         {
@@ -367,6 +542,10 @@
             throw new System.NotImplementedException();
         }
 
+        #endregion
+
+        #region RemoveRelation
+
         public Task RemoveUserCityRelation(int userID, int cityID)
         {
             throw new System.NotImplementedException();
@@ -396,6 +575,8 @@
         {
             throw new System.NotImplementedException();
         }
+
+        #endregion
 
         #endregion
 

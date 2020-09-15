@@ -17,7 +17,7 @@ namespace Dateland.Core
         /// <summary>
         /// Gets or sets the users ID
         /// </summary>
-        [ForeignKey("UserID")]
+        [ForeignKey("Id")]
         public User _User { get; set; }
 
         /// <summary>

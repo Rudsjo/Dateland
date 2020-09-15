@@ -1,5 +1,6 @@
 ﻿namespace Dateland.Core
 {
+    using Microsoft.EntityFrameworkCore.ChangeTracking;
     // Required namespaces
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -86,6 +87,80 @@
         /// </summary>
         /// <returns></returns>
         abstract Task<IEnumerable<Relation>> GetAllRelationTypes();
+
+        #endregion
+
+        #region GetByID
+
+        /// <summary>
+        /// Gets a single city by id
+        /// </summary>
+        /// <param name="cityID">the identifier</param>
+        /// <returns></returns>
+        abstract Task<City> GetCityByID(int cityID);
+
+        /// <summary>
+        /// Gets a single education by id
+        /// </summary>
+        /// <param name="educationID">the identifier</param>
+        /// <returns></returns>
+        abstract Task<Education> GetEducationByID(int educationID);
+
+        /// <summary>
+        /// Gets a single food by id
+        /// </summary>
+        /// <param name="foodID">the identifier</param>
+        /// <returns></returns>
+        abstract Task<Food> GetFoodByID(int foodID);
+
+        /// <summary>
+        /// Gets a single gender by id
+        /// </summary>
+        /// <param name="genderID">the identifier</param>
+        /// <returns></returns>
+        abstract Task<Gender> GetGenderByID(int genderID);
+
+        /// <summary>
+        /// Gets a single genderpreferation by id
+        /// </summary>
+        /// <param name="genderpreferationID">the identifier</param>
+        /// <returns></returns>
+        abstract Task<GenderPreferation> GetGenderPreferationByID(int genderpreferationID);
+
+        /// <summary>
+        /// Gets a single interest by id
+        /// </summary>
+        /// <param name="interestID">the identifier</param>
+        /// <returns></returns>
+        abstract Task<Interest> GetInterestByID(int interestID);
+
+        /// <summary>
+        /// Gets a single movie by id
+        /// </summary>
+        /// <param name="movieID">the identifier</param>
+        /// <returns></returns>
+        abstract Task<Movie> GetMovieByID(int movieID);
+
+        /// <summary>
+        /// Gets a single music genre by id
+        /// </summary>
+        /// <param name="musicID">the identifier</param>
+        /// <returns></returns>
+        abstract Task<Music> GetMusicGenreByID(int musicID);
+
+        /// <summary>
+        /// Gets a single profession by id
+        /// </summary>
+        /// <param name="professionID">the identifier</param>
+        /// <returns></returns>
+        abstract Task<Profession> GetProfessionByID(int professionID);
+
+        /// <summary>
+        /// Gets a single relation type by id
+        /// </summary>
+        /// <param name="relationID">the identifier</param>
+        /// <returns></returns>
+        abstract Task<Relation> GetRelationByID(int relationID);
 
         #endregion
 
@@ -197,37 +272,37 @@
         /// Adds a relation between user and city
         /// </summary>
         /// <returns></returns>
-        abstract Task AddUserCity(int userID, int cityID);
+        abstract Task AddUserCity(User user, City city);
 
         /// <summary>
         /// Adds a relation between user and education
         /// </summary>
         /// <returns></returns>
-        abstract Task AddUserEducation(int userID, int educationID);
+        abstract Task AddUserEducation(User user, Education education);
 
         /// <summary>
         /// Adds a relation between user and preferred datinggender
         /// </summary>
         /// <returns></returns>
-        abstract Task AddUserGenderPreferation(int userID, int genderpreferationID);
+        abstract Task AddUserGenderPreferation(User user, GenderPreferation genderPreferation);
 
         /// <summary>
         /// Adds a relation between user and interest
         /// </summary>
         /// <returns></returns>
-        abstract Task AddUserInterest(int userID, int interestID);
+        abstract Task AddUserInterest(User user, Interest interest);
 
         /// <summary>
         /// Adds a relation between user and profession
         /// </summary>
         /// <returns></returns>
-        abstract Task AddUserProfession(int userID, int professionID);
+        abstract Task AddUserProfession(User user, Profession profession);
 
         /// <summary>
         /// Adds a relation between two users
         /// </summary>
         /// <returns></returns>
-        abstract Task AddUserRelation(int userID, int relationID);
+        abstract Task AddUserRelation(User firstUser, User secondUser, Relation relation);
         #endregion
 
         #region Update
@@ -237,7 +312,7 @@
         /// </summary>
         /// <param name="id">the indentifier</param>
         /// <returns></returns>
-        abstract Task UpdateCity(int id, string name);
+        abstract EntityEntry UpdateCity(City city);
 
         /// <summary>
         /// Updates the name of an education

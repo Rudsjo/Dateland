@@ -36,6 +36,7 @@ namespace Dateland
         {
             // Set the configurator
             Configuration = configuration;
+
         }
 
         /// <summary>
