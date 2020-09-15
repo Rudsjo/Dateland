@@ -10,11 +10,18 @@ namespace Dateland
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Newtonsoft.Json;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Security;
+    using System.Text.Encodings.Web;
 
     /// <summary>
     /// Startup class
     /// </summary>
-    public class Startup
+    public partial class Startup
     {
         /// <summary>
         /// Gets the current connection to use.
@@ -66,8 +73,34 @@ namespace Dateland
             // Map our IReposirory to our GlobalReposirory class
             services.AddScoped<IRepository, GlobalRepository>();
 
-            // Map our IEmailService with our StandardEmailService
-            services.AddSingleton<IEmailService, StandardEmailService>();
+            // If the mail credentials file exists
+            if (File.Exists("mailcredentials.json"))
+            {
+                // Create dictionary to hold all json properties
+                Dictionary<string, string> fields = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("mailcredentials.json"));
+
+                // Create a secure string to hold the email password
+                SecureString password = new SecureString();
+
+                // Loop through each characters in the password
+                for (int i = 0; i < fields["password"].Length; i++)
+                    // Append char to the seucre string
+                    password.AppendChar(fields["password"][i]);
+
+                // Map our IEmailService with our StandardEmailService
+                services.AddSingleton<IEmailService>(mailService =>
+                    new StandardEmailService(
+                    new NetworkCredential()
+                    {
+                        UserName = fields["username"],
+                        SecurePassword = password
+                    }));
+            }
+            // else...
+            else
+            {
+
+            }
 
             // Add Controllers
             services.AddControllersWithViews();

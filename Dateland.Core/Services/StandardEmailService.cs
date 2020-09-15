@@ -30,12 +30,14 @@
         /// <summary>
         /// <see cref="IEmailService.SenderEmail"/>
         /// </summary>
-        public string SenderEmail => String.Empty;
+        public string SenderEmail { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardEmailService"/> class.
         /// </summary>
-        public StandardEmailService()
+        /// <param name="senderEmail">The sender email.</param>
+        /// <param name="senderPassword">The sender password.</param>
+        public StandardEmailService(NetworkCredential credentials)
         {          
             // Create the client
             Client = new SmtpClient(HostAddress);
@@ -45,9 +47,11 @@
             Client.EnableSsl = true;
             // We wan to use our own credentials
             Client.UseDefaultCredentials = false;
+            // Set the senders email
+            SenderEmail = credentials.UserName;
 
             // CREDENTIALS SHOULD NOT BE SET HERE!
-            Client.Credentials = new NetworkCredential(SenderEmail, String.Empty);
+            Client.Credentials = credentials;
         }
 
         /// <summary>

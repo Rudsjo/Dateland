@@ -67,8 +67,6 @@ namespace Dateland.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel vm)
         {
-            throw new Exception("Råkade låsa våran email :( får fixa en ny eller stänga av email confirmation temperärt");
-
             // Check if all fields are filled correctly
             if (ModelState.IsValid)
             {
