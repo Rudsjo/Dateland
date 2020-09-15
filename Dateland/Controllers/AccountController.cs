@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Dateland.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -47,6 +48,14 @@ namespace Dateland.Controllers
         {
             return View(new SignedInViewModel());
         }
+
+        /// <summary>
+        /// The page for the logged in users profile
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult MyProfile()
+            => View(new MyProfileViewModel());
 
         /// <summary>
         /// Registers a user to the database if criterias are set in the register form

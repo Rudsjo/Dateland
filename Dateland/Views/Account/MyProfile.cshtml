@@ -1,0 +1,126 @@
+﻿@model MyProfileViewModel
+
+<section class="myProfile">
+    <div class="container">
+        <div class="info">
+            <div class="description padding-right animate-left">
+                <div class="global-headline">
+                    <h1 class="headline headline-dark">Allmänt</h1>
+                    <img src="~/images/flower-girl.jpg" alt="" class="si-img-chosen" />
+                    <div class="asterisk"><i class="fas fa-heart"></i></div>
+                </div>
+                <form method="post">
+
+                    <div class="form-group profile-form">
+                        <input class="form-control" placeholder="Förnamn" />
+                    </div>
+
+                    <div class="form-group profile-form">
+                        <input class="form-control" placeholder="Efternamn" />
+                    </div>
+
+                    <div class="form-group profile-form">
+                        <input class="form-control" placeholder="Ålder" />
+                    </div>
+
+                    <div class="form-group profile-form">
+                        <input class="form-control" placeholder="Stad" />
+                    </div>
+
+                    <div class="form-group profile-form">
+                        <textarea name="profile-desc" class="form-control profile-desc" placeholder="Beskrivning"></textarea>
+                    </div>
+
+                    <div class="form-group profile-form">
+                        <input type="submit" class="btn cta-btn-dark" value="Spara">
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Höger sida -->
+            <div class="animate-right">
+                <div class="global-headline">
+                    <h1 class="headline headline-dark">Mina favoriter</h1>
+                </div>
+                <form method="post">
+
+                    <div class="form-group profile-form">
+                        <label for="1">Favorit</label>
+                        <select name="1" id="1" class="form-control">
+                            <option value="option1">Val</option>
+                            <option value="option2">Val</option>
+                            <option value="option3">Val</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group profile-form">
+                        <label for="1">Favorit</label>
+                        <select name="1" id="1" class="form-control">
+                            <option value="option1">Val</option>
+                            <option value="option2">Val</option>
+                            <option value="option3">Val</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group profile-form">
+                        <label for="1">Favorit</label>
+                        <select name="1" id="1" class="form-control">
+                            <option value="option1">Val</option>
+                            <option value="option2">Val</option>
+                            <option value="option3">Val</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group profile-form">
+                        <input type="submit" class="btn cta-btn-dark" value="Spara">
+                    </div>
+
+                </form>
+
+                <div class="global-headline">
+                    <h1 class="headline headline-dark">Mina intressen</h1>
+                </div>
+                <form method="post">
+
+                    <div class="interest-list">
+                        <div class="form-group profile-form">
+                            <input type="checkbox" id="intresse1" name="intresse1" value="Bike">
+                            <label for="intresse1"> Intresse</label><br>
+                        </div>
+
+                        <div class="form-group profile-form">
+                            <input type="checkbox" id="intresse1" name="intresse1" value="Bike">
+                            <label for="intresse1"> Intresse</label><br>
+                        </div>
+
+                        <div class="form-group profile-form">
+                            <input type="checkbox" id="intresse1" name="intresse1" value="Bike">
+                            <label for="intresse1"> Intresse</label><br>
+                        </div>
+
+                        <div class="form-group profile-form">
+                            <input type="checkbox" id="intresse1" name="intresse1" value="Bike">
+                            <label for="intresse1"> Intresse</label><br>
+                        </div>
+
+                        <div class="form-group profile-form">
+                            <input type="checkbox" id="intresse1" name="intresse1" value="Bike">
+                            <label for="intresse1"> Intresse</label><br>
+                        </div>
+
+                        <div class="form-group profile-form">
+                            <input type="checkbox" id="intresse1" name="intresse1" value="Bike">
+                            <label for="intresse1"> Intresse</label><br>
+                        </div>
+                    </div>
+
+                    <div class="form-group profile-form">
+                        <input type="submit" class="btn cta-btn-dark" value="Spara">
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
