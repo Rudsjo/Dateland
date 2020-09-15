@@ -2,6 +2,7 @@ namespace Dateland
 {
     // Required namespaces
     using Dateland.Core;
+    using Dateland.Core.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -13,16 +14,19 @@ namespace Dateland
     using Newtonsoft.Json;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Net;
     using System.Security;
-    using System.Text.Encodings.Web;
 
     /// <summary>
     /// Startup class
     /// </summary>
     public partial class Startup
     {
+        /// <summary>
+        /// Set to true if the real email service should be used
+        /// </summary>
+        private bool UseEmailService => false;
+
         /// <summary>
         /// Gets the current connection to use.
         /// </summary>
@@ -74,7 +78,7 @@ namespace Dateland
             services.AddScoped<IRepository, GlobalRepository>();
 
             // If the mail credentials file exists
-            if (File.Exists("mailcredentials.json"))
+            if (File.Exists("mailcredentials.json") && UseEmailService)
             {
                 // Create dictionary to hold all json properties
                 Dictionary<string, string> fields = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("mailcredentials.json"));
@@ -99,7 +103,8 @@ namespace Dateland
             // else...
             else
             {
-
+                // use the mock email service
+                services.AddSingleton<IEmailService, MockEmailService>();
             }
 
             // Add Controllers
