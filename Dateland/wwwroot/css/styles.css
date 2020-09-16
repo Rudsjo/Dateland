@@ -540,6 +540,11 @@ header {
     margin: 2rem 38rem;
 }
 
+.rememberme{
+
+    display:flex;
+    align-items:center;
+}
 
 /* MEDIA QUERIES */
 

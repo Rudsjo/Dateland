@@ -6,25 +6,20 @@
             <div class="description padding-right animate-left">
                 <div class="global-headline">
                     <h1 class="headline headline-dark">Allmänt</h1>
-                    <img src="~/images/flower-girl.jpg" alt="" class="si-img-chosen" />
+                    <img src="@Model.CurrentUser.ProfilePictureUrl" alt="" class="si-img-chosen" />
                     <div class="asterisk"><i class="fas fa-heart"></i></div>
                 </div>
                 <form method="post">
-
                     <div class="form-group profile-form">
-                        <input class="form-control" placeholder="Förnamn" />
+                        <input class="form-control" asp-for="@Model.CurrentUser.FirstName" />
                     </div>
 
                     <div class="form-group profile-form">
-                        <input class="form-control" placeholder="Efternamn" />
+                        <input class="form-control" asp-for="@Model.CurrentUser.LastName" />
                     </div>
 
                     <div class="form-group profile-form">
-                        <input class="form-control" placeholder="Ålder" />
-                    </div>
-
-                    <div class="form-group profile-form">
-                        <input class="form-control" placeholder="Stad" />
+                        <input class="form-control" asp-for="@Model.CurrentUser.DateOfBirth" />
                     </div>
 
                     <div class="form-group profile-form">
@@ -32,7 +27,7 @@
                     </div>
 
                     <div class="form-group profile-form">
-                        <input type="submit" class="btn cta-btn-dark" value="Spara">
+                        <input type="submit" asp-route-id="@Model.CurrentUser.Id" asp-action="SaveChanges" asp-controller="Account" class="btn cta-btn-dark" value="Spara">
                     </div>
 
                 </form>

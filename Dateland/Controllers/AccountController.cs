@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dateland.Core;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-
 namespace Dateland.Controllers
 {
+    using Dateland.Helpers;
+    // Required namespaces
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Security.Claims;
+
     [Authorize]
     public class AccountController : Controller
     {
@@ -26,17 +29,27 @@ namespace Dateland.Controllers
         public IEmailService EmailService { get; }
 
         /// <summary>
+        /// Gets the repository.
+        /// </summary>
+        /// <value>
+        /// The repository.
+        /// </value>
+        public IRepository Repository { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AccountController"/> class.
         /// </summary>
         /// <param name="userManager">The user manager.</param>
         /// <param name="signInManager">The sign in manager.</param>
         /// <param name="emailService">The email service.</param>
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService, IRepository repository)
         {
             // Set the user manager
             UserManager = userManager;
             // Set the sign in manager
             SignInManager = signInManager;
+            // Set the repository
+            Repository = repository;
         }
 
         /// <summary>
@@ -54,9 +67,9 @@ namespace Dateland.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult MyProfile()
-            => View(new MyProfileViewModel());
-
+        public async Task<IActionResult> MyProfile()
+            => View(new MyProfileViewModel() { CurrentUser = await UserManager.FindByEmailAsync(User.Identity.Name) });
+        
         /// <summary>
         /// Registers a user to the database if criterias are set in the register form
         /// </summary>
@@ -150,6 +163,19 @@ namespace Dateland.Controllers
         }
 
         /// <summary>
+        /// Logouts this instance.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> Logout()
+        {
+            // Sign out the current user
+            await SignInManager.SignOutAsync();
+
+            // Return the home page
+            return RedirectToAction("Index", controllerName: "Home");
+        }
+
+        /// <summary>
         /// Returns the login view
         /// </summary>
         /// <returns></returns>
@@ -190,6 +216,36 @@ namespace Dateland.Controllers
 
             // Else redirect the user back to the login page with the same ViewModel instance
             return View(vm);
+        }
+
+        /// <summary>
+        /// Post method for when a user saves changes to their profile
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> SaveChanges(string id, MyProfileViewModel vm)
+        {
+            // If everything is ok...
+            if (ModelState.IsValid)
+            {
+                // Get the updated user
+                var newUser = await UserManager.FindByIdAsync(id);
+
+                // Update the user in relation to the updated model
+                newUser.UpdateInReletionTo<User>(vm.CurrentUser);
+
+                // Update the current user
+                await UserManager.UpdateAsync(newUser);               
+
+                // Redirect the user back to the profile page
+                return RedirectToAction(nameof(MyProfile));
+            }
+            else
+            {
+                // Return the MyPage with the currently edited user
+                return View("MyProfile", vm);
+            }
+            
         }
     }
 }
