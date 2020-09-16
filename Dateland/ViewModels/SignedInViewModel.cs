@@ -24,5 +24,18 @@
 
         #endregion
 
+        #region Constructor
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public SignedInViewModel()
+        {
+            // Instanceing list
+            MatchedUsers = new List<User>();
+        }
+
+        #endregion
+
     }
 }

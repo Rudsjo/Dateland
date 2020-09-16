@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Signed In";
+
+    
 }
 
 <!-- Header ends -->
@@ -83,7 +85,7 @@
                             <hr class="chosen-body" />
 
                             <div class="go-to-profile">
-                                <a href="#">Gå till profil<span class="ca-btn"><i class="fa fa-arrow-right"></i></span></a>
+                                <a asp-action="UserProfile" asp-route-id="@Model.MatchedUsers[Model.SelectedUser].Id">Gå till profil<span class="ca-btn"><i class="fa fa-arrow-right"></i></span></a>
                             </div>
                         </div>
                     </div>

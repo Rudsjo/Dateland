@@ -6,23 +6,6 @@
     margin: 0;
 }
 
-.myProfile .global-headline {
-    margin-top: 10.9rem;
-}
-
-.info {
-    display: flex;
-    align-items: center;
-}
-
-.info > div {
-    flex: 1;
-}
-
-.padding-right {
-    padding-right: 7rem;
-}
-
 .profile-form {
     margin: 2rem 8rem;
 }
@@ -44,23 +27,37 @@
     align-content: center;
 }
 
-.info {
-    text-align: center;
+/* USER PROFILE */
+.userProfile {
+    margin-top: 10rem;
 }
 
-.description {
-    margin-bottom: 3rem;
-}
-
-    .description p {
-        line-height: 1.6;
-        margin-bottom: 2.4rem;
+    .userProfile .chosen-header {
+        justify-content: center;
     }
+
+        .userProfile .chosen-header img {
+            padding: 0;
+            margin-right: 5rem;
+        }
+
+    .userProfile .ca-btn {
+        float: right;
+    }
+
+.user-info p {
+    margin: 4rem;
+}
+
+.no-list-type {
+    text-decoration: none;
+    list-style-type: none;
+}
 
 @media screen and (max-width: 600px) {
 
     .profile-form {
-        margin: 2rem;
+        margin: 3rem;
     }
 
     .interest-list {
@@ -69,5 +66,4 @@
         grid-gap: 0;
         margin: 0 auto;
     }
-
 }

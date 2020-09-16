@@ -8,6 +8,7 @@ namespace Dateland.Controllers
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
     using System.Security.Claims;
 
     [Authorize]
@@ -50,6 +51,8 @@ namespace Dateland.Controllers
             SignInManager = signInManager;
             // Set the repository
             Repository = repository;
+            // Set the email service
+            EmailService = emailService;
         }
 
         /// <summary>
@@ -57,9 +60,15 @@ namespace Dateland.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(new SignedInViewModel());
+            var vm = new SignedInViewModel();
+
+           // vm.MatchedUsers = Reposistory.GetMatchingUsers()
+
+            vm.MatchedUsers.Add(await UserManager.FindByIdAsync("1380b9f5-e7cc-464b-950a-aedc285a6761"));
+
+            return View(vm);
         }
 
         /// <summary>
@@ -127,6 +136,20 @@ namespace Dateland.Controllers
 
             // Go back to the start page in case of failing
             return View(nameof(Index), vm);
+        }
+
+        /// <summary>
+        /// Gets the prifle page of a user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> UserProfile(string id)
+        {
+            var vm = new UserProfileViewModel();
+
+            vm.SelectedUser = await UserManager.FindByIdAsync(id);
+
+            return View(vm);
         }
 
         /// <summary>

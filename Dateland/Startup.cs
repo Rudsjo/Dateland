@@ -25,7 +25,7 @@ namespace Dateland
         /// <summary>
         /// Set to true if the real email service should be used
         /// </summary>
-        private bool UseEmailService => false;
+        private bool UseEmailService => true;
 
         /// <summary>
         /// Gets the current connection to use.
