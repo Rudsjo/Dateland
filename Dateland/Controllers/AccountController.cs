@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Dateland.Core;
 namespace Dateland.Controllers
@@ -8,7 +9,9 @@ namespace Dateland.Controllers
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore.Internal;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Security.Claims;
 
     [Authorize]
@@ -37,6 +40,8 @@ namespace Dateland.Controllers
         /// </value>
         public IRepository Repository { get; }
 
+        public ProfileViewModel ProfileVm { get; set; } = new ProfileViewModel();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountController"/> class.
         /// </summary>
@@ -58,18 +63,24 @@ namespace Dateland.Controllers
         /// <summary>
         /// The index page.
         /// </summary>
+        /// <param name="selectedUserId">The id of a user to be selected</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string selectedUserId)
         {
-            var vm = new SignedInViewModel();
+            // TEMPORARY UNTIL WE HAVE A MATCHING FUNCTION
+            ProfileVm.MatchedUsers = new List<User>();
+            ProfileVm.MatchedUsers.Add(await UserManager.FindByIdAsync("1380b9f5-e7cc-464b-950a-aedc285a6761"));
+            ProfileVm.MatchedUsers.Add(await UserManager.FindByIdAsync("18217bae-9c0f-4e29-a657-9fb77c99294d"));
+            ProfileVm.MatchedUsers.Add(await UserManager.FindByIdAsync("eebedef6-2889-44c6-980a-c62fc71809f5"));
 
-           // vm.MatchedUsers = Reposistory.GetMatchingUsers()
+            // Checks if any id is sent in and updates the selected user
+            if (selectedUserId != null)
+                ProfileVm.SelectedUser = await UserManager.FindByIdAsync(selectedUserId);
 
-            vm.MatchedUsers.Add(await UserManager.FindByIdAsync("1380b9f5-e7cc-464b-950a-aedc285a6761"));
-
-            return View(vm);
+            return View(ProfileVm);
         }
+
 
         /// <summary>
         /// The page for the logged in users profile
@@ -77,7 +88,7 @@ namespace Dateland.Controllers
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> MyProfile()
-            => View(new MyProfileViewModel() { CurrentUser = await UserManager.FindByEmailAsync(User.Identity.Name) });
+            => View(ProfileVm.CurrentUser = await UserManager.FindByEmailAsync(User.Identity.Name));
         
         /// <summary>
         /// Registers a user to the database if criterias are set in the register form
@@ -145,11 +156,9 @@ namespace Dateland.Controllers
         /// <returns></returns>
         public async Task<IActionResult> UserProfile(string id)
         {
-            var vm = new UserProfileViewModel();
+            ProfileVm.SelectedUser = await UserManager.FindByIdAsync(id);
 
-            vm.SelectedUser = await UserManager.FindByIdAsync(id);
-
-            return View(vm);
+            return View(ProfileVm);
         }
 
         /// <summary>
@@ -246,7 +255,7 @@ namespace Dateland.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> SaveChanges(string id, MyProfileViewModel vm)
+        public async Task<IActionResult> SaveChanges(string id, ProfileViewModel vm)
         {
             // If everything is ok...
             if (ModelState.IsValid)
@@ -255,7 +264,7 @@ namespace Dateland.Controllers
                 var newUser = await UserManager.FindByIdAsync(id);
 
                 // Update the user in relation to the updated model
-                newUser.UpdateInReletionTo<User>(vm.CurrentUser);
+                newUser.UpdateInRelationTo<User>(vm.CurrentUser);
 
                 // Update the current user
                 await UserManager.UpdateAsync(newUser);               

@@ -16,7 +16,7 @@
         /// <param name="orgModel">The org model.</param>
         /// <param name="newModel">The new model.</param>
         /// <returns></returns>
-        public static T UpdateInReletionTo<T>(this T orgModel, T newModel) where T : class, new()
+        public static T UpdateInRelationTo<T>(this T orgModel, T newModel) where T : class, new()
         {
             // If any of the models are null
             if (orgModel == null || newModel == null) return null;

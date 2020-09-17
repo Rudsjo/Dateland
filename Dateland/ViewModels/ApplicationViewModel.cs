@@ -9,8 +9,5 @@
     /// </summary>
     public class ApplicationViewModel
     {
-        #region Public Properties
-
-        #endregion
     }
 }

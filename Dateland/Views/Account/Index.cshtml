@@ -1,9 +1,7 @@
-﻿@model SignedInViewModel
+﻿@model ProfileViewModel
 
 @{
     ViewData["Title"] = "Signed In";
-
-    
 }
 
 <!-- Header ends -->
@@ -23,22 +21,17 @@
 
                 @if (Model.MatchedUsers != null && Model.MatchedUsers.Count > 0)
                 {
-                    <div class="si-row-inner">
-                        <div class="sub-col-3">
-                            <a asp-route-id="0" asp-action="UpdateSelectedUser"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[0].ProfilePictureUrl)" /></a>
-                            <a asp-route-id="1" asp-action="UpdateSelectedUser"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[0].ProfilePictureUrl)" /></a>
-                        </div>
-                        <div class="sub-col-3">
-                            <a href="#"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[0].ProfilePictureUrl)" /></a>
-                            <a href="#"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[0].ProfilePictureUrl)" /></a>
-                        </div>
-                        <div class="sub-col-3">
-                            <a href="#"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[0].ProfilePictureUrl)" /></a>
-                            <a href="#"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[0].ProfilePictureUrl)" /></a>
-                        </div>
 
-                        <a href="#" class="btn cta-btn-dark si-randomize-btn">Slumpa nya matchningar!</a>
-                    </div>
+                <div class="si-row-inner">
+                    @for(int i = 0; i < 3; i++)
+                    {
+                        <div class="sub-col-3">
+                            <a asp-route-selectedUserId="@Model.MatchedUsers[i].Id" asp-action="Index"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[i].ProfilePictureUrl)" /></a>
+                        </div>
+                    }
+
+                    <a href="#" class="btn cta-btn-dark si-randomize-btn">Slumpa nya matchningar!</a>
+                </div>
                 }
                 else { }
 
@@ -53,14 +46,14 @@
                         @if (Model.MatchedUsers != null && Model.MatchedUsers.Count() > 0)
                         {
                             <div class="chosen-header">
-                                <img class="si-img-chosen" src="@Url.Content(Model.MatchedUsers[Model.SelectedUser].ProfilePictureUrl)" />
+                                <img class="si-img-chosen" src="@Url.Content(Model.SelectedUser.ProfilePictureUrl)" />
 
                                 <div class="name-and-btns">
                                     <span class="ca-btn plane"><i class="far fa-paper-plane"></i></span>
                                     <span class="ca-btn plus"><i class="far fa-plus-square"></i></span>
 
                                     <h2>
-                                        @Model.MatchedUsers[Model.SelectedUser].FirstName  @Model.MatchedUsers[Model.SelectedUser].LastName
+                                        @Model.SelectedUser.FirstName @Model.SelectedUser.LastName
                                         <br /><span class="chosen-subheader">29 år, Stockholm</span>
                                     </h2>
 
@@ -85,7 +78,7 @@
                             <hr class="chosen-body" />
 
                             <div class="go-to-profile">
-                                <a asp-action="UserProfile" asp-route-id="@Model.MatchedUsers[Model.SelectedUser].Id">Gå till profil<span class="ca-btn"><i class="fa fa-arrow-right"></i></span></a>
+                                <a asp-action="UserProfile" asp-route-id="@Model.SelectedUser.Id">Gå till profil<span class="ca-btn"><i class="fa fa-arrow-right"></i></span></a>
                             </div>
                         </div>
                     </div>
