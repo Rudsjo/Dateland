@@ -106,11 +106,18 @@ namespace Dateland.Controllers
                 // Create the new user
                 User newUser = new User()
                 {
-                    UserName = vm.Email,
-                    FirstName = vm.FirstName,
-                    LastName = vm.LastName,
-                    Email = vm.Email,
-                    DateOfBirth = vm.DateOfBirth
+                    UserName    = vm.Email,
+                    FirstName   = vm.FirstName,
+                    LastName    = vm.LastName,
+                    Email       = vm.Email,
+                    DateOfBirth = vm.DateOfBirth,
+
+                    // Vet inte hur entity funkar med DefaultValues så sätter allt manuelt hör för nu...
+                    CityID              = 0, FoodID     = 0, 
+                    EducationID         = 0, GenderID   = 0,
+                    GenderPreferationID = 0, MovieID    = 0,
+                    InterestID          = 0, RelationID = 0,
+                    ProfessionID        = 0, 
                 };
 
                 // Create the new user and capture the result
@@ -264,7 +271,7 @@ namespace Dateland.Controllers
                 var newUser = await UserManager.FindByIdAsync(id);
 
                 // Update the user in relation to the updated model
-                newUser.UpdateInRelationTo<User>(vm.CurrentUser);
+                newUser.UpdateInRelationTo<User>(vm.CurrentUser, "Id", "ConcurrencyStamp", "SecurityStamp");
 
                 // Update the current user
                 await UserManager.UpdateAsync(newUser);               

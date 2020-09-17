@@ -16,7 +16,7 @@
         /// <param name="orgModel">The org model.</param>
         /// <param name="newModel">The new model.</param>
         /// <returns></returns>
-        public static T UpdateInRelationTo<T>(this T orgModel, T newModel) where T : class, new()
+        public static T UpdateInRelationTo<T>(this T orgModel, T newModel, params string[] propertiesToSkip) where T : class, new()
         {
             // If any of the models are null
             if (orgModel == null || newModel == null) return null;
@@ -30,8 +30,8 @@
             // Loop through all properties in the original model
             for(int i = 0; i < originalProperties.Count(); i++)
             {
-                // If the new model ha an updated value on the same property...
-                if(originalProperties[i].GetValue(orgModel) != newProperties[i].GetValue(newModel) && newProperties[i].GetValue(newModel) != null && !originalProperties[i].Name.Equals("Id"))
+                // If the new model has an updated value on the same property and it is'nt a property to skip...
+                if(originalProperties[i].GetValue(orgModel) != newProperties[i].GetValue(newModel) && newProperties[i].GetValue(newModel) != null && !propertiesToSkip.Contains(originalProperties[i].Name))
                     // update the original model's property
                     originalProperties[i].SetValue(orgModel, newProperties[i].GetValue(newModel));
             }
