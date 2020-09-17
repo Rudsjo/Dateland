@@ -88,7 +88,11 @@ namespace Dateland.Controllers
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> MyProfile()
-            => View(ProfileVm.CurrentUser = await UserManager.FindByEmailAsync(User.Identity.Name));
+        {
+            ProfileVm.CurrentUser = await UserManager.FindByEmailAsync(User.Identity.Name);
+
+            return View(ProfileVm);
+        }
         
         /// <summary>
         /// Registers a user to the database if criterias are set in the register form

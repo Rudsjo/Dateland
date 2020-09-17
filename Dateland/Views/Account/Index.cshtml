@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Signed In";
+    var age = DateTime.UtcNow.Year - Convert.ToDateTime(Model.SelectedUser.DateOfBirth).Year;
 }
 
 <!-- Header ends -->
@@ -45,6 +46,11 @@
 
                         @if (Model.MatchedUsers != null && Model.MatchedUsers.Count() > 0)
                         {
+                            if(Model.SelectedUser.FirstName == null)
+                            {
+                                Model.SelectedUser = Model.MatchedUsers[0];
+                            }
+
                             <div class="chosen-header">
                                 <img class="si-img-chosen" src="@Url.Content(Model.SelectedUser.ProfilePictureUrl)" />
 
@@ -54,7 +60,7 @@
 
                                     <h2>
                                         @Model.SelectedUser.FirstName @Model.SelectedUser.LastName
-                                        <br /><span class="chosen-subheader">29 år, Stockholm</span>
+                                        <br /><span class="chosen-subheader">@age år, @Model.SelectedUser.City</span>
                                     </h2>
 
                                     <span class="dot"></span>

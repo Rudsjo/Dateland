@@ -1,5 +1,10 @@
 ﻿@model ProfileViewModel
 
+@{
+    var age = DateTime.UtcNow.Year - Convert.ToDateTime(Model.SelectedUser.DateOfBirth).Year;
+}
+
+<!-- About -->
 <section class="userProfile">
     <div class="container">
         <div class="info">
@@ -10,7 +15,7 @@
                     <div class="name-and-btns">
                         <h2>
                             @Model.SelectedUser.FirstName @Model.SelectedUser.LastName
-                            <br /><span class="chosen-subheader">29 år, Stockholm</span>
+                            <br /><span class="chosen-subheader">@age år, @Model.SelectedUser.City</span>
                             <br>
                             <span class="ca-btn plane"><i class="far fa-paper-plane"></i></span>
                             <span class="ca-btn plus"><i class="far fa-plus-square"></i></span>
@@ -29,8 +34,8 @@
 
                     <h3>Intresserad av:</h3>
                     <ul class="no-list-type">
-                        <li>Allt</li>
-                        <li>Allt</li>
+                        <li></span>Allt</li>
+                        <li></span>Allt</li>
                     </ul>
 
                 </div>
@@ -42,13 +47,13 @@
                     <h1 class="headline headline-dark">Favoriter</h1>
                 </div>
                 <ul class="no-list-type">
-                    <li>Favorit</li>
-                    <li>Favorit</li>
-                    <li>Favorit</li>
-                    <li>Favorit</li>
-                    <li>Favorit</li>
-                    <li>Favorit</li>
-                    <li>Favorit</li>
+                    <li></span>Favorit</li>
+                    <li></span>Favorit</li>
+                    <li></span>Favorit</li>
+                    <li></span>Favorit</li>
+                    <li></span>Favorit</li>
+                    <li></span>Favorit</li>
+                    <li></span>Favorit</li>
                 </ul>
 
                 <div class="global-headline">

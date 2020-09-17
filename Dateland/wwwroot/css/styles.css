@@ -27,9 +27,13 @@ html {
     color: var(--body-font-color);
     scroll-behavior: smooth;
 }
+body {
+    overflow-x: hidden;
+}
 
 section {
     padding: 3.9rem 0;
+    overflow: hidden;
 }
 
 img {
@@ -592,6 +596,17 @@ header {
     .login-form {
         margin: 2rem;
     }
+}
+
+@media screen and (min-width: 900px) {
+    .info {
+        display: flex;
+        align-items: center;
+    }
+
+        .info > div {
+            flex: 1;
+        }
 }
 
 
