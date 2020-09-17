@@ -64,7 +64,7 @@
         public virtual Gender Gender { get; set; }
 
         /// <summary>
-        /// Property to get or set the users favorite food 
+        /// Gets or sets the food identifier.
         /// </summary>
         public int? FoodID { get; set; }
 

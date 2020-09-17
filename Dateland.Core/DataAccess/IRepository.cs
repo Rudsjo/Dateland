@@ -28,6 +28,13 @@
         /// <returns></returns>
         abstract Task<IEnumerable<Interest>> GetAllInterests();
 
+        /// <summary>
+        /// Gets the matching users.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
+        abstract Task<IEnumerable<User>> GetMatchingUsers(string userId);
+
         #region Added by marcus
 
         #region GetAll

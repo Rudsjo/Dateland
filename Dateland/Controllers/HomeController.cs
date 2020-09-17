@@ -10,6 +10,7 @@
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using System;
     using Microsoft.AspNetCore.Authorization;
+    using System.Linq;
 
     /// <summary>
     /// Our home controller
@@ -40,7 +41,7 @@
         /// <param name="repo">The repo.</param>
         /// <param name="userManager">The user manager.</param>
         /// <param name="signInManager">The sign in manager.</param>
-        public HomeController( ILogger<HomeController> logger, IRepository repo)            
+        public HomeController( ILogger<HomeController> logger, IRepository repo, AppDbContext c)            
         {
             // Set instances
             _logger = logger;

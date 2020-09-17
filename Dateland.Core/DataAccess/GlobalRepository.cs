@@ -5,6 +5,8 @@
     using System.Threading.Tasks;
     using System.Collections.Generic;
     using Microsoft.EntityFrameworkCore;
+    using System.Linq.Expressions;
+    using System;
 
     /// <summary>
     /// The global repository implementation
@@ -27,6 +29,78 @@
             this.Context = context;
         }
 
+        /// <summary>
+        /// Gets the matching users.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<User>> GetMatchingUsers(string userId)
+        {
+            // Create the result object
+            List<User> result = new List<User>();
+
+            // Get the current user
+            var currentUser = Context.Users.FirstOrDefault(u => u.Id.Equals(userId));
+
+            // If the user does'nt exist...
+            if (currentUser == null)
+                // return an empty list
+                return result;
+
+            // Keeps track of all matches so far
+            int matches = 0;
+
+            // Get all user identifiers
+            var useridentifiers = Context.Users.Select(u => u.Id).ToList();
+
+            // Loop through all users in the database
+            for(int i = 0; i < useridentifiers.Count(); i++)
+            {
+                // Get the user with the current id
+                var user = await Context.Users.FirstOrDefaultAsync(u => u.Id.Equals(useridentifiers[i]));
+
+                // If the user is'nt null
+                if(user != null)
+                {
+                    // x: Check music
+                    // x: Check food
+                    // x: Check movies
+                    // x: Check Interest
+                    // x: Check education
+                    // x: My gender preferation must be their gender, and their gender preferation must be my gender
+
+                    // We both must prefer each others genders
+                    if (user.GenderPreferation.Equals(currentUser.Gender) && currentUser.GenderPreferation.Equals(user.GenderPreferation))
+                    {
+                        // Keeps track of how many interests they have in common
+                        int interestsCount = 0;
+
+                        // Check if we both like the same music
+                        if (user.Music.Equals(currentUser.Music))         interestsCount++;
+                        // Check if we both like the same food
+                        if (user.Food.Equals(currentUser.Food))           interestsCount++;
+                        // Check if we both like the same movie
+                        if (user.Movie.Equals(currentUser.Movie))         interestsCount++;
+                        // Check if we both like the same music
+                        if (user.Interest.Equals(currentUser.Interest))   interestsCount++;
+                        // Check if we both have the same education
+                        if (user.Education.Equals(currentUser.Education)) interestsCount++;
+
+                        if (interestsCount >= 3)
+                            // Add the user to the result
+                            result.Add(user);
+
+                        // If 6 matches has been made
+                        if (matches.Equals(6))
+                            // Break out of the loop
+                            break;
+                    }
+                }
+            }
+
+            // Return the result
+            return result;
+        }
 
         /// <summary>
         /// Gets all interests  from the database.

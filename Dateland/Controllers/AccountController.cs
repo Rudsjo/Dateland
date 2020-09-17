@@ -1,18 +1,13 @@
-﻿using System;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
-using Dateland.Core;
-namespace Dateland.Controllers
+﻿namespace Dateland.Controllers
 {
-    using Dateland.Helpers;
     // Required namespaces
+    using Dateland.Helpers;
+    using System.Threading.Tasks;
+    using Dateland.Core;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore.Internal;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Claims;
 
     [Authorize]
     public class AccountController : Controller
@@ -67,12 +62,10 @@ namespace Dateland.Controllers
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Index(string selectedUserId)
-        {
-            // TEMPORARY UNTIL WE HAVE A MATCHING FUNCTION
-            ProfileVm.MatchedUsers = new List<User>();
-            ProfileVm.MatchedUsers.Add(await UserManager.FindByIdAsync("1380b9f5-e7cc-464b-950a-aedc285a6761"));
-            ProfileVm.MatchedUsers.Add(await UserManager.FindByIdAsync("18217bae-9c0f-4e29-a657-9fb77c99294d"));
-            ProfileVm.MatchedUsers.Add(await UserManager.FindByIdAsync("eebedef6-2889-44c6-980a-c62fc71809f5"));
+        {           
+
+            // Foreign key fuckar i user så den kan inte hämta typ food o sånt så de krashar när den kommer hot!
+            ProfileVm.MatchedUsers = (await Repository.GetMatchingUsers((await UserManager.FindByEmailAsync(User.Identity.Name)).Id)).ToList();
 
             // Checks if any id is sent in and updates the selected user
             if (selectedUserId != null)
@@ -117,11 +110,11 @@ namespace Dateland.Controllers
                     DateOfBirth = vm.DateOfBirth,
 
                     // Vet inte hur entity funkar med DefaultValues så sätter allt manuelt hör för nu...
-                    CityID              = 0, FoodID     = 0, 
-                    EducationID         = 0, GenderID   = 0,
-                    GenderPreferationID = 0, MovieID    = 0,
-                    InterestID          = 0, RelationID = 0,
-                    ProfessionID        = 0, 
+                    CityID              = 1, FoodID     = 1, 
+                    EducationID         = 1, GenderID   = 1,
+                    GenderPreferationID = 1, MovieID    = 1,
+                    InterestID          = 1, RelationID = 1,
+                    ProfessionID        = 1, 
                 };
 
                 // Create the new user and capture the result

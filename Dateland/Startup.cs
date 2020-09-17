@@ -5,7 +5,6 @@ namespace Dateland
     using Dateland.Core.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -25,7 +24,7 @@ namespace Dateland
         /// <summary>
         /// Set to true if the real email service should be used
         /// </summary>
-        private bool UseEmailService => true;
+        private bool UseEmailService => false;
 
         /// <summary>
         /// Gets the current connection to use.

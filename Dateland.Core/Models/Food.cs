@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Dateland.Core
 {
     /// <summary>
     /// Represents a favorite food object
     /// </summary>
+    [Table("Foods")]
     public class Food
     {
         /// <summary>
@@ -23,5 +21,6 @@ namespace Dateland.Core
         [Required]
         [StringLength(50)]
         public string FoodName { get; set; }
+
     }
 }
