@@ -7,16 +7,8 @@
     /// <summary>
     /// ViewModel for MyProfile
     /// </summary>
-    public class ProfileViewModel
+    public class ProfileViewModel : ApplicationViewModel
     {
-        /// <summary>
-        /// Gets or sets the current user.
-        /// </summary>
-        /// <value>
-        /// The current user.
-        /// </value>
-        public User CurrentUser { get; set; }
-
         /// <summary>
         /// A list of of the matched users
         /// </summary>

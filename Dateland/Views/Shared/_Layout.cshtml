@@ -1,4 +1,5 @@
 ﻿@inject Microsoft.AspNetCore.Identity.SignInManager<User> Manager
+@model ApplicationViewModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,27 +28,55 @@
             <nav class="nav">
                 @if (User.Identity.IsAuthenticated)
                 {
-            <a href="@Url.Action("MyProfile", "Account")"><i class="fas fa-user"></i></a> }
-                        else
-                        {
-            <a href="@Url.Action("Login", "Account")"><i class="fas fa-user"></i></a>}
-                <div class="menu-toggle">
+                    <span class="friends-list"><i class="fas fa-users"></i></span>
+                    <a href="@Url.Action("MyProfile", "Account")"><i class="fas fa-user"></i></a> 
+
+
+                    <!-- Friend Request -->
+                    <div class="friends-modal">
+                        <div class="friends-modal-container">
+                            <div class="close">&times;</div>
+                            <br />
+                            <div class="friends-modal-content">
+                                <span class="friends-name">Lisa Svensson</span>
+                                <a href="#"><i class="fas fa-thumbs-up"></i></a>
+                                <a href="#"><i class="fas fa-thumbs-down"></i></a>
+                                <a href="#"><i class="fas fa-ban"></i></a>
+                                <br /><hr />
+                            </div>
+
+                            @*@foreach(var user in Model.FriendRequests)
+                            {
+                        <div class="friend-request-user">
+                            <a href="#">@user.FirstName @user.LastName</a>
+                            <a href="#"><i class="fas fa-thumbs-up"></i></a>
+                            <a href="#"><i class="fas fa-thumbs-down"></i></a>
+                            <a href="#"><i class="fas fa-ban"></i></a>
+                        </div>
+                            }*@
+                        </div>
+                    </div>
+                }
+
+                else
+                {
+                  <a href="@Url.Action("Login", "Account")"><i class="fas fa-user"></i></a>
+                }
+                  <div class="menu-toggle">
                     <i class="fas fa-bars"></i>
                     <i class="fas fa-times"></i>
                 </div>
 
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a href="@Url.Action("Index", "Account")" class="logo">
-                        <img src="~/images/dateland-logo-white.png" alt="">
-                    </a>
-                }
-                else
-                {
-                    <a href="@Url.Action("Index", "Home")" class="logo">
-                        <img src="~/images/dateland-logo-white.png" alt="">
-                    </a>
-                }
+            <a href="@Url.Action("Index", "Account")" class="logo">
+                <img src="~/images/dateland-logo-white.png" alt="">
+            </a> }
+                        else
+                        {
+            <a href="@Url.Action("Index", "Home")" class="logo">
+                <img src="~/images/dateland-logo-white.png" alt="">
+            </a>}
                 <ul class="nav-list">
                     <li class="nav-item">
                         <a class="nav-link" @Html.ActionLink("Home", "Index", "Home")>Hem</a>
@@ -56,12 +85,14 @@
                     {
             <li class="nav-item">
                 <a href="@Url.Action("Logout", "Account")" class="nav-link">Logga ut</a>
-            </li> }
-                        else
-                        {
+            </li>
+ }
+        else
+        {
             <li class="nav-item">
-                <a href="#" class="nav-link">Logga in</a>
-            </li>}
+                <a href="@Url.Action("Login", "Account")" class="nav-link">Logga in</a>
+            </li>
+}
                 </ul>
             </nav>
         </div>

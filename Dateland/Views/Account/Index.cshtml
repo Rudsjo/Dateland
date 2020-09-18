@@ -1,12 +1,9 @@
 ﻿@model ProfileViewModel
 
-@{
-    ViewData["Title"] = "Signed In";
-    var age = DateTime.UtcNow.Year - Convert.ToDateTime(Model.SelectedUser.DateOfBirth).Year;
-}
+@{ ViewData["Title"] = "Signed In";
+    var age = DateTime.UtcNow.Year - Convert.ToDateTime(Model.SelectedUser.DateOfBirth).Year; }
 
 <!-- Header ends -->
-
 <section class="potential-partners">
     <div class="container">
         <div class="global-headline">
@@ -23,18 +20,16 @@
                 @if (Model.MatchedUsers != null && Model.MatchedUsers.Count > 0)
                 {
 
-                <div class="si-row-inner">
-                    @for(int i = 0; i < Model.MatchedUsers.Count(); i++)
-                    {
-                        <div class="sub-col-3">
-                            <a asp-route-selectedUserId="@Model.MatchedUsers[i].Id" asp-action="Index"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[i].ProfilePictureUrl)" /></a>
-                        </div>
-                    }
+    <div class="si-row-inner">
+        @for (int i = 0; i < 6; i++)
+        {
+<div class="sub-col-3">
+    <a asp-route-selectedUserId="@Model.MatchedUsers[i].Id" asp-action="Index"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[i].ProfilePictureUrl)" /></a>
+</div>}
 
-                    <a href="#" class="btn cta-btn-dark si-randomize-btn">Slumpa nya matchningar!</a>
-                </div>
-                }
-                else { }
+        <a href="#" class="btn cta-btn-dark si-randomize-btn">Slumpa nya matchningar!</a>
+    </div>}
+else { }
 
             </div>
 
@@ -46,29 +41,28 @@
 
                         @if (Model.MatchedUsers != null && Model.MatchedUsers.Count() > 0)
                         {
-                            if(Model.SelectedUser.FirstName == null)
+                            if (Model.SelectedUser.FirstName == null)
                             {
                                 Model.SelectedUser = Model.MatchedUsers[0];
                             }
 
-                            <div class="chosen-header">
-                                <img class="si-img-chosen" src="@Url.Content(Model.SelectedUser.ProfilePictureUrl)" />
+            <div class="chosen-header">
+                <img class="si-img-chosen" src="@Url.Content(Model.SelectedUser.ProfilePictureUrl)" />
 
-                                <div class="name-and-btns">
-                                    <span class="ca-btn plane"><i class="far fa-paper-plane"></i></span>
-                                    <span class="ca-btn plus"><i class="far fa-plus-square"></i></span>
+                <div class="name-and-btns">
+                    <span class="ca-btn plane"><i class="far fa-paper-plane"></i></span>
+                    <span class="ca-btn plus"><i class="far fa-plus-square"></i></span>
 
-                                    <h2>
-                                        @Model.SelectedUser.FirstName @Model.SelectedUser.LastName
-                                        <br /><span class="chosen-subheader">@age år, @Model.SelectedUser.City</span>
-                                    </h2>
+                    <h2>
+                        @Model.SelectedUser.FirstName @Model.SelectedUser.LastName
+                        <br /><span class="chosen-subheader">@age år, @Model.SelectedUser.City</span>
+                    </h2>
 
-                                    <span class="dot"></span>
-                                </div>
+                    <span class="dot"></span>
+                </div>
 
-                            </div>
-                        }
-                        else { }
+            </div>}
+        else { }
 
                         <div class="chosen-body">
                             <ul>

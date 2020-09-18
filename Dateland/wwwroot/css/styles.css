@@ -18,6 +18,7 @@
     --secondary-font-color: #c59d5f;
     --body-font-color: #515151;
     --green-color: #1EA642;
+    --red-color: #ff0000;
     --dark-blue: #011134;
 }
 
@@ -105,9 +106,21 @@ header {
     margin-right: 5rem;
 }
 
+.fa-users {
+    color: #fff;
+    font-size: 2.2rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 7.5rem;
+    cursor: pointer;
+    z-index: 1500;
+    margin-right: 5rem;
+}
+
 .fa-user:hover,
-.fa-bars:hover
-{
+.fa-bars:hover,
+.fa-users:hover {
     color: var(--secondary-font-color);
 }
 
@@ -549,6 +562,69 @@ header {
     display:flex;
     align-items:center;
 }
+
+/* MODALS */
+
+.friends-modal {
+    display: none;
+    border: 3px solid #f1f1f1;
+    z-index: 20000;
+    position: absolute;
+    top: 120%;
+    transform: translateY(-50%);
+    right: 7.5rem;
+    margin-right: 5rem;
+}
+
+.friends-modal-container {
+    max-width: 150rem;
+    background-color: #fff;
+    padding: 0 1rem 2.5rem 1rem;
+    color: var(--main-font-color-dark);
+    z-index: 20000;
+}
+
+.friends-modal-content {
+    margin: 2rem;
+    font-size: 1.5rem;
+}
+
+.friends-name {
+    margin: .5rem;
+}
+
+.friends-modal-content .fas {
+    margin: .3rem;
+    opacity: .7;
+    transition: .5s;
+}
+
+.friends-modal-content .fas:hover {
+    opacity: 1;
+}
+
+.friends-modal-content .fa-thumbs-up {
+    color: var(--green-color);
+}
+.friends-modal-content .fa-thumbs-down {
+    color: var(--red-color);
+}
+.friends-modal-content .fa-ban {
+    color: var(--main-font-color-dark);
+}
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
 
 /* MEDIA QUERIES */
 

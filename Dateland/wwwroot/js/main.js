@@ -40,3 +40,21 @@ sr.reveal('.animate-bottom', {
     distance: '25rem',
     delay: 600
 });
+
+
+// Pop ups
+
+let friendsList = selectElement('.friends-list');
+let friendsModal = selectElement('.friends-modal');
+
+var div = document.getElementsByClassName("close")[0];
+
+// opens the modal
+friendsList.addEventListener('click', function () {
+    friendsModal.style.display = "block";
+});
+
+// closing the modal
+div.onclick = function () {
+    friendsModal.style.display = "none";
+}

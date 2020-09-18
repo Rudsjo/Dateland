@@ -6,7 +6,7 @@
     /// <summary>
     /// ViewModel for the login view
     /// </summary>
-    public class LoginViewModel
+    public class LoginViewModel : ApplicationViewModel
     {
         /// <summary>
         /// The user's email address
