@@ -107,310 +107,122 @@
             return result;
         }
 
-        /// <summary>
-        /// Gets all interests  from the database.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Interest>> GetAllInterests()
-            =>
-            await Context.Interests.ToListAsync();
+        #region Generic Add, Update, Delete
 
         /// <summary>
-        /// Gets all users from the database.
+        /// Generic function to create a new entity
         /// </summary>
+        /// <typeparam name="T">The class to base the object from</typeparam>
+        /// <param name="entity">the name of the entity</param>
         /// <returns></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public async Task<IEnumerable<User>> GetUsers()
-            =>
-            await Context.Users.ToListAsync();
+        public async Task<T> Create<T>(T entity)
+            where T : class
+        {
 
-        #region Added by marcus
+            await Context.Set<T>().AddAsync(entity);
 
-        #region GetAll
-        /// <summary>
-        /// Gets all the cities from the database
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<City>> GetAllCities()
-            =>
-            await Context.Cities.ToListAsync();
+            await Context.SaveChangesAsync();
+
+            return entity;
+        }
 
         /// <summary>
-        /// Gets all the educations from the database
+        /// Generic function to update a new entity
         /// </summary>
+        /// <typeparam name="T">the class of object to update</typeparam>
+        /// <param name="entity">the object</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Education>> GetAllEducations()
-            =>
-            await Context.Educations.ToListAsync();
+        public async Task<T> Update<T>(T entity)
+            where T : class
+        {
+            Context.Set<T>().Update(entity);
+
+            await Context.SaveChangesAsync();
+
+            return entity;
+        }
 
         /// <summary>
-        /// Gets all the foods from the database
+        /// Generic function to deleta an entity
         /// </summary>
+        /// <typeparam name="T">the class of object to delete</typeparam>
+        /// <param name="entity">the object</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Food>> GetAllFoods()
-            =>
-            await Context.Foods.ToListAsync();
+        public async Task<T> Delete<T>(T entity)
+             where T : class
+        {
+            Context.Set<T>().Remove(entity);
+
+            await Context.SaveChangesAsync();
+
+            return entity;
+        }
 
         /// <summary>
-        /// Gets all the genders from the database
+        /// Generic function to get all objects of a specified type
         /// </summary>
+        /// <typeparam name="T">the class of object to get</typeparam>
         /// <returns></returns>
-        public async Task<IEnumerable<Gender>> GetAllGenders()
-            =>
-            await Context.Genders.ToListAsync();
+        public async Task<ICollection<T>> GetAll<T>()
+            where T : class
+        {
+            return await Context.Set<T>().ToListAsync();
+        }
 
         /// <summary>
-        /// Gets all the movies from the database
+        /// Generic function to get a single object of a desired type
         /// </summary>
+        /// <typeparam name="T">the class of object to return</typeparam>
+        /// <param name="id">the identifier</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Movie>> GetAllMovies()
-            =>
-            await Context.Movies.ToListAsync();
+        public async Task<T> GetByID<T>(int id)
+            where T : class
+        {
+            return await Context.Set<T>().FindAsync(id);
+        }
 
         /// <summary>
-        /// Gets all the musicGenres from the database
+        /// Generic function to get a users relation of a specified type
         /// </summary>
+        /// <typeparam name="T">the class of relation</typeparam>
+        /// <param name="id">the identifier</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Music>> GetAllMusic()
-            =>
-            await Context.Music.ToListAsync();
+        public async Task<ICollection<T>> GetRelation<T>(string id)
+            where T : class
+        {
+            return await Context.Set<T>().ToListAsync();
+        }
 
         /// <summary>
-        /// Gets all the professions from the database
+        /// Generic function to create a relation of a specified type
         /// </summary>
+        /// <typeparam name="T">the class of relation</typeparam>
+        /// <param name="relation">the relation object</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Profession>> GetAllProfessions()
-            =>
-            await Context.Professions.ToListAsync();
+        public async Task<T> CreateRelation<T>(T relation)
+            where T : class
+        {
+            await Context.Set<T>().AddAsync(relation);
+
+            await Context.SaveChangesAsync();
+
+            return relation;
+        }
 
         /// <summary>
-        /// Gets all the types of relations from the database
+        /// Generic function to remove a relation of a specified type
         /// </summary>
+        /// <typeparam name="T">the class of relation</typeparam>
+        /// <param name="relation">the relation object</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Relation>> GetAllRelationTypes()
-            =>
-            await Context.Relations.ToListAsync();
-        #endregion
-
-        #region Get Relationships
-
-        #endregion
-
-        
-
-        public async Task AddCity(string name)
+        public async Task<T> RemoveRelation<T>(T relation)
+            where T : class
         {
-            var newCity = new City();
-            newCity.CityName = name;
-            await Context.Cities.AddAsync(newCity);
-        }
-            
+            Context.Set<T>().Remove(relation);
 
-        public async Task AddEducation(string name)
-        {
-            var newEducation = new Education();
-            newEducation.EducationName = name;
-            await Context.Educations.AddAsync(newEducation);
-        }
+            await Context.SaveChangesAsync();
 
-        public Task AddFood(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task AddGender(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task AddGenderPreferation(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task AddInterest(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task AddMovie(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task AddMusic(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task AddProfession(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task AddRelation(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task AddUserCity(int userID, int cityID)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task AddUserEducation(int userID, int educationID)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task AddUserGenderPreferation(int userID, int genderpreferationID)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task AddUserInterest(int userID, int interestID)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task AddUserProfession(int userID, int professionID)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task AddUserRelation(int userID, int relationID)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task UpdateCity(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task UpdateEducation(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task UpdateFood(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task UpdateGender(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task UpdateGenderPreferation(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task UpdateInterest(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task UpdateMovie(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task UpdateMusic(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task UpdateProfession(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task UpdateRelation(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task DeleteCity(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task DeleteEducation(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task DeleteFood(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task DeleteGender(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task DeleteGenderPreferation(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task DeleteInterest(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task DeleteMovie(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task DeleteMusic(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task DeleteProfession(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task DeleteRelation(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task RemoveUserCityRelation(int userID, int cityID)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task RemoveUserEducationRelation(int userID, int educationID)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task RemoveUserGenderPreferationRelation(int userID, int genderPreferationID)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task RemoveUserInterestRelation(int userID, int interestID)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task RemoveUserProfessionRelation(int userID, int professionID)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task RemoveUserRelationRelation(int userID, int relationID)
-        {
-            throw new System.NotImplementedException();
+            return relation;
         }
 
         #endregion
