@@ -16,13 +16,6 @@
         abstract Task<IEnumerable<User>> GetUsers();
 
         /// <summary>
-        /// Gets the users intrest.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        abstract Task<IEnumerable<UserInterestRelation>> GetUsersInterest(int id);
-
-        /// <summary>
         /// Gets all interests  from the database.
         /// </summary>
         /// <returns></returns>
@@ -65,12 +58,6 @@
         abstract Task<IEnumerable<Gender>> GetAllGenders();
 
         /// <summary>
-        /// Gets all the genderpreferations from the database
-        /// </summary>
-        /// <returns></returns>
-        abstract Task<IEnumerable<GenderPreferation>> GetAllGenderPreferations();
-
-        /// <summary>
         /// Gets all the movies from the database
         /// </summary>
         /// <returns></returns>
@@ -93,45 +80,6 @@
         /// </summary>
         /// <returns></returns>
         abstract Task<IEnumerable<Relation>> GetAllRelationTypes();
-
-        #endregion
-
-        #region GetRelationships
-
-        /// <summary>
-        /// Gets the users cities of interest
-        /// </summary>
-        /// <param name="id">the identifier</param>
-        /// <returns></returns>
-        abstract Task<IEnumerable<UserCityRelation>> GetUserCities(int id);
-
-        /// <summary>
-        /// Gets the users educations
-        /// </summary>
-        /// <param name="id">the identifier</param>
-        /// <returns></returns>
-        abstract Task<IEnumerable<UserEducationRelation>> GetUserEducations(int id);
-
-        /// <summary>
-        /// Gets the users preferred datinggender
-        /// </summary>
-        /// <param name="id">the identifier</param>
-        /// <returns></returns>
-        abstract Task<IEnumerable<UserGenderPreferationRelation>> GetUserGenderPreferations(int id);
-
-        /// <summary>
-        /// Gets the users professions
-        /// </summary>
-        /// <param name="id">the identifier</param>
-        /// <returns></returns>
-        abstract Task<IEnumerable<UserProfessionRelation>> GetUserProfessions(int id);
-
-        /// <summary>
-        /// Gets the users relationships with other users
-        /// </summary>
-        /// <param name="id">the identifier</param>
-        /// <returns></returns>
-        abstract Task<IEnumerable<UserRelationRelation>> GetUserRelations(int id);
 
         #endregion
 

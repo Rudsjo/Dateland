@@ -24,7 +24,7 @@ namespace Dateland
         /// <summary>
         /// Set to true if the real email service should be used
         /// </summary>
-        private bool UseEmailService => false;
+        private bool UseEmailService => true;
 
         /// <summary>
         /// Gets the current connection to use.
@@ -58,7 +58,7 @@ namespace Dateland
             // Add AppDbContext
             services.AddDbContextPool<AppDbContext>(
                 o => o.UseSqlServer(Configuration.GetConnectionString(CurrentConnection),
-                a => a.MigrationsAssembly("Dateland")));
+                a => a.MigrationsAssembly("Dateland")).UseLazyLoadingProxies());
 
             // Add identity to the project
             services.AddIdentity<User, IdentityRole>(req =>

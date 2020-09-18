@@ -8,6 +8,9 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
+    using Microsoft.CodeAnalysis.CSharp;
+    using System.Collections.Generic;
+    using Dateland.Core.Models;
 
     [Authorize]
     public class AccountController : Controller
@@ -35,6 +38,8 @@
         /// </value>
         public IRepository Repository { get; }
 
+        public AppDbContext Context { get; }
+
         public ProfileViewModel ProfileVm { get; set; } = new ProfileViewModel();
 
         /// <summary>
@@ -43,7 +48,7 @@
         /// <param name="userManager">The user manager.</param>
         /// <param name="signInManager">The sign in manager.</param>
         /// <param name="emailService">The email service.</param>
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService, IRepository repository)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService, IRepository repository, AppDbContext context)
         {
             // Set the user manager
             UserManager = userManager;
@@ -51,6 +56,8 @@
             SignInManager = signInManager;
             // Set the repository
             Repository = repository;
+            // Set the context
+            Context = context;
             // Set the email service
             EmailService = emailService;
         }
@@ -62,8 +69,7 @@
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Index(string selectedUserId)
-        {           
-
+        {
             // Foreign key fuckar i user så den kan inte hämta typ food o sånt så de krashar när den kommer hot!
             ProfileVm.MatchedUsers = (await Repository.GetMatchingUsers((await UserManager.FindByEmailAsync(User.Identity.Name)).Id)).ToList();
 
@@ -103,18 +109,22 @@
                 // Create the new user
                 User newUser = new User()
                 {
+                    // Set user provided data
                     UserName    = vm.Email,
                     FirstName   = vm.FirstName,
                     LastName    = vm.LastName,
                     Email       = vm.Email,
                     DateOfBirth = vm.DateOfBirth,
 
-                    // Vet inte hur entity funkar med DefaultValues så sätter allt manuelt hör för nu...
-                    CityID              = 1, FoodID     = 1, 
-                    EducationID         = 1, GenderID   = 1,
-                    GenderPreferationID = 1, MovieID    = 1,
-                    InterestID          = 1, RelationID = 1,
-                    ProfessionID        = 1, 
+                    // Set default values
+                    Food              = Context.Foods.First(),
+                    Movie             = Context.Movies.First(),
+                    City              = Context.Cities.First(),
+                    Music             = Context.Music.First(),
+                    Education         = Context.Educations.First(),
+                    Gender            = Context.Genders.First(),
+                    GenderPreferation = Context.Genders.First(),
+                    Profession        = Context.Professions.First(),
                 };
 
                 // Create the new user and capture the result

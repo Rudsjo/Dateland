@@ -24,7 +24,7 @@
                 {
 
                 <div class="si-row-inner">
-                    @for(int i = 0; i < 3; i++)
+                    @for(int i = 0; i < Model.MatchedUsers.Count(); i++)
                     {
                         <div class="sub-col-3">
                             <a asp-route-selectedUserId="@Model.MatchedUsers[i].Id" asp-action="Index"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[i].ProfilePictureUrl)" /></a>

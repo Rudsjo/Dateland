@@ -5,11 +5,6 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Dateland.Core;
-    using Microsoft.AspNetCore.Identity;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using System;
-    using Microsoft.AspNetCore.Authorization;
     using System.Linq;
 
     /// <summary>
@@ -41,7 +36,7 @@
         /// <param name="repo">The repo.</param>
         /// <param name="userManager">The user manager.</param>
         /// <param name="signInManager">The sign in manager.</param>
-        public HomeController( ILogger<HomeController> logger, IRepository repo, AppDbContext c)            
+        public HomeController( ILogger<HomeController> logger, IRepository repo)            
         {
             // Set instances
             _logger = logger;

@@ -59,13 +59,13 @@
                 // Get the user with the current id
                 var user = await Context.Users.FirstOrDefaultAsync(u => u.Id.Equals(useridentifiers[i]));
 
-                // If the user is'nt null
-                if(user != null)
+                // If the user is'nt null and is'nt me
+                if(user != null && user.Id.CompareTo(currentUser.Id) != 0)
                 {
                     // x: Check music
                     // x: Check food
                     // x: Check movies
-                    // x: Check Interest
+                    // x: Check Interests
                     // x: Check education
                     // x: My gender preferation must be their gender, and their gender preferation must be my gender
 
@@ -81,10 +81,15 @@
                         if (user.Food.Equals(currentUser.Food))           interestsCount++;
                         // Check if we both like the same movie
                         if (user.Movie.Equals(currentUser.Movie))         interestsCount++;
-                        // Check if we both like the same music
-                        if (user.Interest.Equals(currentUser.Interest))   interestsCount++;
                         // Check if we both have the same education
                         if (user.Education.Equals(currentUser.Education)) interestsCount++;
+
+                        // Check if we have any same interests
+                        foreach (var interest in currentUser.UserInterests)
+                            // If the other user have the same interest as me...
+                            if (user.UserInterests.Contains(interest))
+                                // Add one to the interest counts
+                                interestsCount++;
 
                         if (interestsCount >= 3)
                             // Add the user to the result
@@ -118,16 +123,6 @@
         public async Task<IEnumerable<User>> GetUsers()
             =>
             await Context.Users.ToListAsync();
-
-        /// <summary>
-        /// Gets the users intrest.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public async Task<IEnumerable<UserInterestRelation>> GetUsersInterest(int id)
-            =>
-            await Context.UserIntrests.Where(u => u._User.Id.Equals(id)).ToListAsync();
 
         #region Added by marcus
 
@@ -165,14 +160,6 @@
             await Context.Genders.ToListAsync();
 
         /// <summary>
-        /// Gets all the gender preferations from the database
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<GenderPreferation>> GetAllGenderPreferations()
-            =>
-            await Context.GenderPreferations.ToListAsync();
-
-        /// <summary>
         /// Gets all the movies from the database
         /// </summary>
         /// <returns></returns>
@@ -206,51 +193,6 @@
         #endregion
 
         #region Get Relationships
-
-        /// <summary>
-        /// Gets the users cities of interest
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<UserCityRelation>> GetUserCities(int id)
-            =>
-            await Context.UserCityRelations.Where(u => u._User.Id.Equals(id)).ToListAsync();
-
-        /// <summary>
-        /// Gets the users educations
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<UserEducationRelation>> GetUserEducations(int id)
-            =>
-            await Context.UserEducationRelations.Where(u => u._User.Id.Equals(id)).ToListAsync();
-
-        /// <summary>
-        /// Gets the users preferred datinggender
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<UserGenderPreferationRelation>> GetUserGenderPreferations(int id)
-            =>
-            await Context.UserGenderPreferationRelations.Where(u => u._User.Id.Equals(id)).ToListAsync();
-
-        /// <summary>
-        /// Gets the users professions
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<UserProfessionRelation>> GetUserProfessions(int id)
-            =>
-            await Context.UserProfessionRelations.Where(u => u._User.Id.Equals(id)).ToListAsync();
-
-        /// <summary>
-        /// Gets the users relationships with other users
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<UserRelationRelation>> GetUserRelations(int id)
-            =>
-            await Context.UserRelationRelations.Where(u => u._FirstUserID.Id.Equals(id)).ToListAsync();
 
         #endregion
 

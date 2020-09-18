@@ -3,6 +3,7 @@
     // Required namespaces
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+    using Dateland.Core.Models;
 
     public class AppDbContext : IdentityDbContext<User>
     {
@@ -10,11 +11,6 @@
         /// Gets or sets the intrests.
         /// </summary>
         public DbSet<Interest> Interests { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user intrests.
-        /// </summary>
-        public DbSet<UserInterestRelation> UserIntrests { get; set; }
 
         #region Added by Marcus
 
@@ -39,11 +35,6 @@
         public DbSet<Gender> Genders { get; set; }
 
         /// <summary>
-        /// Gets or sets the genderpreferations.
-        /// </summary>
-        public DbSet<GenderPreferation> GenderPreferations { get; set; }
-
-        /// <summary>
         /// Gets or sets the Movies.
         /// </summary>
         public DbSet<Movie> Movies { get; set; }
@@ -63,30 +54,9 @@
         /// </summary>
         public DbSet<Relation> Relations { get; set; }
 
-        /// <summary>
-        /// Gets or sets the user cities.
-        /// </summary>
-        public DbSet<UserCityRelation> UserCityRelations { get; set; }
+        public DbSet<UserInterest> UserInterests { get; set; }
 
-        /// <summary>
-        /// Gets or sets the user education.
-        /// </summary>
-        public DbSet<UserEducationRelation> UserEducationRelations { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user gender preferation.
-        /// </summary>
-        public DbSet<UserGenderPreferationRelation> UserGenderPreferationRelations { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user profession.
-        /// </summary>
-        public DbSet<UserProfessionRelation> UserProfessionRelations { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user to user relationshit.
-        /// </summary>
-        public DbSet<UserRelationRelation> UserRelationRelations { get; set; }
+        public DbSet<UserRelations> UserRelations { get; set; }
 
         #endregion
 
@@ -105,9 +75,26 @@
             // Call the base class
             base.OnModelCreating(builder);
 
+            // Sets the primary keys for the user intrests table
+            builder.Entity<UserInterest>().HasKey(x => new { x.UserID, x.InterestID });
+
             // Change the default name of the users table to "Users"
             builder.Entity<User>()
                         .ToTable("Users", "dbo");
+
+            #region UserInterests
+
+            builder.Entity<UserInterest>()
+                .HasOne<User>  (x => x.User)
+                .WithMany      (x => x.UserInterests)
+                .HasForeignKey (x => x.UserID);
+
+            builder.Entity<UserInterest>()
+                .HasOne<Interest> (x => x.Interest)
+                .WithMany         (x => x.UserInterests)
+                .HasForeignKey    (x => x.InterestID);
+
+            #endregion
         }
     }
 }
