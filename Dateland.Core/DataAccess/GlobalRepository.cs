@@ -7,6 +7,9 @@
     using Microsoft.EntityFrameworkCore;
     using System.Linq.Expressions;
     using System;
+    using Dateland.Core.Models;
+    using System.Security.Cryptography.X509Certificates;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// The global repository implementation
@@ -104,6 +107,30 @@
             }
 
             // Return the result
+            return result;
+        }
+
+        public async Task<IEnumerable<User>> GetPendingRequests(string userId)
+        {
+            // Create the result object
+            List<User> result = new List<User>();
+
+            // If the user does'nt exist...
+            if (userId == null)
+                // return an empty list
+                return result;
+
+            // Gets the pending relations for the user
+            var userRelations = (await Context.Set<UserRelations>().ToListAsync()).Where(x => x.RelationID1.Equals(2) && x.User2Id.Equals(userId)).Select(x => x.User1Id);
+
+            // Loop through the pending relations and get the user
+            foreach (var user in userRelations)
+            {
+                // Add the user to a list
+                result.Add(await Context.FindAsync<User>(user));
+            }
+
+            // Return the list of users
             return result;
         }
 

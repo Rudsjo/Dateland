@@ -1,14 +1,20 @@
 ﻿namespace Dateland
 {
+    using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+    using Dateland.Controllers;
     // Required namespaces
     using Dateland.Core;
+    using Dateland.Core.Models;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// The view model holding information for the whole application
     /// </summary>
     public class ApplicationViewModel
     {
+
         /// <summary>
         /// Gets or sets the current user.
         /// </summary>
@@ -20,12 +26,7 @@
         /// <summary>
         /// A list of friend requests
         /// </summary>
-        public List<User> FriendRequests { get; set; } = new List<User>()
-        {
-            new User()
-            {
-                FirstName = "Ulla", LastName = "Red"
-            }
-        };
+        public List<User> FriendRequests { get; set; }
+
     }
 }

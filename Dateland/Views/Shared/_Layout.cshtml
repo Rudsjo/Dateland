@@ -1,5 +1,5 @@
 ﻿@inject Microsoft.AspNetCore.Identity.SignInManager<User> Manager
-@model ApplicationViewModel
+@inject ProfileViewModel vm
 
 <!DOCTYPE html>
 <html lang="en">
@@ -37,23 +37,27 @@
                         <div class="friends-modal-container">
                             <div class="close">&times;</div>
                             <br />
-                            <div class="friends-modal-content">
-                                <span class="friends-name">Lisa Svensson</span>
-                                <a href="#"><i class="fas fa-thumbs-up"></i></a>
-                                <a href="#"><i class="fas fa-thumbs-down"></i></a>
-                                <a href="#"><i class="fas fa-ban"></i></a>
-                                <br /><hr />
-                            </div>
 
-                            @*@foreach(var user in Model.FriendRequests)
-                            {
-                        <div class="friend-request-user">
-                            <a href="#">@user.FirstName @user.LastName</a>
-                            <a href="#"><i class="fas fa-thumbs-up"></i></a>
-                            <a href="#"><i class="fas fa-thumbs-down"></i></a>
-                            <a href="#"><i class="fas fa-ban"></i></a>
-                        </div>
-                            }*@
+                            <div class="friends-modal-content">
+                              
+                                @if (vm.CurrentUser != null && vm.FriendRequests != null)
+                                {
+                                    foreach (var item in vm.FriendRequests)
+                                    {
+                                        <a href="#">@item.FirstName @item.LastName</a>
+                                        <a href="#"><i class="fas fa-thumbs-up"></i></a>
+                                        <a href="#"><i class="fas fa-thumbs-down"></i></a>
+                                        <a href="#"><i class="fas fa-ban"></i></a>
+                                    }
+                                }
+                                else
+                                {
+                                    <p>Du har inga vänner!</p>
+                                }
+
+                            </div>
+               
+                            
                         </div>
                     </div>
                 }

@@ -16,6 +16,8 @@
         /// <returns></returns>
         abstract Task<IEnumerable<User>> GetMatchingUsers(string userId);
 
+        abstract Task<IEnumerable<User>> GetPendingRequests(string userId);
+
         #region Generic Add,Update and delete
 
         /// <summary>

@@ -40,7 +40,7 @@
 
         public AppDbContext Context { get; }
 
-        public ProfileViewModel ProfileVm { get; set; } = new ProfileViewModel();
+        public ProfileViewModel ProfileVm { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountController"/> class.
@@ -48,7 +48,7 @@
         /// <param name="userManager">The user manager.</param>
         /// <param name="signInManager">The sign in manager.</param>
         /// <param name="emailService">The email service.</param>
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService, IRepository repository, AppDbContext context)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService, IRepository repository, AppDbContext context, ProfileViewModel vm)
         {
             // Set the user manager
             UserManager = userManager;
@@ -60,7 +60,11 @@
             Context = context;
             // Set the email service
             EmailService = emailService;
+            // Set the viewModel
+            ProfileVm = vm;
+        
         }
+
 
         /// <summary>
         /// The index page.
@@ -213,7 +217,7 @@
         /// </summary>
         /// <returns></returns>
         public async Task<IActionResult> Logout()
-        {
+        {    
             // Sign out the current user
             await SignInManager.SignOutAsync();
 
@@ -293,5 +297,6 @@
             }
             
         }
+
     }
 }

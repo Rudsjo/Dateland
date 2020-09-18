@@ -109,7 +109,8 @@ namespace Dateland
             // Add Controllers
             services.AddControllersWithViews();
 
-            services.AddTransient<ApplicationViewModel>();
+            services.AddSingleton<ProfileViewModel>();
+
         }
 
         /// <summary>

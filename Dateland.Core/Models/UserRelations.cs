@@ -20,17 +20,17 @@
         /// <summary>
         /// Gets or sets the relation between the 2 users.
         /// </summary>
-        public virtual Relation Relation { get; set; }
+        public virtual int RelationID1 { get; set; }
 
         /// <summary>
         /// Gets or sets user 1.
         /// </summary>
-        public virtual User User1 { get; set; }
+        public virtual string User1Id { get; set; }
 
         /// <summary>
         /// Gets or sets user 2.
         /// </summary>
-        public virtual User User2 { get; set; }
+        public virtual string User2Id { get; set; }
 
     }
 }
