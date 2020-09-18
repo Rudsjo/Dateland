@@ -6,6 +6,7 @@ namespace Dateland
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,8 @@ namespace Dateland
     /// </summary>
     public partial class Startup
     {
+        #region Private Properties
+
         /// <summary>
         /// Set to true if the real email service should be used
         /// </summary>
@@ -31,6 +34,10 @@ namespace Dateland
         /// </summary>
         private string CurrentConnection { get => "SmarterConnection"; }
 
+        #endregion
+
+        #region Public Properties
+
         /// <summary>
         /// Gets the configuration.
         /// </summary>
@@ -38,6 +45,10 @@ namespace Dateland
         /// The configuration.
         /// </value>
         public IConfiguration Configuration { get; }
+
+        #endregion
+
+        #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
@@ -48,6 +59,10 @@ namespace Dateland
             // Set the configurator
             Configuration = configuration;
         }
+
+        #endregion
+
+        #region Configuration
 
         /// <summary>
         /// Configures the services.
@@ -65,10 +80,10 @@ namespace Dateland
             {
                 // Set the password options here
                 req.Password.RequireNonAlphanumeric = false;
-                req.Password.RequireUppercase       = false;
+                req.Password.RequireUppercase = false;
 
                 req.SignIn.RequireConfirmedEmail = true;
-            
+
             })
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders().AddRoles<IdentityRole>();
@@ -109,6 +124,7 @@ namespace Dateland
             // Add Controllers
             services.AddControllersWithViews();
 
+            // Add view models
             services.AddSingleton<ProfileViewModel>();
 
         }
@@ -143,9 +159,10 @@ namespace Dateland
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    //pattern: "{controller=Home}/{action=Index}/{id?}");
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-        });
-        }
+            });
+        } 
+
+        #endregion
     }
 }

@@ -51,7 +51,7 @@ else { }
 
                 <div class="name-and-btns">
                     <span class="ca-btn plane"><i class="far fa-paper-plane"></i></span>
-                    <span class="ca-btn plus"><i class="far fa-plus-square"></i></span>
+                    <a asp-action="SendFriendRequest" asp-route-id="@Model.SelectedUser.Id" class="ca-btn plus"><i class="far fa-plus-square"></i></a>
 
                     <h2>
                         @Model.SelectedUser.FirstName @Model.SelectedUser.LastName

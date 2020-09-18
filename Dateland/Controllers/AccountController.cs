@@ -15,6 +15,8 @@
     [Authorize]
     public class AccountController : Controller
     {
+        #region Private Members
+
         /// <summary>
         /// The user manager
         /// </summary>
@@ -24,6 +26,15 @@
         /// The sign in manager
         /// </summary>
         private readonly SignInManager<User> SignInManager;
+
+        /// <summary>
+        /// The view model
+        /// </summary>
+        private readonly ProfileViewModel ProfileVm;
+
+        #endregion
+
+        #region Public Properties
 
         /// <summary>
         /// Gets the email service.
@@ -38,9 +49,14 @@
         /// </value>
         public IRepository Repository { get; }
 
+        /// <summary>
+        /// The db context
+        /// </summary>
         public AppDbContext Context { get; }
 
-        public ProfileViewModel ProfileVm { get; set; }
+        #endregion
+
+        #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountController"/> class.
@@ -62,10 +78,13 @@
             EmailService = emailService;
             // Set the viewModel
             ProfileVm = vm;
-        
         }
 
+        #endregion
 
+        #region Action Results
+
+        #region Index
         /// <summary>
         /// The index page.
         /// </summary>
@@ -74,6 +93,12 @@
         [HttpGet]
         public async Task<IActionResult> Index(string selectedUserId)
         {
+            // Set the current user
+            await SetCurrentUser();
+
+            // Check for friend requests
+            await GetFriendRequests();
+
             // Foreign key fuckar i user så den kan inte hämta typ food o sånt så de krashar när den kommer hot!
             ProfileVm.MatchedUsers = (await Repository.GetMatchingUsers((await UserManager.FindByEmailAsync(User.Identity.Name)).Id)).ToList();
 
@@ -84,19 +109,6 @@
             return View(ProfileVm);
         }
 
-
-        /// <summary>
-        /// The page for the logged in users profile
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<IActionResult> MyProfile()
-        {
-            ProfileVm.CurrentUser = await UserManager.FindByEmailAsync(User.Identity.Name);
-
-            return View(ProfileVm);
-        }
-        
         /// <summary>
         /// Registers a user to the database if criterias are set in the register form
         /// </summary>
@@ -114,21 +126,21 @@
                 User newUser = new User()
                 {
                     // Set user provided data
-                    UserName    = vm.Email,
-                    FirstName   = vm.FirstName,
-                    LastName    = vm.LastName,
-                    Email       = vm.Email,
+                    UserName = vm.Email,
+                    FirstName = vm.FirstName,
+                    LastName = vm.LastName,
+                    Email = vm.Email,
                     DateOfBirth = vm.DateOfBirth,
 
                     // Set default values
-                    Food              = Context.Foods.First(),
-                    Movie             = Context.Movies.First(),
-                    City              = Context.Cities.First(),
-                    Music             = Context.Music.First(),
-                    Education         = Context.Educations.First(),
-                    Gender            = Context.Genders.First(),
+                    Food = Context.Foods.First(),
+                    Movie = Context.Movies.First(),
+                    City = Context.Cities.First(),
+                    Music = Context.Music.First(),
+                    Education = Context.Educations.First(),
+                    Gender = Context.Genders.First(),
                     GenderPreferation = Context.Genders.First(),
-                    Profession        = Context.Professions.First(),
+                    Profession = Context.Professions.First(),
                 };
 
                 // Create the new user and capture the result
@@ -165,6 +177,25 @@
 
             // Go back to the start page in case of failing
             return View(nameof(Index), vm);
+        }
+        #endregion
+
+        #region Profile
+        /// <summary>
+        /// The page for the logged in users profile
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> MyProfile()
+        {
+            // Set the current user
+            await SetCurrentUser();
+
+            // Check for friend requests
+            await GetFriendRequests();
+
+            // Return the view
+            return View(ProfileVm);
         }
 
         /// <summary>
@@ -213,11 +244,43 @@
         }
 
         /// <summary>
+        /// Post method for when a user saves changes to their profile
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> SaveChanges(string id, ProfileViewModel vm)
+        {
+            // If everything is ok...
+            if (ModelState.IsValid)
+            {
+                // Get the updated user
+                var newUser = await UserManager.FindByIdAsync(id);
+
+                // Update the user in relation to the updated model
+                newUser.UpdateInRelationTo<User>(vm.CurrentUser, "Id", "ConcurrencyStamp", "SecurityStamp");
+
+                // Update the current user
+                await UserManager.UpdateAsync(newUser);
+
+                // Redirect the user back to the profile page
+                return RedirectToAction(nameof(MyProfile));
+            }
+            else
+            {
+                // Return the MyPage with the currently edited user
+                return View("MyProfile", vm);
+            }
+
+        }
+        #endregion
+
+        #region Login / Log out
+        /// <summary>
         /// Logouts this instance.
         /// </summary>
         /// <returns></returns>
         public async Task<IActionResult> Logout()
-        {    
+        {
             // Sign out the current user
             await SignInManager.SignOutAsync();
 
@@ -252,7 +315,7 @@
                     vm.Password,
                     vm.RememberMe,
                     false);
-                
+
                 // If login was successful
                 if (loginResult.Succeeded)
                 {
@@ -267,36 +330,133 @@
             // Else redirect the user back to the login page with the same ViewModel instance
             return View(vm);
         }
+        #endregion
+
+        #region Friend Requests
 
         /// <summary>
-        /// Post method for when a user saves changes to their profile
+        /// Action to send a friendrequest to a user
+        /// </summary>
+        /// <param name="id">the identifier for the person recieving the request</param>
+        /// <returns></returns>
+        public async Task<IActionResult> SendFriendRequest(string id)
+        {
+
+            // Create a new pending relation between two users
+            var relation = new UserRelations() 
+            { 
+                User1Id = ProfileVm.CurrentUser.Id, 
+                User2Id = id, 
+                RelationID1 = (int)EnumRelations.Pending 
+            };
+
+            // Check to see if they are already friends or friendinvite pending
+            if ((await Repository.GetRelation<UserRelations>(ProfileVm.CurrentUser.Id)).Where(x => x.User2Id == id).FirstOrDefault() == null)
+            {
+                // Create the new relation
+                await Repository.CreateRelation(relation);
+            }
+
+            // Set the relation to null
+            else relation = null;
+
+            return RedirectToAction("Index", controllerName: "Account");
+        }
+
+        /// <summary>
+        /// Accepts a pending friend requests
+        /// </summary>
+        /// <param name="userRequestingId">The id of the user sending the request</param>
+        /// <returns></returns>
+        public async Task<IActionResult> AcceptFriendRequest(string userRequestingId)
+        {
+            // Gets a specified request based on which user gets sent in the function
+            var requests = (await Repository.GetRelation<UserRelations>(ProfileVm.CurrentUser.Id))
+                .Where(x => x.User1Id == userRequestingId).FirstOrDefault();
+
+            // Sets the relationID to friends
+            requests.RelationID1 = (int)EnumRelations.Friends;
+
+            // Updates the relation between the users
+            await Repository.Update(requests);
+
+            // Should be changed
+            return RedirectToAction("Index", controllerName: "Account");
+
+        }
+
+        /// <summary>
+        /// Denies a pending friend request 
+        /// and also bans the requesting user from asking again
+        /// </summary>
+        /// <param name="userRequestingId">The id of the user sending the request</param>
+        /// <returns></returns>
+        public async Task<IActionResult> DenyFriendRequest(string userRequestingId)
+        {
+            // Gets a specified request based on which user gets sent in the function
+            var requests = (await Repository.GetRelation<UserRelations>(ProfileVm.CurrentUser.Id))
+                .Where(x => x.User1Id == userRequestingId).FirstOrDefault();
+
+            // Sets the relationID to unmatched
+            requests.RelationID1 = (int)EnumRelations.Unmatched;
+
+            // Updates the relation between the users
+            await Repository.Update(requests);
+
+            // Should be changed
+            return RedirectToAction("Index", controllerName: "Account");
+        }
+
+        /// <summary>
+        /// Action to remove someone from friendslist
+        /// </summary>
+        /// <param name="userToRemove">the user that is to be removed</param>
+        /// <returns></returns>
+        public async Task<IActionResult> RemoveFriend(string userToRemoveId)
+        {
+            // Get the relation between the two users sent in in function
+            var remove = (await Repository.GetRelation<UserRelations>(ProfileVm.CurrentUser.Id)).Where(x => x.User1Id == userToRemoveId || x.User2Id == userToRemoveId).FirstOrDefault();
+
+            //Checks to se if there is a relation or if. Maybe only remove the relation type friends?
+            if (remove != null && remove.RelationID != (int)EnumRelations.None)
+            {
+                // Removes the relation
+                await Repository.Delete(remove);
+            }
+
+            // Should be changed
+            return RedirectToAction("Index", controllerName: "Account");
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Get all the pending friend requests the current user has
         /// </summary>
         /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> SaveChanges(string id, ProfileViewModel vm)
+        public async Task GetFriendRequests()
         {
-            // If everything is ok...
-            if (ModelState.IsValid)
-            {
-                // Get the updated user
-                var newUser = await UserManager.FindByIdAsync(id);
+            if (ProfileVm.FriendRequests == null)
+                ProfileVm.FriendRequests = new List<User>();
 
-                // Update the user in relation to the updated model
-                newUser.UpdateInRelationTo<User>(vm.CurrentUser, "Id", "ConcurrencyStamp", "SecurityStamp");
-
-                // Update the current user
-                await UserManager.UpdateAsync(newUser);               
-
-                // Redirect the user back to the profile page
-                return RedirectToAction(nameof(MyProfile));
-            }
-            else
-            {
-                // Return the MyPage with the currently edited user
-                return View("MyProfile", vm);
-            }
-            
+            ProfileVm.FriendRequests = (await Repository.GetPendingRequests(ProfileVm.CurrentUser.Id)).ToList();
         }
+
+        /// <summary>
+        /// Sets the current user of the application
+        /// </summary>
+        /// <returns></returns>
+        public async Task SetCurrentUser()
+        {
+            // Set the current user
+            ProfileVm.CurrentUser = await UserManager.FindByEmailAsync(User.Identity.Name);
+        }
+
+        #endregion
 
     }
 }

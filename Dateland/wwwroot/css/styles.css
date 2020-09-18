@@ -612,6 +612,17 @@ header {
 .friends-modal-content .fa-ban {
     color: var(--main-font-color-dark);
 }
+
+a.friend-link {
+    color: var(--main-font-color-dark);
+    transition: color .5s;
+}
+
+.nav-link:hover {
+   color: var(--secondary-font-color);
+}
+
+
     .close {
         color: #aaa;
         float: right;

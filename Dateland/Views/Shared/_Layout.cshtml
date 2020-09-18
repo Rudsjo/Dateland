@@ -40,19 +40,20 @@
 
                             <div class="friends-modal-content">
                               
-                                @if (vm.CurrentUser != null && vm.FriendRequests != null)
+                                @if (vm.CurrentUser != null && vm.FriendRequests != null && vm.FriendRequests.Count > 0)
                                 {
                                     foreach (var item in vm.FriendRequests)
                                     {
-                                        <a href="#">@item.FirstName @item.LastName</a>
-                                        <a href="#"><i class="fas fa-thumbs-up"></i></a>
-                                        <a href="#"><i class="fas fa-thumbs-down"></i></a>
-                                        <a href="#"><i class="fas fa-ban"></i></a>
+                                        <a asp-action="UserProfile" asp-route-id="@item.Id" class="friend-link">@item.FirstName @item.LastName</a>
+                                        <a asp-action="AcceptFriendRequest" asp-route-userRequestingId="@item.Id"><i class="fas fa-thumbs-up"></i></a>
+                                        <a asp-action="DenyFriendRequest" asp-route-userRequestingId="@item.Id"><i class="fas fa-thumbs-down"></i></a>
+                                        <a asp-action="RemoveFriend" asp-route-userToRemoveId="@item.Id"><i class="fas fa-ban"></i></a>
+                                        <br /><hr />
                                     }
                                 }
                                 else
                                 {
-                                    <p>Du har inga vänner!</p>
+                                    <p>Du har vänförfrågningar!</p>
                                 }
 
                             </div>
