@@ -57,7 +57,7 @@
             int RequiredMatches = 3;
 
             // Loop through until enough matches has been made
-            while(RequiredMatches > 0)
+            while(RequiredMatches >= 0)
             {
                 // Loop through all users in the database
                 for (int i = 0; i < useridentifiers.Count(); i++)
@@ -71,6 +71,17 @@
                         // We both must prefer each others genders
                         if (user.GenderPreferation.Equals(currentUser.Gender) && currentUser.GenderPreferation.Equals(user.Gender))
                         {
+                            // If the required matches is 0...
+                            if (RequiredMatches.Equals(0))
+                            {
+                                // Remove the current user from the list of identifiers
+                                useridentifiers.Remove(user.Id);
+                                // Add the user to the result
+                                result.Add(user);
+                                // Skip the rest
+                                continue;
+                            }
+
                             // Keeps track of how many interests they have in common
                             int interestsCount = 0;
 
