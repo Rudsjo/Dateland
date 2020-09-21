@@ -1,4 +1,4 @@
-﻿@model ProfileViewModel
+﻿@model User
 
 <section class="myProfile">
     <div class="container">
@@ -6,28 +6,29 @@
             <div class="description padding-right animate-left">
                 <div class="global-headline">
                     <h1 class="headline headline-dark">Allmänt</h1>
-                    <img src="@Model.CurrentUser.ProfilePictureUrl" alt="" class="si-img-chosen" />
+                    <img src="@Model.ProfilePictureUrl" alt="" class="si-img-chosen" />
                     <div class="asterisk"><i class="fas fa-heart"></i></div>
                 </div>
                 <form method="post">
+
                     <div class="form-group profile-form">
-                        <input class="form-control" asp-for="@Model.CurrentUser.FirstName" />
+                        <input class="form-control" asp-for="@Model.FirstName" />
                     </div>
 
                     <div class="form-group profile-form">
-                        <input class="form-control" asp-for="@Model.CurrentUser.LastName" />
+                        <input class="form-control" asp-for="@Model.LastName" />
                     </div>
 
                     <div class="form-group profile-form">
-                        <input class="form-control" asp-for="@Model.CurrentUser.DateOfBirth" />
+                        <input class="form-control" asp-for="@Model.DateOfBirth" />
                     </div>
 
                     <div class="form-group profile-form">
-                        <textarea name="profile-desc" class="form-control profile-desc" asp-for="@Model.CurrentUser.Description"></textarea>
+                        <input class="form-control" asp-for="@Model.Description" height="100"/>
                     </div>
 
                     <div class="form-group profile-form">
-                        <input type="submit" asp-route-id="@Model.CurrentUser.Id" asp-action="SaveChanges" asp-controller="Account" class="btn cta-btn-dark" value="Spara">
+                        <input type="submit" asp-route-id="@Model.Id" asp-action="SaveChanges" asp-controller="Account" class="btn cta-btn-dark" value="Spara">
                     </div>
 
                 </form>

@@ -11,6 +11,8 @@
     using Microsoft.CodeAnalysis.CSharp;
     using System.Collections.Generic;
     using Dateland.Core.Models;
+    using Microsoft.EntityFrameworkCore.Infrastructure;
+    using Microsoft.EntityFrameworkCore.Internal;
 
     [Authorize]
     public class AccountController : Controller
@@ -222,7 +224,7 @@
             await GetFriendRequests();
 
             // Return the view
-            return View(ProfileVm);
+            return View(ProfileVm.CurrentUser);
         }
 
         /// <summary>
@@ -275,29 +277,22 @@
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> SaveChanges(string id, ProfileViewModel vm)
+        public async Task<IActionResult> SaveChanges(string id, User currentUser)
         {
-            // If everything is ok...
-            if (ModelState.IsValid)
-            {
-                // Get the updated user
-                var newUser = await UserManager.FindByIdAsync(id);
+            // Get the updated user
+            var OriginalUser = await UserManager.FindByIdAsync(id);
 
-                // Update the user in relation to the updated model
-                newUser.UpdateInRelationTo<User>(vm.CurrentUser, "Id", "ConcurrencyStamp", "SecurityStamp");
+            // Update properties
+            OriginalUser.FirstName   = currentUser.FirstName;
+            OriginalUser.LastName    = currentUser.LastName;
+            OriginalUser.DateOfBirth = currentUser.DateOfBirth;
+            OriginalUser.Description = currentUser.Description;
 
-                // Update the current user
-                await UserManager.UpdateAsync(newUser);
+            // Update the current user
+            var result = await UserManager.UpdateAsync(OriginalUser);
 
-                // Redirect the user back to the profile page
-                return RedirectToAction(nameof(MyProfile));
-            }
-            else
-            {
-                // Return the MyPage with the currently edited user
-                return View("MyProfile", vm);
-            }
-
+            // Redirect the user back to the profile page
+            return RedirectToAction(nameof(MyProfile));
         }
         #endregion
 

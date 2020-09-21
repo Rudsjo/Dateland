@@ -1,5 +1,7 @@
 ﻿namespace Dateland.Helpers
 {
+    using Dateland.Core;
+    using Microsoft.EntityFrameworkCore;
     using System.Linq;
     // Required namespaces
     using System.Reflection;
@@ -31,7 +33,7 @@
             for(int i = 0; i < originalProperties.Count(); i++)
             {
                 // If the new model has an updated value on the same property and it is'nt a property to skip...
-                if(originalProperties[i].GetValue(orgModel) != newProperties[i].GetValue(newModel) && newProperties[i].GetValue(newModel) != null && !propertiesToSkip.Contains(originalProperties[i].Name))
+                if (originalProperties[i].GetValue(orgModel) != newProperties[i].GetValue(newModel) && newProperties[i].GetValue(newModel) != null && !propertiesToSkip.Contains(originalProperties[i].PropertyType.FullName))
                     // update the original model's property
                     originalProperties[i].SetValue(orgModel, newProperties[i].GetValue(newModel));
             }

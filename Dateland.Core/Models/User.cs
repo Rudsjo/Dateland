@@ -59,7 +59,7 @@
         /// <summary>
         /// Property to get or set the description of the user
         /// </summary>
-        [StringLength(1000)]
+        [MaxLength(1000)]
         public string Description { get; set; }
 
         #region Foreign keys
