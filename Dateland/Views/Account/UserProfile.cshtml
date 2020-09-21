@@ -15,7 +15,7 @@
                     <div class="name-and-btns">
                         <h2>
                             @Model.SelectedUser.FirstName @Model.SelectedUser.LastName
-                            <br /><span class="chosen-subheader">@age år, @Model.SelectedUser.City</span>
+                            <br /><span class="chosen-subheader">@age år, @Model.City</span>
                             <br>
                             <span class="ca-btn plane"><i class="far fa-paper-plane"></i></span>
                             <a asp-action="SendFriendRequest" asp-route-id="@Model.SelectedUser.Id" class="ca-btn plus"><i class="far fa-plus-square"></i></a>

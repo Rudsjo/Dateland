@@ -19,5 +19,9 @@
         /// </summary>
         public User SelectedUser { get; set; } = new User();
 
+        /// <summary>
+        /// To display the selected users city
+        /// </summary>
+        public string City { get; set; }
     }
 }

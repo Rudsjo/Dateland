@@ -106,6 +106,10 @@
             if (selectedUserId != null)
                 ProfileVm.SelectedUser = await UserManager.FindByIdAsync(selectedUserId);
 
+            ProfileVm.SelectedUser = ProfileVm.MatchedUsers.FirstOrDefault();
+
+            await GetSelectedUserCity(ProfileVm.SelectedUser.Id);
+
             return View(ProfileVm);
         }
 
@@ -455,6 +459,25 @@
             // Set the current user
             ProfileVm.CurrentUser = await UserManager.FindByEmailAsync(User.Identity.Name);
         }
+
+        /// <summary>
+        /// Sets the selected users city
+        /// </summary>
+        /// <param name="selectedUserId">the identifier for the user</param>
+        /// <returns></returns>
+        public async Task GetSelectedUserCity(string selectedUserId)
+        {
+            // Checks to se if selected user is null
+            if (selectedUserId != null)
+                ProfileVm.SelectedUser = await UserManager.FindByIdAsync(selectedUserId);
+
+            // Gets the city from the database with the selected users cityID
+            var selectedUserCity = (await Repository.GetByID<City>(ProfileVm.SelectedUser.City.CityID));
+
+            // Sets the selected users city
+            ProfileVm.City = selectedUserCity.CityName;
+        }
+
 
         #endregion
 
