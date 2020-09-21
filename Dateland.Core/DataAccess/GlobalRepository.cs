@@ -50,60 +50,65 @@
                 // return an empty list
                 return result;
 
-            // Keeps track of all matches so far
-            int matches = 0;
-
             // Get all user identifiers
             var useridentifiers = Context.Users.Select(u => u.Id).ToList();
 
-            // Loop through all users in the database
-            for(int i = 0; i < useridentifiers.Count(); i++)
+            // The minimum required matches
+            int RequiredMatches = 3;
+
+            // Loop through until enough matches has been made
+            while(RequiredMatches > 0)
             {
-                // Get the user with the current id
-                var user = await Context.Users.FirstOrDefaultAsync(u => u.Id.Equals(useridentifiers[i]));
-
-                // If the user is'nt null and is'nt me
-                if(user != null && user.Id.CompareTo(currentUser.Id) != 0)
+                // Loop through all users in the database
+                for (int i = 0; i < useridentifiers.Count(); i++)
                 {
-                    // x: Check music
-                    // x: Check food
-                    // x: Check movies
-                    // x: Check Interests
-                    // x: Check education
-                    // x: My gender preferation must be their gender, and their gender preferation must be my gender
+                    // Get the user with the current id
+                    var user = await Context.Users.FirstOrDefaultAsync(u => u.Id.Equals(useridentifiers[i]));
 
-                    // We both must prefer each others genders
-                    if (user.GenderPreferation.Equals(currentUser.Gender) && currentUser.GenderPreferation.Equals(user.GenderPreferation))
+                    // If the user is'nt null and is'nt me
+                    if (user != null && user.Id.CompareTo(currentUser.Id) != 0)
                     {
-                        // Keeps track of how many interests they have in common
-                        int interestsCount = 0;
+                        // We both must prefer each others genders
+                        if (user.GenderPreferation.Equals(currentUser.Gender) && currentUser.GenderPreferation.Equals(user.Gender))
+                        {
+                            // Keeps track of how many interests they have in common
+                            int interestsCount = 0;
 
-                        // Check if we both like the same music
-                        if (user.Music.Equals(currentUser.Music))         interestsCount++;
-                        // Check if we both like the same food
-                        if (user.Food.Equals(currentUser.Food))           interestsCount++;
-                        // Check if we both like the same movie
-                        if (user.Movie.Equals(currentUser.Movie))         interestsCount++;
-                        // Check if we both have the same education
-                        if (user.Education.Equals(currentUser.Education)) interestsCount++;
+                            // Check if we both like the same music
+                            if (user.Music.MusicID.Equals(currentUser.Music.MusicID)) interestsCount++;
+                            // Check if we both like the same food
+                            if (user.Food.FoodID.Equals(currentUser.Food.FoodID)) interestsCount++;
+                            // Check if we both like the same movie
+                            if (user.Movie.MovieID.Equals(currentUser.Movie.MovieID)) interestsCount++;
+                            // Check if we both have the same education
+                            if (user.Education.EducationID.Equals(currentUser.Education.EducationID)) interestsCount++;
 
-                        // Check if we have any same interests
-                        foreach (var interest in currentUser.UserInterests)
-                            // If the other user have the same interest as me...
-                            if (user.UserInterests.Contains(interest))
-                                // Add one to the interest counts
-                                interestsCount++;
+                            // Check if we have any same interests
+                            foreach (var interest in currentUser.UserInterests)
+                                // If the other user have the same interest as me...
+                                if (user.UserInterests.Contains(interest))
+                                    // Add one to the interest counts
+                                    interestsCount++;
 
-                        if (interestsCount >= 3)
-                            // Add the user to the result
-                            result.Add(user);
+                            // If user is a match
+                            if (interestsCount >= RequiredMatches)
+                            {
+                                // Remove the current user from the list of identifiers
+                                useridentifiers.Remove(user.Id);
+                                // Add the user to the result
+                                result.Add(user);
+                            }
 
-                        // If 6 matches has been made
-                        if (matches.Equals(6))
-                            // Break out of the loop
-                            break;
+
+                            // If 6 matches has been made
+                            if (result.Count == 6)
+                                // Break out of the loop
+                                return result;
+                        }
                     }
                 }
+                // If not enough matches was found, decreased the minimum required match set
+                RequiredMatches--;
             }
 
             // Return the result

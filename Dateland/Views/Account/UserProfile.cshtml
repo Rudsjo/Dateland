@@ -34,8 +34,17 @@
 
                     <h3>Intresserad av:</h3>
                     <ul class="no-list-type">
-                        <li></span>Allt</li>
-                        <li></span>Allt</li>
+                        @if (Model.SelectedUser.UserInterests.Count() == 0)
+                        {
+                            <li>Den här användaren nhar inga intressen :(</li>
+                        }
+                        else
+                        {
+                            @for (int i = 0; i < 10 && i < Model.SelectedUser.UserInterests.Count(); i++)
+                            {
+                                <li>@Model.SelectedUser.UserInterests[i].Interest.InterestName</li>
+                            }
+                        }
                     </ul>
 
                 </div>
@@ -47,13 +56,6 @@
                     <h1 class="headline headline-dark">Favoriter</h1>
                 </div>
                 <ul class="no-list-type">
-                    <li></span>Favorit</li>
-                    <li></span>Favorit</li>
-                    <li></span>Favorit</li>
-                    <li></span>Favorit</li>
-                    <li></span>Favorit</li>
-                    <li></span>Favorit</li>
-                    <li></span>Favorit</li>
                 </ul>
 
                 <div class="global-headline">

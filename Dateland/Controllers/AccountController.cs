@@ -99,18 +99,41 @@
             // Check for friend requests
             await GetFriendRequests();
 
+            // If matches is list
+            if (ProfileVm.MatchedUsers == null) return await GenerateMatches(ProfileVm.CurrentUser.Id);
+
+            // If matches are greater then zero...
+            if(ProfileVm.MatchedUsers.Count() > 0)
+            {
+                // If no user id was provided...
+                if (selectedUserId == null)
+                    // Set selected user to the first user in the matches list
+                    ProfileVm.SelectedUser = ProfileVm.MatchedUsers.FirstOrDefault();
+                // Else...
+                else
+                    // Set selected user to the first matched user
+                    ProfileVm.SelectedUser = ProfileVm.MatchedUsers.FirstOrDefault(u => u.Id.CompareTo(selectedUserId) == 0);
+
+                // Get city of the selected user
+                await GetSelectedUserCity(ProfileVm.SelectedUser.Id);
+            }
+
+            // Return the Index view
+            return View(ProfileVm);
+        }
+
+        /// <summary>
+        /// Generates the matches.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
+        public async Task<IActionResult> GenerateMatches(string userId)
+        {
             // Foreign key fuckar i user så den kan inte hämta typ food o sånt så de krashar när den kommer hot!
             ProfileVm.MatchedUsers = (await Repository.GetMatchingUsers((await UserManager.FindByEmailAsync(User.Identity.Name)).Id)).ToList();
 
-            // Checks if any id is sent in and updates the selected user
-            if (selectedUserId != null)
-                ProfileVm.SelectedUser = await UserManager.FindByIdAsync(selectedUserId);
-
-            ProfileVm.SelectedUser = ProfileVm.MatchedUsers.FirstOrDefault();
-
-            await GetSelectedUserCity(ProfileVm.SelectedUser.Id);
-
-            return View(ProfileVm);
+            // Redirect to the Index page
+            return RedirectToAction(nameof(Index));
         }
 
         /// <summary>
