@@ -1,10 +1,11 @@
 ﻿@model User
+@inject ProfileViewModel pvm
 @inject MyProfileViewModel vm
 
-@{ 
-    // Set up the profile
-    await vm.SetupMyProfile();
-}
+@{ // Set up the profile
+                await vm.SetupMyProfile();
+
+                var UserMovie = ""; }
 
 <section class="myProfile">
     <div class="container">
@@ -30,7 +31,7 @@
                     </div>
 
                     <div class="form-group profile-form">
-                        <input class="form-control" asp-for="@Model.Description" height="100"/>
+                        <input class="form-control" asp-for="@Model.Description" height="100" />
                     </div>
 
                     <div class="form-group profile-form">
@@ -49,62 +50,63 @@
 
                     <div class="form-group profile-form">
                         <label for="1">Favoritmat</label>
-                        <select name="1" id="1" class="form-control">
+                        <select class="form-control" id="foodlist" onchange="updateSelFood()">
                             @foreach (var food in vm.Foods)
                             {
                                 if (food.FoodName.Equals("None"))
                                     continue;
                                 else if (food.FoodName.Equals(Model.Food.FoodName) && Model.Food != null)
                                 {
-                <option selected>@food.FoodName</option>
- }
-            else
-            {
-                <option>@food.FoodName</option>
-}
-        };
+                <option selected>@food.FoodName</option> }
+                                else
+                                {
+                <option>@food.FoodName</option>}
+                            };
                         </select>
                     </div>
 
                     <div class="form-group profile-form">
                         <label for="1">Favoritmusik</label>
-                        <select name="1" id="1" class="form-control">
+                        <select class="form-control" id="musiclist" onchange="updateSelMusic()">
                             @foreach (var music in vm.Musics)
                             {
                                 if (music.MusicGenre.Equals("None"))
                                     continue;
                                 else if (music.MusicGenre.Equals(Model.Music.MusicGenre) && Model.Music != null)
                                 {
-                <option selected>@music.MusicGenre</option>
- }
-            else
-            {
-                <option>@music.MusicGenre</option>
-}
-        };
+                <option selected>@music.MusicGenre</option> }
+                                else
+                                {
+                <option>@music.MusicGenre</option>}
+                            };
                         </select>
                     </div>
 
                     <div class="form-group profile-form">
                         <label for="1">Favoritfilm</label>
-                        <select name="1" id="1" class="form-control">
+                        <select class="form-control" id="movielist" onchange="updateSelMovie()">
+
                             @foreach (var movie in vm.Movies)
                             {
                                 if (movie.MovieName.Equals("None"))
+                                {
                                     continue;
-                                else if (movie.MovieName.Equals(Model.Movie.MovieName) && Model.Movie != null)
+                                }
+                                else if(movie.MovieName.Equals(Model.Movie.MovieName) && Model.Movie != null)
                                 {
                                     <option selected>@movie.MovieName</option>
                                 }
                                 else
                                 {
-                                    <option id="sel">@movie.MovieName</option>}
-                                };
+                                    <option>@movie.MovieName</option>
+                                }
+                            }
+
                         </select>
                     </div>
 
                     <div class="form-group profile-form">
-                        <input type="submit" asp-route-id="@Model.Id" asp-route-vm="@vm" asp-action="SaveFavorites" 
+                        <input type="submit" asp-route-id="@Model.Id"asp-action="SaveFavorites"
                                asp-controller="Account" class="btn cta-btn-dark" value="Spara">
                     </div>
 
@@ -117,33 +119,31 @@
 
                     <div class="interest-list">
 
-                        @foreach (var interest in vm.Interests)
+                        @for (int i = 0; i < vm.Interests.Count; i++)
                         {
-                            if (interest.InterestName.Equals("None"))
+                            if (vm.Interests[i].InterestName.Equals("None"))
                             {
                                 continue;
                             }
-                            else if (Model.UserInterests.Any(x => x.Interest.InterestName.Equals(interest.InterestName)))
+                            else if (Model.UserInterests.Any(x => x.Interest.InterestName.Equals(vm.Interests[i].InterestName)))
                             {
-                                <div class="form-group profile-form">
-                                    <input type="checkbox" id="intresse1" checked>
-                                    <label for="intresse1">@interest.InterestName</label>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="form-group profile-form">
-                                    <input type="checkbox" id="intresse1">
-                                    <label for="intresse1">@interest.InterestName</label>
-                                </div>
-                            }
-
-                        }
+                <div class="form-group profile-form">
+                    <input type="checkbox" id="interest" checked onchange="updateInterests(@vm.Interests[i].InterestID)">
+                    <label for="interest">@vm.Interests[i].InterestName</label>
+                </div> }
+            else
+            {
+                <div class="form-group profile-form">
+                    <input type="checkbox" id="interest" onchange="updateInterests(@vm.Interests[i].InterestID)">
+                    <label for="interest">@vm.Interests[i].InterestName</label>
+                </div>}
+        }
 
                     </div>
 
                     <div class="form-group profile-form">
-                        <input type="submit" class="btn cta-btn-dark" value="Spara">
+                        <input type="submit" asp-route-id="@Model.Id" asp-action="SaveInterests"
+                               asp-controller="Account" class="btn cta-btn-dark" value="Spara">
                     </div>
 
                 </form>

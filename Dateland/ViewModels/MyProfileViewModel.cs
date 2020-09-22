@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Dateland
 {
-    public class MyProfileViewModel
+    public class MyProfileViewModel : User
     {
         #region Private Members
 
@@ -14,6 +14,7 @@ namespace Dateland
         /// Private instance of the repository used within the class
         /// </summary>
         private IRepository _repo;
+
 
         #endregion
 
@@ -37,7 +38,7 @@ namespace Dateland
         /// <summary>
         /// The list of Movies to be displayed
         /// </summary>
-        public List<Movie> Movies { get; set; }
+        public IEnumerable<Movie> Movies { get; set; }
 
         #endregion
 

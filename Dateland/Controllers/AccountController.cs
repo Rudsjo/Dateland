@@ -13,6 +13,7 @@
     using Dateland.Core.Models;
     using Microsoft.EntityFrameworkCore.Infrastructure;
     using Microsoft.EntityFrameworkCore.Internal;
+    using System.IO.Compression;
 
     [Authorize]
     public class AccountController : Controller
@@ -297,22 +298,74 @@
         }
 
         /// <summary>
-        /// Post method for when a user saves favorites to their profile
+        /// Post method for when a user saves changes to their profile
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> SaveFavorites(string id, MyProfileViewModel vm)
+        public async Task<IActionResult> SaveFavorites(string id, User currentUser)
         {
             // Get the updated user
             var OriginalUser = await UserManager.FindByIdAsync(id);
 
-            var movie = (await Repository.GetAll<Movie>()).ToList().First(x => x.MovieName.Equals(id));
-
             // Update properties
-            OriginalUser.Movie = movie;
+            if(ProfileVm.FavMovie != null)
+                OriginalUser.Movie = (await Repository.GetAll<Movie>()).ToList().First(x => x.MovieName.Equals(ProfileVm.FavMovie));
+            if(ProfileVm.FavFood != null)
+                OriginalUser.Food = (await Repository.GetAll<Food>()).ToList().First(x => x.FoodName.Equals(ProfileVm.FavFood));
+            if(ProfileVm.FavMusic != null)
+                OriginalUser.Music = (await Repository.GetAll<Music>()).ToList().First(x => x.MusicGenre.Equals(ProfileVm.FavMusic));
 
             // Update the current user
             var result = await UserManager.UpdateAsync(OriginalUser);
+
+            // Redirect the user back to the profile page
+            return RedirectToAction(nameof(MyProfile));
+        }
+
+        /// <summary>
+        /// Post method for when a user saves changes to their profile
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> SaveInterests(string id, User currentUser)
+        {
+            // Get the updated user
+            var OriginalUser = await UserManager.FindByIdAsync(id);
+
+            // Update properties
+            if (ProfileVm.CurrentInterests != null)
+            {
+                // The interests the user has declared before
+                var listToCompare = OriginalUser.UserInterests.ToList();
+
+                // The changed interests
+                var orgList = ProfileVm.CurrentInterests;
+
+                // Loop thorugh all changed interests
+                for (int i = 0; i < orgList.Count; i++)
+                {
+                    // And then check all the existing items
+                    foreach(var existingItem in listToCompare)
+                    {
+                        // If the item exists it will remove it and in the UI it will be unmarked
+                        if (existingItem.Interest.InterestID.Equals(orgList[i].InterestID))
+                        {
+                            OriginalUser.UserInterests.Remove(listToCompare.First(x => x.Interest.InterestID.Equals(orgList[i].InterestID)));
+                        }
+                        else
+                        {
+                            // TODO: LÄGG TILL EN USERINTEREST FÖR USERN
+
+                        }
+                    }
+                }
+            }
+
+            // Update the current user
+            var result = await UserManager.UpdateAsync(OriginalUser);
+
+            // Empty the list
+            ProfileVm.CurrentInterests = new List<Interest>();
 
             // Redirect the user back to the profile page
             return RedirectToAction(nameof(MyProfile));
@@ -520,6 +573,52 @@
             ProfileVm.City = selectedUserCity.CityName;
         }
 
+        /// <summary>
+        /// Post method to update a users favorite movie
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public void ChangeFavoriteMovie(string movieName)
+        {
+            ProfileVm.FavMovie = movieName;
+        }
+
+        /// <summary>
+        /// Post method to update a users favorite food
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task ChangeFavoriteFood(string foodName)
+        {
+            ProfileVm.FavFood = foodName;
+
+            await Task.Delay(1000);
+        }
+
+        /// <summary>
+        /// Post method to update a users favorite music
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public void ChangeFavoriteMusic(string musicName)
+        {
+            ProfileVm.FavMusic = musicName;
+        }
+
+        /// <summary>
+        /// Post method to update a users favorite music
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task ChangeInterestStatus(int id)
+        {
+            var interest = (await Repository.GetAll<Interest>()).ToList().First(x => x.InterestID.Equals(id));
+
+            if (interest != null && !ProfileVm.CurrentInterests.Contains(interest))
+            {
+                ProfileVm.CurrentInterests.Add(interest);
+            }
+        }
 
         #endregion
 

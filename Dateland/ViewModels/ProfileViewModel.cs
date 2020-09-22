@@ -23,5 +23,22 @@
         /// To display the selected users city
         /// </summary>
         public string City { get; set; }
+
+        /// <summary>
+        /// The current users favorite movie
+        /// </summary>
+        public string FavMovie { get; set; }
+
+        /// <summary>
+        /// The current users favorite food
+        /// </summary>
+        public string FavFood { get; set; }
+
+        /// <summary>
+        /// The current users favorite music
+        /// </summary>
+        public string FavMusic { get; set; }
+
+        public List<Interest> CurrentInterests { get; set; } = new List<Interest>();
     }
 }
