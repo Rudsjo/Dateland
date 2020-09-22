@@ -1,4 +1,10 @@
 ﻿@model User
+@inject MyProfileViewModel vm
+
+@{ 
+    // Set up the profile
+    await vm.SetupMyProfile();
+}
 
 <section class="myProfile">
     <div class="container">
@@ -44,32 +50,62 @@
                     <div class="form-group profile-form">
                         <label for="1">Favoritmat</label>
                         <select name="1" id="1" class="form-control">
-                            <option value="option1">Val</option>
-                            <option value="option2">Val</option>
-                            <option value="option3">Val</option>
+                            @foreach (var food in vm.Foods)
+                            {
+                                if (food.FoodName.Equals("None"))
+                                    continue;
+                                else if (food.FoodName.Equals(Model.Food.FoodName) && Model.Food != null)
+                                {
+                <option selected>@food.FoodName</option>
+ }
+            else
+            {
+                <option>@food.FoodName</option>
+}
+        };
                         </select>
                     </div>
 
                     <div class="form-group profile-form">
                         <label for="1">Favoritmusik</label>
                         <select name="1" id="1" class="form-control">
-                            <option value="option1">Val</option>
-                            <option value="option2">Val</option>
-                            <option value="option3">Val</option>
+                            @foreach (var music in vm.Musics)
+                            {
+                                if (music.MusicGenre.Equals("None"))
+                                    continue;
+                                else if (music.MusicGenre.Equals(Model.Music.MusicGenre) && Model.Music != null)
+                                {
+                <option selected>@music.MusicGenre</option>
+ }
+            else
+            {
+                <option>@music.MusicGenre</option>
+}
+        };
                         </select>
                     </div>
 
                     <div class="form-group profile-form">
                         <label for="1">Favoritfilm</label>
                         <select name="1" id="1" class="form-control">
-                            <option value="option1">Val</option>
-                            <option value="option2">Val</option>
-                            <option value="option3">Val</option>
+                            @foreach (var movie in vm.Movies)
+                            {
+                                if (movie.MovieName.Equals("None"))
+                                    continue;
+                                else if (movie.MovieName.Equals(Model.Movie.MovieName) && Model.Movie != null)
+                                {
+                                    <option selected>@movie.MovieName</option>
+                                }
+                                else
+                                {
+                                    <option id="sel">@movie.MovieName</option>}
+                                };
                         </select>
                     </div>
 
                     <div class="form-group profile-form">
-                        <input type="submit" class="btn cta-btn-dark" value="Spara">
+                        <input type="submit" asp-route-id="@Model.Id" asp-route-vm="@vm" asp-action="SaveFavorites" 
+                               asp-controller="Account" class="btn cta-btn-dark" value="Spara">
                     </div>
 
                 </form>
@@ -81,35 +117,29 @@
 
                     <div class="interest-list">
 
-                        <div class="form-group profile-form">
-                            <input type="checkbox" id="intresse1" name="intresse1" value="Bike">
-                            <label for="intresse1"> Intresse</label><br>
-                        </div>
+                        @foreach (var interest in vm.Interests)
+                        {
+                            if (interest.InterestName.Equals("None"))
+                            {
+                                continue;
+                            }
+                            else if (Model.UserInterests.Any(x => x.Interest.InterestName.Equals(interest.InterestName)))
+                            {
+                                <div class="form-group profile-form">
+                                    <input type="checkbox" id="intresse1" checked>
+                                    <label for="intresse1">@interest.InterestName</label>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group profile-form">
+                                    <input type="checkbox" id="intresse1">
+                                    <label for="intresse1">@interest.InterestName</label>
+                                </div>
+                            }
 
-                        <div class="form-group profile-form">
-                            <input type="checkbox" id="intresse1" name="intresse1" value="Bike">
-                            <label for="intresse1"> Intresse</label><br>
-                        </div>
+                        }
 
-                        <div class="form-group profile-form">
-                            <input type="checkbox" id="intresse1" name="intresse1" value="Bike">
-                            <label for="intresse1"> Intresse</label><br>
-                        </div>
-
-                        <div class="form-group profile-form">
-                            <input type="checkbox" id="intresse1" name="intresse1" value="Bike">
-                            <label for="intresse1"> Intresse</label><br>
-                        </div>
-
-                        <div class="form-group profile-form">
-                            <input type="checkbox" id="intresse1" name="intresse1" value="Bike">
-                            <label for="intresse1"> Intresse</label><br>
-                        </div>
-
-                        <div class="form-group profile-form">
-                            <input type="checkbox" id="intresse1" name="intresse1" value="Bike">
-                            <label for="intresse1"> Intresse</label><br>
-                        </div>
                     </div>
 
                     <div class="form-group profile-form">

@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dateland.Core", "Dateland.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dateland", "Dateland\Dateland.csproj", "{BBA59664-7A54-47E2-8DB4-EC0DC525B326}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dateland.Tests", "..\..\..\..\..\Skrivbord\Dateland\Dateland\Dateland\Dateland.Tests\Dateland.Tests.csproj", "{1887CEBD-0A74-4B66-8714-4A9B8C377BB9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{BBA59664-7A54-47E2-8DB4-EC0DC525B326}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBA59664-7A54-47E2-8DB4-EC0DC525B326}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBA59664-7A54-47E2-8DB4-EC0DC525B326}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1887CEBD-0A74-4B66-8714-4A9B8C377BB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1887CEBD-0A74-4B66-8714-4A9B8C377BB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1887CEBD-0A74-4B66-8714-4A9B8C377BB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1887CEBD-0A74-4B66-8714-4A9B8C377BB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

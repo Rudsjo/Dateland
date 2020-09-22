@@ -128,6 +128,7 @@ namespace Dateland
 
             // Add view models
             services.AddSingleton<ProfileViewModel>();
+            services.AddScoped<MyProfileViewModel>();
 
         }
 

@@ -14,7 +14,6 @@
     /// </summary>
     public class ApplicationViewModel
     {
-
         /// <summary>
         /// Gets or sets the current user.
         /// </summary>

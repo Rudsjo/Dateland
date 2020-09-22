@@ -210,6 +210,7 @@
         #endregion
 
         #region Profile
+
         /// <summary>
         /// The page for the logged in users profile
         /// </summary>
@@ -294,6 +295,29 @@
             // Redirect the user back to the profile page
             return RedirectToAction(nameof(MyProfile));
         }
+
+        /// <summary>
+        /// Post method for when a user saves favorites to their profile
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> SaveFavorites(string id, MyProfileViewModel vm)
+        {
+            // Get the updated user
+            var OriginalUser = await UserManager.FindByIdAsync(id);
+
+            var movie = (await Repository.GetAll<Movie>()).ToList().First(x => x.MovieName.Equals(id));
+
+            // Update properties
+            OriginalUser.Movie = movie;
+
+            // Update the current user
+            var result = await UserManager.UpdateAsync(OriginalUser);
+
+            // Redirect the user back to the profile page
+            return RedirectToAction(nameof(MyProfile));
+        }
+
         #endregion
 
         #region Login / Log out
