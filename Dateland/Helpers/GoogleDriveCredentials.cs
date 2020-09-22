@@ -18,13 +18,12 @@ namespace Dateland.Helpers
     {
         public static string CredentialsPath { get; } = "credentials.json";
         /// <summary>
-        /// ** Installed Aplication only ** 
-        /// This method requests Authentcation from a user using Oauth2.  
+        /// This method requests Authentcation from a user using Oauth2.
         /// </summary>
-        /// <param name="clientSecretJson">Path to the client secret json file from Google Developers console.</param>
-        /// <param name="userName">Identifying string for the user who is being authentcated.</param>
-        /// <param name="scopes">Array of Google scopes</param>
-        /// <returns>DriveService used to make requests against the Drive API</returns>
+        /// <param name="clientSecretJson"></param>
+        /// <param name="userName"></param>
+        /// <param name="scopes"></param>
+        /// <returns></returns>
         public static DriveService GetDriveService(string clientSecretJson, string userName, string[] scopes)
         {
 
@@ -48,15 +47,12 @@ namespace Dateland.Helpers
         }
 
         /// <summary>
-        /// ** Installed Aplication only ** 
         /// This method requests Authentcation from a user using Oauth2.  
-        /// Credentials are stored in System.Environment.SpecialFolder.Personal
-        /// Documentation https://developers.google.com/accounts/docs/OAuth2
         /// </summary>
-        /// <param name="clientSecretJson">Path to the client secret json file from Google Developers console.</param>
-        /// <param name="userName">Identifying string for the user who is being authentcated.</param>
-        /// <param name="scopes">Array of Google scopes</param>
-        /// <returns>authencated UserCredential</returns>
+        /// <param name="clientSecretJson"></param>
+        /// <param name="userName"></param>
+        /// <param name="scopes"></param>
+        /// <returns></returns>
         private static UserCredential GetUserCredential(string clientSecretJson, string userName, string[] scopes)
         {
             try
@@ -68,7 +64,7 @@ namespace Dateland.Helpers
                 if (!File.Exists(clientSecretJson))
                     throw new Exception("clientSecretJson file does not exist.");
 
-                // These are the scopes of permissions you need. It is best to request only what you need and not all of them               
+                             
                 using (var stream = new FileStream(clientSecretJson, FileMode.Open, FileAccess.Read))
                 {
                     string credPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
@@ -92,10 +88,10 @@ namespace Dateland.Helpers
         }
 
         /// <summary>
-        /// This method get a valid service
+        /// /// This method gets a valid service
         /// </summary>
-        /// <param name="credential">Authecated user credentail</param>
-        /// <returns>DriveService used to make requests against the Drive API</returns>
+        /// <param name="credential"></param>
+        /// <returns></returns>
         private static DriveService GetService(UserCredential credential)
         {
             try

@@ -297,12 +297,19 @@
         {
             // Get the updated user
             var OriginalUser = await UserManager.FindByIdAsync(id);
-
+            //Uploads the profilepicture to drive and returns an url
+            string getProfilePictureUrl = UploadProfilePicture();
             // Update properties
             OriginalUser.FirstName   = currentUser.FirstName;
             OriginalUser.LastName    = currentUser.LastName;
             OriginalUser.DateOfBirth = currentUser.DateOfBirth;
             OriginalUser.Description = currentUser.Description;
+           
+            if (getProfilePictureUrl != "")
+            {
+                OriginalUser.ProfilePictureUrl = getProfilePictureUrl;
+            }
+            
 
             // Update the current user
             var result = await UserManager.UpdateAsync(OriginalUser);
@@ -535,6 +542,12 @@
             ProfileVm.City = selectedUserCity.CityName;
         }
 
+
+        /// <summary>
+        /// Copies the image and uploads it to google drive
+        /// and returns an url for the image
+        /// </summary>
+        /// <returns></returns>
         public string UploadProfilePicture()
         {
             string picURL = "";
@@ -579,7 +592,7 @@
                         // Combines two strings into a path.
                         fileName = Path.Combine(_environment.WebRootPath, "images") + $@"\{newFileName}";
 
-                        // if you want to store path of folder in database
+                        
                         PathDB = "images/" + newFileName;
 
                         using (FileStream fs = System.IO.File.Create(fileName))
