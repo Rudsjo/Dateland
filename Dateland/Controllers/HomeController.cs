@@ -53,8 +53,18 @@
         /// <returns></returns>
         [HttpGet]
         public IActionResult Index()
-            =>
-            View();
+        {
+            // If user is Authenticated...
+            if (User.Identity.IsAuthenticated)
+
+                // Redirect the user to the logged in page
+                return RedirectToAction("Index", "Account");
+
+            // Else just show the user the homepage...
+            else return View();
+
+
+        }
 
         /// <summary>
         /// Returns the privacy view
