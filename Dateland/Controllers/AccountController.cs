@@ -14,6 +14,17 @@
     using Microsoft.EntityFrameworkCore.Infrastructure;
     using Microsoft.EntityFrameworkCore.Internal;
 
+    using System;
+    using System.IO;
+    using System.Net.Http.Headers;
+    using Google.Apis.Auth.OAuth2;
+    using Google.Apis.Drive.v3;
+    using Google.Apis.Services;
+    using Google.Apis.Util.Store;
+
+    using System.Threading;
+    using Microsoft.AspNetCore.Hosting;
+
     [Authorize]
     public class AccountController : Controller
     {
@@ -56,6 +67,8 @@
         /// </summary>
         public AppDbContext Context { get; }
 
+
+        private readonly IHostingEnvironment _environment;
         #endregion
 
         #region Constructor
@@ -66,8 +79,11 @@
         /// <param name="userManager">The user manager.</param>
         /// <param name="signInManager">The sign in manager.</param>
         /// <param name="emailService">The email service.</param>
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService, IRepository repository, AppDbContext context, ProfileViewModel vm)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService, IRepository repository, AppDbContext context, ProfileViewModel vm, IHostingEnvironment IHostingEnvironment)
         {
+
+            _environment = IHostingEnvironment;
+
             // Set the user manager
             UserManager = userManager;
             // Set the sign in manager
@@ -151,6 +167,9 @@
             // Check if all fields are filled correctly
             if (ModelState.IsValid)
             {
+                //Uploads the profilepicture to drive and returns a url
+                string getProfilePictureUrl = UploadProfilePicture();
+
                 // Create the new user
                 User newUser = new User()
                 {
@@ -160,6 +179,7 @@
                     LastName = vm.LastName,
                     Email = vm.Email,
                     DateOfBirth = vm.DateOfBirth,
+                    ProfilePictureUrl = getProfilePictureUrl,
 
                     // Set default values
                     Food = Context.Foods.First(),
@@ -520,6 +540,80 @@
             ProfileVm.City = selectedUserCity.CityName;
         }
 
+        public string UploadProfilePicture()
+        {
+            string picURL = "";
+            var newFileName = string.Empty;
+
+            var service = GoogleDriveCredentials.GetDriveService(GoogleDriveCredentials.CredentialsPath, "test",
+                   new[] { Google.Apis.Drive.v3.DriveService.Scope.Drive });
+
+            var fileMetadata = new Google.Apis.Drive.v3.Data.File()
+            {
+
+                Name = "Image.jpg",
+
+                Parents = new List<string>
+                    {
+                        "16VtUpWJ48VByl3f8zPWB-fJOXAQq_Uts"
+                    }
+            };
+            if (HttpContext.Request.Form.Files != null)
+            {
+                var fileName = string.Empty;
+                string PathDB = string.Empty;
+
+                var files = HttpContext.Request.Form.Files;
+
+                foreach (var file in files)
+                {
+                    if (file.Length > 0)
+                    {
+                        //Getting FileName
+                        fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+
+                        //Assigning Unique Filename (Guid)
+                        var myUniqueFileName = Convert.ToString(Guid.NewGuid());
+
+                        //Getting file Extension
+                        var FileExtension = Path.GetExtension(fileName);
+
+                        // concating  FileName + FileExtension
+                        newFileName = myUniqueFileName + FileExtension;
+
+                        // Combines two strings into a path.
+                        fileName = Path.Combine(_environment.WebRootPath, "images") + $@"\{newFileName}";
+
+                        // if you want to store path of folder in database
+                        PathDB = "images/" + newFileName;
+
+                        using (FileStream fs = System.IO.File.Create(fileName))
+                        {
+                            file.CopyTo(fs);
+
+                            fs.Flush();
+                        }
+
+                        FilesResource.CreateMediaUpload request;
+                        using (var stream = new System.IO.FileStream(fileName, System.IO.FileMode.Open))
+                        {
+                            request = service.Files.Create(fileMetadata, stream, "image/jpeg");
+                            request.Fields = "id";
+                            request.Upload();
+
+                        }
+                        System.IO.File.Delete(fileName);
+                        var file2 = request.ResponseBody;
+                        picURL = "https://drive.google.com/uc?id=" + file2.Id;
+
+                    }
+
+                }
+
+
+            }
+            return picURL;
+        }
 
         #endregion
 
