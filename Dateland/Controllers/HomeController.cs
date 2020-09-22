@@ -54,12 +54,13 @@
         [HttpGet]
         public IActionResult Index()
         {
-            // Check if the user is logged in...
+            // If user is Authenticated...
             if (User.Identity.IsAuthenticated)
-                // Then return the LoggedIn page
+
+                // Redirect the user to the logged in page
                 return RedirectToAction("Index", "Account");
 
-            // Else return the normal home page
+            // Else just show the user the homepage...
             else return View();
         }
 
