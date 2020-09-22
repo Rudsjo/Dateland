@@ -36,7 +36,7 @@
         /// <param name="repo">The repo.</param>
         /// <param name="userManager">The user manager.</param>
         /// <param name="signInManager">The sign in manager.</param>
-        public HomeController( ILogger<HomeController> logger, IRepository repo)            
+        public HomeController( ILogger<HomeController> logger, IRepository repo) 
         {
             // Set instances
             _logger = logger;
@@ -53,8 +53,15 @@
         /// <returns></returns>
         [HttpGet]
         public IActionResult Index()
-            =>
-            View();
+        {
+            // Check if the user is logged in...
+            if (User.Identity.IsAuthenticated)
+                // Then return the LoggedIn page
+                return RedirectToAction("Index", "Account");
+
+            // Else return the normal home page
+            else return View();
+        }
 
         /// <summary>
         /// Returns the privacy view

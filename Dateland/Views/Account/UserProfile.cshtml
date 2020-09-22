@@ -36,7 +36,7 @@
                     <ul class="no-list-type">
                         @if (Model.SelectedUser.UserInterests.Count() == 0)
                         {
-                            <li>Den här användaren nhar inga intressen :(</li>
+                            <li>Den här användaren har inga intressen :(</li>
                         }
                         else
                         {
@@ -54,6 +54,15 @@
             <div class="animate-right">
                 <div class="global-headline">
                     <h1 class="headline headline-dark">Favoriter</h1>
+                    <div class="chosen-body">
+                        <ul class="no-list-type">
+
+                            <text>@Model.SelectedUser.Food.FoodName</text>
+                            <text>@Model.SelectedUser.Movie.MovieName</text>
+                            <text>@Model.SelectedUser.Music.MusicGenre</text>
+
+                        </ul>
+                    </div>
                 </div>
                 <ul class="no-list-type">
                 </ul>
@@ -61,15 +70,17 @@
                 <div class="global-headline">
                     <h1 class="headline headline-dark">Matchningar</h1>
                 </div>
-                <ul class="no-list-type">
-                    <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
-                    <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
-                    <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
-                    <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
-                    <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
-                    <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
-                    <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
-                </ul>
+                
+                <div class="chosen-body">
+                    <ul class="no-list-type">
+
+                        @foreach (var parameter in Model.MatchedUsers.First(u => u.Key.UserName == Model.SelectedUser.UserName).Value)
+                        {
+                            <li><span class="match"><i class="fas fa-check-square"></i></span>@parameter</li>
+                        }
+
+                    </ul>
+                </div>
 
             </div>
         </div>

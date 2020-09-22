@@ -37,10 +37,10 @@
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<User>> GetMatchingUsers(string userId)
+        public async Task<IDictionary<User, List<string>>> GetMatchingUsers(string userId)
         {
             // Create the result object
-            List<User> result = new List<User>();
+            Dictionary<User, List<string>> result = new Dictionary<User, List<string>>();
 
             // Get the current user
             var currentUser = Context.Users.FirstOrDefault(u => u.Id.Equals(userId));
@@ -71,43 +71,43 @@
                         // We both must prefer each others genders
                         if (user.GenderPreferation.Equals(currentUser.Gender) && currentUser.GenderPreferation.Equals(user.Gender))
                         {
+                            // Create a new list that will hold the matched parameters
+                            List<string> matchedParameters = new List<string>();
+
                             // If the required matches is 0...
                             if (RequiredMatches.Equals(0))
                             {
                                 // Remove the current user from the list of identifiers
                                 useridentifiers.Remove(user.Id);
                                 // Add the user to the result
-                                result.Add(user);
+                                result.Add(user, matchedParameters);
                                 // Skip the rest
                                 continue;
                             }
 
-                            // Keeps track of how many interests they have in common
-                            int interestsCount = 0;
-
                             // Check if we both like the same music
-                            if (user.Music.MusicID.Equals(currentUser.Music.MusicID)) interestsCount++;
+                            if (user.Music.MusicID.Equals(currentUser.Music.MusicID)) matchedParameters.Add(currentUser.Music.MusicGenre); 
                             // Check if we both like the same food
-                            if (user.Food.FoodID.Equals(currentUser.Food.FoodID)) interestsCount++;
+                            if (user.Food.FoodID.Equals(currentUser.Food.FoodID))     matchedParameters.Add(currentUser.Food.FoodName);
                             // Check if we both like the same movie
-                            if (user.Movie.MovieID.Equals(currentUser.Movie.MovieID)) interestsCount++;
+                            if (user.Movie.MovieID.Equals(currentUser.Movie.MovieID)) matchedParameters.Add(currentUser.Movie.MovieName);
                             // Check if we both have the same education
-                            if (user.Education.EducationID.Equals(currentUser.Education.EducationID)) interestsCount++;
+                            if (user.Education.EducationID.Equals(currentUser.Education.EducationID)) matchedParameters.Add(currentUser.Education.EducationName);
 
                             // Check if we have any same interests
                             foreach (var interest in currentUser.UserInterests)
                                 // If the other user have the same interest as me...
                                 if (user.UserInterests.Contains(interest))
-                                    // Add one to the interest counts
-                                    interestsCount++;
+                                    // Add the interest to the matched parameters
+                                    matchedParameters.Add(interest.Interest.InterestName);
 
                             // If user is a match
-                            if (interestsCount >= RequiredMatches)
+                            if (matchedParameters.Count >= RequiredMatches)
                             {
                                 // Remove the current user from the list of identifiers
                                 useridentifiers.Remove(user.Id);
                                 // Add the user to the result
-                                result.Add(user);
+                                result.Add(user, matchedParameters);
                             }
 
 

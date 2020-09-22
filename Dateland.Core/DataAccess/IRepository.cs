@@ -14,8 +14,13 @@
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns></returns>
-        abstract Task<IEnumerable<User>> GetMatchingUsers(string userId);
+        abstract Task<IDictionary<User, List<string>>> GetMatchingUsers(string userId);
 
+        /// <summary>
+        /// Gets the pending requests.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
         abstract Task<IEnumerable<User>> GetPendingRequests(string userId);
 
         #region Generic Add,Update and delete

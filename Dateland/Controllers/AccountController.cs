@@ -8,21 +8,12 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
-    using Microsoft.CodeAnalysis.CSharp;
     using System.Collections.Generic;
     using Dateland.Core.Models;
-    using Microsoft.EntityFrameworkCore.Infrastructure;
-    using Microsoft.EntityFrameworkCore.Internal;
-
     using System;
     using System.IO;
     using System.Net.Http.Headers;
-    using Google.Apis.Auth.OAuth2;
     using Google.Apis.Drive.v3;
-    using Google.Apis.Services;
-    using Google.Apis.Util.Store;
-
-    using System.Threading;
     using Microsoft.AspNetCore.Hosting;
 
     [Authorize]
@@ -67,8 +58,12 @@
         /// </summary>
         public AppDbContext Context { get; }
 
-
+#pragma warning disable
+        /// <summary>
+        /// The environment
+        /// </summary>
         private readonly IHostingEnvironment _environment;
+
         #endregion
 
         #region Constructor
@@ -126,11 +121,11 @@
                 // If no user id was provided...
                 if (selectedUserId == null)
                     // Set selected user to the first user in the matches list
-                    ProfileVm.SelectedUser = ProfileVm.MatchedUsers.FirstOrDefault();
+                    ProfileVm.SelectedUser = ProfileVm.MatchedUsers.FirstOrDefault().Key;
                 // Else...
                 else
                     // Set selected user to the first matched user
-                    ProfileVm.SelectedUser = ProfileVm.MatchedUsers.FirstOrDefault(u => u.Id.CompareTo(selectedUserId) == 0);
+                    ProfileVm.SelectedUser = ProfileVm.MatchedUsers.Keys.FirstOrDefault(u => u.Id.CompareTo(selectedUserId) == 0);
 
                 // Get city of the selected user
                 await GetSelectedUserCity(ProfileVm.SelectedUser.Id);
@@ -148,7 +143,7 @@
         public async Task<IActionResult> GenerateMatches(string userId)
         {
             // Foreign key fuckar i user så den kan inte hämta typ food o sånt så de krashar när den kommer hot!
-            ProfileVm.MatchedUsers = (await Repository.GetMatchingUsers((await UserManager.FindByEmailAsync(User.Identity.Name)).Id)).ToList();
+            ProfileVm.MatchedUsers = (await Repository.GetMatchingUsers((await UserManager.FindByEmailAsync(User.Identity.Name)).Id));
 
             // Redirect to the Index page
             return RedirectToAction(nameof(Index));
