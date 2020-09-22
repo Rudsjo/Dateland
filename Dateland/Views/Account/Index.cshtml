@@ -20,10 +20,10 @@
                 @if (Model.MatchedUsers != null && Model.MatchedUsers.Count > 0)
                 {
                     <div class="si-row-inner">
-                        @for (int i = 0; i < Model.MatchedUsers.Count; i++)
+                        @foreach(var obj in Model.MatchedUsers)
                         {
                             <div class="sub-col-3">
-                                <a asp-route-selectedUserId="@Model.MatchedUsers[i].Id" asp-action="Index"><img asp-append-version="true" class="si-img" src="@Url.Content(Model.MatchedUsers[i].ProfilePictureUrl)" /></a>
+                                <a asp-route-selectedUserId="@obj.Key.Id" asp-action="Index"><img asp-append-version="true" class="si-img" src="@Url.Content(obj.Key.ProfilePictureUrl)" /></a>
                             </div>}
                     </div>}
                 else { }
@@ -42,7 +42,7 @@
                         {
                             if (Model.SelectedUser.FirstName == null)
                             {
-                                Model.SelectedUser = Model.MatchedUsers[0];
+                                Model.SelectedUser = Model.MatchedUsers.FirstOrDefault().Key;
                             }
 
                             <div class="chosen-header">
@@ -65,13 +65,12 @@
 
                         <div class="chosen-body">
                             <ul>
-                                <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
-                                <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
-                                <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
-                                <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
-                                <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
-                                <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
-                                <li><span class="match"><i class="fas fa-check-square"></i></span>Matchande parameter</li>
+
+                                @foreach(var parameter in Model.MatchedUsers.First(u => u.Key.UserName == Model.SelectedUser.UserName).Value)
+                                {
+                                    <li><span class="match"><i class="fas fa-check-square"></i></span>@parameter</li>
+                                }
+
                             </ul>
 
                             <hr class="chosen-body" />

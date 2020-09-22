@@ -8,12 +8,13 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
-    using Microsoft.CodeAnalysis.CSharp;
     using System.Collections.Generic;
     using Dateland.Core.Models;
-    using Microsoft.EntityFrameworkCore.Infrastructure;
-    using Microsoft.EntityFrameworkCore.Internal;
-    using System.IO.Compression;
+    using System;
+    using System.IO;
+    using System.Net.Http.Headers;
+    using Google.Apis.Drive.v3;
+    using Microsoft.AspNetCore.Hosting;
 
     [Authorize]
     public class AccountController : Controller
@@ -57,6 +58,12 @@
         /// </summary>
         public AppDbContext Context { get; }
 
+#pragma warning disable
+        /// <summary>
+        /// The environment
+        /// </summary>
+        private readonly IHostingEnvironment _environment;
+
         #endregion
 
         #region Constructor
@@ -67,8 +74,11 @@
         /// <param name="userManager">The user manager.</param>
         /// <param name="signInManager">The sign in manager.</param>
         /// <param name="emailService">The email service.</param>
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService, IRepository repository, AppDbContext context, ProfileViewModel vm)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService, IRepository repository, AppDbContext context, ProfileViewModel vm, IHostingEnvironment IHostingEnvironment)
         {
+
+            _environment = IHostingEnvironment;
+
             // Set the user manager
             UserManager = userManager;
             // Set the sign in manager
@@ -111,11 +121,11 @@
                 // If no user id was provided...
                 if (selectedUserId == null)
                     // Set selected user to the first user in the matches list
-                    ProfileVm.SelectedUser = ProfileVm.MatchedUsers.FirstOrDefault();
+                    ProfileVm.SelectedUser = ProfileVm.MatchedUsers.FirstOrDefault().Key;
                 // Else...
                 else
                     // Set selected user to the first matched user
-                    ProfileVm.SelectedUser = ProfileVm.MatchedUsers.FirstOrDefault(u => u.Id.CompareTo(selectedUserId) == 0);
+                    ProfileVm.SelectedUser = ProfileVm.MatchedUsers.Keys.FirstOrDefault(u => u.Id.CompareTo(selectedUserId) == 0);
 
                 // Get city of the selected user
                 await GetSelectedUserCity(ProfileVm.SelectedUser.Id);
@@ -133,7 +143,7 @@
         public async Task<IActionResult> GenerateMatches(string userId)
         {
             // Foreign key fuckar i user så den kan inte hämta typ food o sånt så de krashar när den kommer hot!
-            ProfileVm.MatchedUsers = (await Repository.GetMatchingUsers((await UserManager.FindByEmailAsync(User.Identity.Name)).Id)).ToList();
+            ProfileVm.MatchedUsers = (await Repository.GetMatchingUsers((await UserManager.FindByEmailAsync(User.Identity.Name)).Id));
 
             // Redirect to the Index page
             return RedirectToAction(nameof(Index));
@@ -152,6 +162,9 @@
             // Check if all fields are filled correctly
             if (ModelState.IsValid)
             {
+                //Uploads the profilepicture to drive and returns a url
+                string getProfilePictureUrl = UploadProfilePicture();
+
                 // Create the new user
                 User newUser = new User()
                 {
@@ -161,6 +174,7 @@
                     LastName = vm.LastName,
                     Email = vm.Email,
                     DateOfBirth = vm.DateOfBirth,
+                    ProfilePictureUrl = getProfilePictureUrl,
 
                     // Set default values
                     Food = Context.Foods.First(),
@@ -283,12 +297,19 @@
         {
             // Get the updated user
             var OriginalUser = await UserManager.FindByIdAsync(id);
-
+            //Uploads the profilepicture to drive and returns an url
+            string getProfilePictureUrl = UploadProfilePicture();
             // Update properties
             OriginalUser.FirstName   = currentUser.FirstName;
             OriginalUser.LastName    = currentUser.LastName;
             OriginalUser.DateOfBirth = currentUser.DateOfBirth;
             OriginalUser.Description = currentUser.Description;
+           
+            if (getProfilePictureUrl != "")
+            {
+                OriginalUser.ProfilePictureUrl = getProfilePictureUrl;
+            }
+            
 
             // Update the current user
             var result = await UserManager.UpdateAsync(OriginalUser);
@@ -618,6 +639,86 @@
             {
                 ProfileVm.CurrentInterests.Add(interest);
             }
+        }
+
+        /// <summary>
+        /// Copies the image and uploads it to google drive
+        /// and returns an url for the image
+        /// </summary>
+        /// <returns></returns>
+        public string UploadProfilePicture()
+        {
+            string picURL = "";
+            var newFileName = string.Empty;
+
+            var service = GoogleDriveCredentials.GetDriveService(GoogleDriveCredentials.CredentialsPath, "test",
+                   new[] { Google.Apis.Drive.v3.DriveService.Scope.Drive });
+
+            var fileMetadata = new Google.Apis.Drive.v3.Data.File()
+            {
+
+                Name = "Image.jpg",
+
+                Parents = new List<string>
+                    {
+                        "16VtUpWJ48VByl3f8zPWB-fJOXAQq_Uts"
+                    }
+            };
+            if (HttpContext.Request.Form.Files != null)
+            {
+                var fileName = string.Empty;
+                string PathDB = string.Empty;
+
+                var files = HttpContext.Request.Form.Files;
+
+                foreach (var file in files)
+                {
+                    if (file.Length > 0)
+                    {
+                        //Getting FileName
+                        fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+
+                        //Assigning Unique Filename (Guid)
+                        var myUniqueFileName = Convert.ToString(Guid.NewGuid());
+
+                        //Getting file Extension
+                        var FileExtension = Path.GetExtension(fileName);
+
+                        // concating  FileName + FileExtension
+                        newFileName = myUniqueFileName + FileExtension;
+
+                        // Combines two strings into a path.
+                        fileName = Path.Combine(_environment.WebRootPath, "images") + $@"\{newFileName}";
+
+                        
+                        PathDB = "images/" + newFileName;
+
+                        using (FileStream fs = System.IO.File.Create(fileName))
+                        {
+                            file.CopyTo(fs);
+
+                            fs.Flush();
+                        }
+
+                        FilesResource.CreateMediaUpload request;
+                        using (var stream = new System.IO.FileStream(fileName, System.IO.FileMode.Open))
+                        {
+                            request = service.Files.Create(fileMetadata, stream, "image/jpeg");
+                            request.Fields = "id";
+                            request.Upload();
+
+                        }
+                        System.IO.File.Delete(fileName);
+                        var file2 = request.ResponseBody;
+                        picURL = "https://drive.google.com/uc?id=" + file2.Id;
+
+                    }
+
+                }
+
+
+            }
+            return picURL;
         }
 
         #endregion

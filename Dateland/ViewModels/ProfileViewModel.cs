@@ -12,7 +12,7 @@
         /// <summary>
         /// A list of of the matched users
         /// </summary>
-        public List<User> MatchedUsers { get; set; }
+        public IDictionary<User, List<string>> MatchedUsers { get; set; }
 
         /// <summary>
         /// The user selected to be shown
