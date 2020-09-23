@@ -385,19 +385,17 @@
                 // Loop thorugh all changed interests
                 for (int i = 0; i < orgList.Count; i++)
                 {
-                    // And then check all the existing items
-                    foreach(var existingItem in listToCompare)
-                    {
-                        // If the item exists it will remove it and in the UI it will be unmarked
-                        if (existingItem.Interest.InterestID.Equals(orgList[i].InterestID))
-                        {
-                            OriginalUser.UserInterests.Remove(listToCompare.First(x => x.Interest.InterestID.Equals(orgList[i].InterestID)));
-                        }
-                        else
-                        {
-                            // TODO: LÄGG TILL EN USERINTEREST FÖR USERN
+                    var userInterest = new UserInterest();
 
-                        }
+                    if (listToCompare.Any(x => x.InterestID.Equals(orgList[i].InterestID)))
+                    {
+                        OriginalUser.UserInterests.Remove(listToCompare.First(x => x.Interest.InterestID.Equals(orgList[i].InterestID)));
+                    }
+                    else
+                    {
+                        userInterest.User = OriginalUser;
+                        userInterest.Interest = orgList[i];
+                        OriginalUser.UserInterests.Add(userInterest);
                     }
                 }
             }
