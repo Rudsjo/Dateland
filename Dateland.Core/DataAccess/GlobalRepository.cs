@@ -37,7 +37,7 @@
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns></returns>
-        public async Task<IDictionary<User, List<string>>> GetMatchingUsers(string userId)
+        public async Task<IDictionary<User, List<string>>> GetMatchingUsers(string userId, List<string> usersToSkip)
         {
             // Create the result object
             Dictionary<User, List<string>> result = new Dictionary<User, List<string>>();
@@ -51,7 +51,7 @@
                 return result;
 
             // Get all user identifiers
-            var useridentifiers = Context.Users.Select(u => u.Id).ToList();
+            var useridentifiers = Context.Users.Select(u => u.Id).Where(i => !usersToSkip.Contains(i)).ToList();
 
             // The minimum required matches
             int RequiredMatches = 3;

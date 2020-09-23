@@ -14,7 +14,7 @@
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns></returns>
-        abstract Task<IDictionary<User, List<string>>> GetMatchingUsers(string userId);
+        abstract Task<IDictionary<User, List<string>>> GetMatchingUsers(string userId, List<string> usersToSkip);
 
         /// <summary>
         /// Gets the pending requests.

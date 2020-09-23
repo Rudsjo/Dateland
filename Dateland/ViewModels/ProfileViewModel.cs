@@ -15,6 +15,11 @@
         public IDictionary<User, List<string>> MatchedUsers { get; set; }
 
         /// <summary>
+        /// Gets or sets the previous matches.
+        /// </summary>
+        public List<string> PreviousMatches { get; set; }
+
+        /// <summary>
         /// The user selected to be shown
         /// </summary>
         public User SelectedUser { get; set; } = new User();

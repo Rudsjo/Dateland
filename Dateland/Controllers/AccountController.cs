@@ -16,6 +16,8 @@
     using Google.Apis.Drive.v3;
     using Microsoft.AspNetCore.Hosting;
 
+#pragma warning disable
+
     [Authorize]
     public class AccountController : Controller
     {
@@ -35,6 +37,11 @@
         /// The view model
         /// </summary>
         private readonly ProfileViewModel ProfileVm;
+
+        /// <summary>
+        /// The environment
+        /// </summary>
+        private readonly IHostingEnvironment _environment;
 
         #endregion
 
@@ -57,12 +64,6 @@
         /// The db context
         /// </summary>
         public AppDbContext Context { get; }
-
-#pragma warning disable
-        /// <summary>
-        /// The environment
-        /// </summary>
-        private readonly IHostingEnvironment _environment;
 
         #endregion
 
@@ -142,8 +143,27 @@
         /// <returns></returns>
         public async Task<IActionResult> GenerateMatches(string userId)
         {
+            // If the list of prevous matches are null... Create a new list
+            if (ProfileVm.PreviousMatches == null) ProfileVm.PreviousMatches = new List<string>();
+
+            // Temo dictionary
+            Dictionary<User, List<string>> TEMP = new Dictionary<User, List<string>>();
+
+            // If matches have been made already...
+            if(ProfileVm.MatchedUsers != null)
+            {
+                // Backup incase no matches was found
+                TEMP = new Dictionary<User, List<string>>(ProfileVm.MatchedUsers);
+            }
+
+            // Query users
+            var queryResult = (await Repository.GetMatchingUsers((await UserManager.FindByEmailAsync(User.Identity.Name)).Id, ProfileVm.PreviousMatches));
+
             // Foreign key fuckar i user så den kan inte hämta typ food o sånt så de krashar när den kommer hot!
-            ProfileVm.MatchedUsers = (await Repository.GetMatchingUsers((await UserManager.FindByEmailAsync(User.Identity.Name)).Id));
+            ProfileVm.MatchedUsers = (queryResult.Count > 0) ? queryResult : TEMP;
+
+            // Add all matches to the list
+            ProfileVm.MatchedUsers.ToList().ForEach(u => ProfileVm.PreviousMatches.Add(u.Key.Id));
 
             // Redirect to the Index page
             return RedirectToAction(nameof(Index));
