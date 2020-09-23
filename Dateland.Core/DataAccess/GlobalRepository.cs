@@ -69,7 +69,8 @@
                     if (user != null && user.Id.CompareTo(currentUser.Id) != 0)
                     {
                         // We both must prefer each others genders
-                        if (user.GenderPreferation.Equals(currentUser.Gender) && currentUser.GenderPreferation.Equals(user.Gender))
+                        if (user.GenderPreferation.GenderID        == currentUser.Gender.GenderID && 
+                            currentUser.GenderPreferation.GenderID == user.Gender.GenderID)
                         {
                             // Create a new list that will hold the matched parameters
                             List<string> matchedParameters = new List<string>();
