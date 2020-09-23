@@ -73,10 +73,12 @@
 
                 <div class="chosen-body">
                     <ul class="no-list-type">
-
-                        @foreach (var parameter in Model.MatchedUsers.First(u => u.Key.UserName == Model.SelectedUser.UserName).Value)
+                        @if(Model.MatchedUsers.Any(u => u.Key.UserName.Equals(Model.SelectedUser.UserName)))
                         {
-                             <li><span class="match"><i class="fas fa-check-square"></i></span>@parameter</li>       
+                            @foreach (var parameter in Model.MatchedUsers.First(u => u.Key.UserName == Model.SelectedUser.UserName).Value??new List<string>())
+                            {
+                                 <li><span class="match"><i class="fas fa-check-square"></i></span>@parameter</li>       
+                            }
                         }
 
                     </ul>
