@@ -33,6 +33,26 @@
         }
 
         /// <summary>
+        /// Gets the potential matches count.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
+        public int GetPotentialMatchesCount(string userId)
+        {
+            // Get the current user
+            var currentUser = Context.Users.FirstOrDefault(u => u.Id.Equals(userId));
+
+            // Get the number of potential matches
+            var result = Context.Users.Where(u =>
+                u.GenderPreferation.GenderID == currentUser.Gender.GenderID &&
+                currentUser.GenderPreferation.GenderID == u.Gender.GenderID
+            ).Count();
+
+            // Return the result
+            return result;
+        }
+
+        /// <summary>
         /// Gets the matching users.
         /// </summary>
         /// <param name="userId">The user identifier.</param>

@@ -10,6 +10,13 @@
     public interface IRepository
     {
         /// <summary>
+        /// Gets the potential matches count.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
+        abstract int GetPotentialMatchesCount(string userId);
+
+        /// <summary>
         /// Gets the matching users.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
