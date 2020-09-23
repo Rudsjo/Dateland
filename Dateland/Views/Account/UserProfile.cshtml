@@ -18,7 +18,7 @@
                             <br /><span class="chosen-subheader">@age år, @Model.City</span>
                             <br>
                             <span class="ca-btn plane"><i class="far fa-paper-plane"></i></span>
-                            <a asp-action="SendFriendRequest" asp-route-id="@Model.SelectedUser.Id" class="ca-btn plus"><i class="far fa-plus-square"></i></a>
+                            <a data-toggle="tooltip" title="Skicka vänförfrågan" asp-action="SendFriendRequest" asp-route-id="@Model.SelectedUser.Id" class="ca-btn plus"><i class="far fa-plus-square"></i></a>
                         </h2>
                     </div>
 
@@ -36,7 +36,7 @@
                     <ul class="no-list-type">
                         @if (Model.SelectedUser.UserInterests.Count() == 0)
                         {
-                            <li>Den här användaren har inga intressen :(</li>
+                            <li>Den här användaren har inga intressen :(</li> 
                         }
                         else
                         {
@@ -55,13 +55,13 @@
                 <div class="global-headline">
                     <h1 class="headline headline-dark">Favoriter</h1>
                     <div class="chosen-body">
-                        <ul class="no-list-type">
 
-                            <text>@Model.SelectedUser.Food.FoodName</text>
-                            <text>@Model.SelectedUser.Movie.MovieName</text>
-                            <text>@Model.SelectedUser.Music.MusicGenre</text>
-
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">@Model.SelectedUser.Food.FoodName</li>
+                            <li class="list-group-item">@Model.SelectedUser.Movie.MovieName</li>
+                            <li class="list-group-item">@Model.SelectedUser.Music.MusicGenre</li>
                         </ul>
+
                     </div>
                 </div>
                 <ul class="no-list-type">
@@ -70,13 +70,13 @@
                 <div class="global-headline">
                     <h1 class="headline headline-dark">Matchningar</h1>
                 </div>
-                
+
                 <div class="chosen-body">
                     <ul class="no-list-type">
 
                         @foreach (var parameter in Model.MatchedUsers.First(u => u.Key.UserName == Model.SelectedUser.UserName).Value)
                         {
-                            <li><span class="match"><i class="fas fa-check-square"></i></span>@parameter</li>
+                             <li><span class="match"><i class="fas fa-check-square"></i></span>@parameter</li>       
                         }
 
                     </ul>

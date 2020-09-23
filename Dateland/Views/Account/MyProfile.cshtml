@@ -62,12 +62,15 @@
                             {
                                 if (food.FoodName.Equals("None"))
                                     continue;
+
                                 else if (food.FoodName.Equals(Model.Food.FoodName) && Model.Food != null)
                                 {
-                <option selected>@food.FoodName</option> }
+                                    <option selected>@food.FoodName</option> 
+                                }
                                 else
                                 {
-                <option>@food.FoodName</option>}
+                                    <option>@food.FoodName</option>
+                                }
                             };
                         </select>
                     </div>
@@ -79,12 +82,15 @@
                             {
                                 if (music.MusicGenre.Equals("None"))
                                     continue;
+
                                 else if (music.MusicGenre.Equals(Model.Music.MusicGenre) && Model.Music != null)
                                 {
-                <option selected>@music.MusicGenre</option> }
+                                    <option selected>@music.MusicGenre</option> 
+                                }
                                 else
                                 {
-                <option>@music.MusicGenre</option>}
+                                    <option>@music.MusicGenre</option>
+                                }
                             };
                         </select>
                     </div>
@@ -134,17 +140,19 @@
                             }
                             else if (Model.UserInterests.Any(x => x.Interest.InterestName.Equals(vm.Interests[i].InterestName)))
                             {
-                <div class="form-group profile-form">
-                    <input type="checkbox" id="interest" checked onchange="updateInterests(@vm.Interests[i].InterestID)">
-                    <label for="interest">@vm.Interests[i].InterestName</label>
-                </div> }
-            else
-            {
-                <div class="form-group profile-form">
-                    <input type="checkbox" id="interest" onchange="updateInterests(@vm.Interests[i].InterestID)">
-                    <label for="interest">@vm.Interests[i].InterestName</label>
-                </div>}
-        }
+                                <div class="form-group profile-form">
+                                    <input type="checkbox" id="interest" checked onchange="updateInterests(@vm.Interests[i].InterestID)">
+                                    <label for="interest">@vm.Interests[i].InterestName</label>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group profile-form">
+                                    <input type="checkbox" id="interest" onchange="updateInterests(@vm.Interests[i].InterestID)">
+                                    <label for="interest">@vm.Interests[i].InterestName</label>
+                                </div>
+                            }
+                        }
 
                     </div>
 
