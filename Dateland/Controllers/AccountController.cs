@@ -185,6 +185,11 @@
                 //Uploads the profilepicture to drive and returns a url
                 string getProfilePictureUrl = UploadProfilePicture();
 
+                if (getProfilePictureUrl == "")
+                {
+                    getProfilePictureUrl = "https://i.stack.imgur.com/34AD2.jpg";
+                }
+
                 // Create the new user
                 User newUser = new User()
                 {
